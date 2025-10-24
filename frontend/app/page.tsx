@@ -159,10 +159,10 @@ export default function ChatApp() {
       <div className="flex h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 items-center justify-center">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-purple-500 rounded-lg flex items-center justify-center animate-pulse">
-            <Sparkles className="h-4 w-4 text-white" />
+            <Code className="h-4 w-4 text-white" />
           </div>
           <span className="text-slate-600 dark:text-slate-400">
-            Loading AI Tutor...
+            Loading ECE MATLAB Helper...
           </span>
         </div>
       </div>
@@ -214,14 +214,14 @@ export default function ChatApp() {
             </Button>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
-                <Sparkles className="h-4 w-4 text-white" />
+                <Code className="h-4 w-4 text-white" />
               </div>
               <div>
                 <h1 className="text-lg font-semibold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
-                  {currentChat?.title || "AI Tutor"}
+                  {currentChat?.title || "ECE MATLAB Helper"}
                 </h1>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Your intelligent learning companion
+                  Your ECE MATLAB practical assistant
                 </p>
               </div>
             </div>
@@ -268,7 +268,7 @@ export default function ChatApp() {
                   transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                   className="w-20 h-20 bg-gradient-to-r from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
                 >
-                  <Sparkles className="h-10 w-10 text-white" />
+                  <Code className="h-10 w-10 text-white" />
                 </motion.div>
                 <motion.h2
                   initial={{ opacity: 0 }}
@@ -276,7 +276,7 @@ export default function ChatApp() {
                   transition={{ delay: 0.3 }}
                   className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent mb-4"
                 >
-                  Welcome to AI Tutor
+                  Welcome to ECE MATLAB Helper
                 </motion.h2>
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -284,9 +284,9 @@ export default function ChatApp() {
                   transition={{ delay: 0.4 }}
                   className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed"
                 >
-                  Your intelligent learning companion is ready to help you
-                  understand complex topics, solve problems, and accelerate your
-                  learning journey.
+                  Your intelligent ECE MATLAB assistant is ready to help you with
+                  ECE practicals, MATLAB programming, signal processing, and 
+                  communication systems.
                 </motion.p>
                 <motion.div
                   initial={{ opacity: 0 }}

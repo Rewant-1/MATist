@@ -16,6 +16,10 @@ import {
   Sparkles,
   BookOpen,
   Lightbulb,
+  Download,
+  Code,
+  FileText,
+  Zap,
 } from "lucide-react";
 import { chatApi } from "@/utils/api";
 import { motion, AnimatePresence } from "framer-motion";
@@ -114,6 +118,7 @@ export function ChatInterface({
   const [typingMessage, setTypingMessage] = useState<{
     id: string;
     content: string;
+    eceData?: any;
   } | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -196,6 +201,7 @@ export function ChatInterface({
       setTypingMessage({
         id: assistantMessageId,
         content: responseContent,
+        eceData: response.ece_data, // Capture ECE practical data if present
       });
     } catch (error) {
       console.error("Error sending message:", error);
@@ -219,6 +225,7 @@ export function ChatInterface({
         role: "assistant",
         content: typingMessage.content,
         timestamp: new Date(),
+        eceData: typingMessage.eceData, // Preserve ECE practical data
       };
 
       onAddMessage(chat.id, assistantMessage);
@@ -257,11 +264,126 @@ export function ChatInterface({
   };
 
   const suggestedPrompts = [
-    "Why do objects fall at the same rate regardless of their mass?",
-    "How do you calculate the derivative of a function like f(x) = x² + 3x?",
-    "What happens when you mix an acid with a base?",
-    "What were the main causes of World War I?",
+    "Generate complete practical for convolution of two signals",
+    "Create full practical on Fast Fourier Transform (FFT)",
+    "What is amplitude modulation?",
+    "Generate complete FIR filter design practical",
   ];
+
+  // Render ECE Practical Data in a beautiful format
+  const renderECEPracticalData = (eceData: any, messageId: string) => {
+    if (!eceData || eceData.status !== "success") return null;
+
+    const downloadLatex = () => {
+      if (!eceData.latex_report) return;
+      const blob = new Blob([eceData.latex_report], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${eceData.topic.replace(/\s+/g, "_")}_report.tex`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    return (
+      <div className="mt-4 space-y-3">
+        {/* Key Features Banner */}
+        <div className="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-violet-200 dark:border-violet-800">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+            <h4 className="font-semibold text-violet-900 dark:text-violet-100">
+              Complete ECE MATLAB Practical Generated
+            </h4>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+              <BookOpen className="h-3.5 w-3.5 text-violet-600" />
+              <span>Theory Explanation</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+              <Code className="h-3.5 w-3.5 text-violet-600" />
+              <span>Dual Code Generation</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+              <FileText className="h-3.5 w-3.5 text-violet-600" />
+              <span>Step-by-Step Explanation</span>
+            </div>
+            {eceData.optimization_applicable && (
+              <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+                <Zap className="h-3.5 w-3.5 text-violet-600" />
+                <span>Optimized Version</span>
+              </div>
+            )}
+            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+              <FileText className="h-3.5 w-3.5 text-violet-600" />
+              <span>LaTeX Report</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+              <Download className="h-3.5 w-3.5 text-violet-600" />
+              <span>One-Click Download</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Download LaTeX Button */}
+        {eceData.latex_report && (
+          <Button
+            onClick={downloadLatex}
+            className="w-full bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white"
+          >
+            <Download className="mr-2 h-4 w-4" />
+            Download Complete LaTeX Report
+          </Button>
+        )}
+
+        {/* Quick Access Buttons */}
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              if (eceData.brute_force_code) {
+                navigator.clipboard.writeText(eceData.brute_force_code);
+              }
+            }}
+            className="text-xs"
+          >
+            <Code className="mr-1.5 h-3.5 w-3.5" />
+            Copy Basic Code
+          </Button>
+          {eceData.efficient_code && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (eceData.efficient_code) {
+                  navigator.clipboard.writeText(eceData.efficient_code);
+                }
+              }}
+              className="text-xs"
+            >
+              <Zap className="mr-1.5 h-3.5 w-3.5" />
+              Copy Optimized Code
+            </Button>
+          )}
+        </div>
+
+        {/* Info Box */}
+        <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-3 text-xs text-blue-900 dark:text-blue-100">
+          <p className="font-semibold mb-1">✨ What you received:</p>
+          <ul className="space-y-0.5 ml-4 list-disc">
+            <li>Comprehensive theory explanation</li>
+            <li>Well-commented MATLAB code (basic implementation)</li>
+            {eceData.optimization_applicable && <li>Optimized version with performance improvements</li>}
+            <li>Step-by-step code explanation</li>
+            <li>Complete academic LaTeX report ready for Overleaf</li>
+          </ul>
+        </div>
+      </div>
+    );
+  };
 
   // Custom markdown components for better styling
   const markdownComponents = {
@@ -428,7 +550,7 @@ export function ChatInterface({
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                 className="w-16 h-16 bg-gradient-to-r from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
               >
-                <Sparkles className="h-8 w-8 text-white" />
+                <Bot className="h-8 w-8 text-white" />
               </motion.div>
               <motion.h3
                 initial={{ opacity: 0 }}
@@ -436,7 +558,7 @@ export function ChatInterface({
                 transition={{ delay: 0.3 }}
                 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2"
               >
-                Ready to learn something new?
+                Ready to work on ECE practicals?
               </motion.h3>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -444,8 +566,13 @@ export function ChatInterface({
                 transition={{ delay: 0.4 }}
                 className="text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto"
               >
-                Ask me anything! I'm here to help you understand complex topics,
-                solve problems, and guide your learning journey.
+                Ask me anything about ECE concepts, MATLAB programming, signal processing,
+                communication systems, and more!
+                <br />
+                <br />
+                <strong className="text-violet-600 dark:text-violet-400">
+                  💡 Pro Tip: Say "generate complete practical for [topic]" to get theory, code, explanations, and LaTeX report!
+                </strong>
               </motion.p>
 
               <motion.div
@@ -501,7 +628,7 @@ export function ChatInterface({
                   {message.role === "assistant" && (
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
-                        <Sparkles className="h-5 w-5 text-white" />
+                        <Bot className="h-5 w-5 text-white" />
                       </div>
                     </div>
                   )}
@@ -530,6 +657,9 @@ export function ChatInterface({
                         </div>
                       )}
                     </motion.div>
+
+                    {/* ECE Practical Data Display */}
+                    {message.role === "assistant" && message.eceData && renderECEPracticalData(message.eceData, message.id)}
 
                     <div
                       className={`flex items-center gap-2 mt-2 text-xs text-slate-500 dark:text-slate-400 ${
@@ -577,7 +707,7 @@ export function ChatInterface({
                 >
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
-                      <Sparkles className="h-5 w-5 text-white" />
+                      <Bot className="h-5 w-5 text-white" />
                     </div>
                   </div>
                   <div className="group max-w-[75%]">
@@ -604,7 +734,7 @@ export function ChatInterface({
               >
                 <div className="flex-shrink-0">
                   <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <Sparkles className="h-5 w-5 text-white" />
+                    <Bot className="h-5 w-5 text-white" />
                   </div>
                 </div>
                 <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">

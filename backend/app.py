@@ -50,8 +50,9 @@ def health():
 @app.route("/api/agents", methods=["GET"])
 def agent_status():
     return jsonify({
-        "available_agents": ["TutorAgent", "MathAgent", "PhysicsAgent", "ChemistryAgent", "HistoryAgent", "ECEMatlabAgent"],
-        "status": "all agents loaded"
+        "available_agents": ["ECE MATLAB Helper"],
+        "status": "ECE MATLAB agent loaded",
+        "description": "Expert assistant for ECE practicals, MATLAB programming, and electronics concepts"
     })
 
 @app.route("/api/ece-practical", methods=["POST"])

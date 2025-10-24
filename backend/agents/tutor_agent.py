@@ -1,34 +1,54 @@
-from .math_agent import MathAgent
-from .physics_agent import PhysicsAgent
-from .chemistry_agent import ChemistryAgent
-from .history_agent import HistoryAgent
 from .base_agent import BaseAgent
+from .ece_matlab_agent import ECEMatlabAgent
 import json
 
-# MAX_TOKENS_APPROX = 5000 * 4  # ~4 chars per token (safe estimate)
 MAX_MESSAGES = 10
 
 class TutorAgent(BaseAgent):
     def __init__(self):
         super().__init__("TutorAgent", """
-            You are a subject classifier for a multi-agent tutor system. Given a student query, your job is to identify the appropriate subject agent that should handle it.
-
-            Available agents:
-            - MathAgent: Arithmetic, algebra, calculus, equations, statistics.
-            - PhysicsAgent: Force, motion, energy, mass, velocity, Newton's laws.
-            - ChemistryAgent: Atoms, molecules, reactions, periodic table, acids and bases.
-            - HistoryAgent: Historical events, timelines, famous leaders, ancient civilizations.
-
-            Respond in the following JSON format:
-            {
-                "subject": "MathAgent" | "PhysicsAgent" | ChemistryAgent | HistoryAgent | "Unknown",
-                "reason": "<short explanation>"
-            }
+            You are an expert ECE (Electronics and Communication Engineering) MATLAB helper.
+            You assist students with:
+            - ECE concepts and theory (signal processing, communication systems, circuits, etc.)
+            - MATLAB programming for ECE practicals
+            - Code explanations and debugging
+            - Academic questions related to ECE
+            
+            Provide clear, educational responses that help students understand both the theory and implementation.
         """)
-        self.math_agent = MathAgent()
-        self.physics_agent = PhysicsAgent()
-        self.chemistry_agent = ChemistryAgent()
-        self.history_agent = HistoryAgent()
+        self.ece_agent = ECEMatlabAgent()
+        self.classifier = BaseAgent("Classifier", """
+            You are a query classifier for an ECE MATLAB helper system.
+            
+            Classify user queries into two types:
+            
+            1. "complete_practical" - User wants a FULL practical with theory, code, explanations, and LaTeX report
+               Keywords to look for: "generate", "create", "complete", "full", "practical", "implementation"
+               Examples: 
+               - "generate practical for convolution"
+               - "create complete practical on FFT"
+               - "I need full implementation of FIR filter"
+               - "generate complete practical for amplitude modulation"
+               - "create full practical on [topic]"
+            
+            2. "simple_question" - User has a specific question or needs help
+               Examples: 
+               - "what is convolution?"
+               - "explain this code"
+               - "how does FFT work?"
+               - "help me fix this error"
+            
+            IMPORTANT: If query contains words like "generate", "create", "complete", or "full practical", 
+            classify as "complete_practical".
+            
+            Respond with ONLY this JSON format (no other text):
+            {"type": "complete_practical", "topic": "extracted topic name"}
+            OR
+            {"type": "simple_question"}
+            
+            Extract the topic name without words like "generate", "create", "practical for", etc.
+            Example: "generate complete practical for amplitude modulation" → topic: "amplitude modulation"
+        """)
 
     def route(self, messages: list[dict]) -> dict:
         # Trim message history to fit under token and message limit
@@ -43,69 +63,128 @@ class TutorAgent(BaseAgent):
 
         if not user_query:
             return {
-                "agent": "Unknown",
+                "agent": "TutorAgent",
                 "response": "No user question found in the message history.",
                 "reason": "Missing user query."
             }
 
-        # Send classification request
-        classification_prompt = trimmed_messages + [
-            {
-                "role": "user",
-                "content": f"""Classify the following query (Keep in mind the previous messages as well):
-                Query: {user_query}
-
-                Respond in this JSON format:
-                {{
-                    "subject": "MathAgent" | "PhysicsAgent" | ChemistryAgent | HistoryAgent | "Unknown",
-                    "reason": "<short explanation>"
-                }}
-                """
-            }
-        ]
-
         try:
-            raw_response = super().respond(classification_prompt)
-            raw_response = raw_response.strip("```json ").lstrip().rstrip().rstrip("```")
-            data = json.loads(raw_response)
-
-            subject = data.get("subject", "Unknown")
-            reason = data.get("reason", "No reason provided.")
-
-            if subject == "MathAgent":
-                result = self.math_agent.respond(reason + user_query)
-            elif subject == "PhysicsAgent":
-                result = self.physics_agent.respond(reason + user_query)
-            elif subject == "ChemistryAgent":
-                result = self.chemistry_agent.respond(reason + user_query)
-            elif subject == "HistoryAgent":
-                result = self.history_agent.respond(reason + user_query)    
+            # Classify the query
+            print(f"[TutorAgent] Classifying query: {user_query}")
+            classification_result = self.classifier.respond(f"Classify this query: {user_query}")
+            classification_result = classification_result.strip().strip("```json").strip("```").strip()
+            print(f"[TutorAgent] Classification result: {classification_result}")
+            
+            try:
+                classification = json.loads(classification_result)
+                print(f"[TutorAgent] Parsed classification: {classification}")
+            except Exception as e:
+                # Default to simple question if classification fails
+                print(f"[TutorAgent] Classification parsing failed: {e}")
+                classification = {"type": "simple_question"}
+            
+            # If it's a request for complete practical, use full ECE workflow
+            if classification.get("type") == "complete_practical":
+                topic = classification.get("topic", user_query)
+                print(f"[TutorAgent] Detected complete practical request for: {topic}")
+                
+                # Use the full ECE MATLAB workflow
+                practical_result = self.ece_agent.process_practical(topic)
+                
+                if practical_result.get("status") == "success":
+                    # Format the complete response with all sections
+                    response = self._format_complete_practical_response(practical_result)
+                    return {
+                        "agent": "ECE MATLAB Complete Practical",
+                        "response": response,
+                        "reason": "Complete practical workflow",
+                        "ece_data": practical_result  # Include full data for frontend
+                    }
+                else:
+                    return {
+                        "agent": "ECE MATLAB Helper",
+                        "response": f"Error generating practical: {practical_result.get('error_message')}",
+                        "reason": "Practical generation error"
+                    }
+            
             else:
-                result = BaseAgent("BaseAgent", "This question is out of scope/not related to subjects, respond accordingly and stay on topic itself and try not to explain/expand on it too much. Politely ask them to stay on topic and show what all agents you have. (Math, Physics, History, Chemistry), Do respond politely to greetings and just try to steer the conversation in the right direction if user is going offtopic.").respond(user_query)
-                # result = "This question is out of scope for me, please try another question."
+                # For simple questions, use the base agent response
+                context = "\n".join([
+                    f"{msg['role']}: {msg['content']}" 
+                    for msg in trimmed_messages[-5:]  # Last 5 messages for context
+                ])
+                
+                full_query = f"Context:\n{context}\n\nCurrent query: {user_query}"
+                result = super().respond(full_query)
 
-            return {
-                "agent": subject,
-                "response": result,
-                "reason": reason
-            }
+                return {
+                    "agent": "ECE MATLAB Helper",
+                    "response": result,
+                    "reason": "ECE MATLAB educational assistant"
+                }
 
         except Exception as e:
             return {
-                "agent": "Unknown",
-                "response": f"Classification failed. Error: {str(e)}",
-                "reason": "Gemini classification failed."
+                "agent": "TutorAgent",
+                "response": f"Sorry, there was an error processing your request: {str(e)}",
+                "reason": "Processing error."
             }
+    
+    def _format_complete_practical_response(self, result: dict) -> str:
+        """Format the complete practical result into a readable response"""
+        sections = []
+        
+        sections.append("# 📚 Complete ECE MATLAB Practical\n")
+        sections.append(f"**Topic:** {result['topic']}\n")
+        
+        # Theory
+        if result.get('theory'):
+            sections.append("## 🎓 Theory\n")
+            sections.append(result['theory'])
+            sections.append("\n---\n")
+        
+        # Brute-Force Code
+        if result.get('brute_force_code'):
+            sections.append("## 💻 MATLAB Code (Basic Implementation)\n")
+            sections.append("```matlab\n")
+            sections.append(result['brute_force_code'])
+            sections.append("\n```\n")
+        
+        # Code Explanation
+        if result.get('brute_force_explanation'):
+            sections.append("## 📖 Code Explanation\n")
+            sections.append(result['brute_force_explanation'])
+            sections.append("\n---\n")
+        
+        # Optimized Code (if applicable)
+        if result.get('optimization_applicable') and result.get('efficient_code'):
+            sections.append("## ⚡ Optimized Implementation\n")
+            sections.append("```matlab\n")
+            sections.append(result['efficient_code'])
+            sections.append("\n```\n")
+            
+            if result.get('efficient_explanation'):
+                sections.append("## 🔧 Optimization Details\n")
+                sections.append(result['efficient_explanation'])
+                sections.append("\n---\n")
+        
+        # LaTeX Report
+        if result.get('latex_report'):
+            sections.append("## 📄 LaTeX Report\n")
+            sections.append("Complete academic report generated! You can:")
+            sections.append("- Copy the LaTeX code below")
+            sections.append("- Paste it into Overleaf")
+            sections.append("- Compile to get a professional PDF\n")
+            sections.append("```latex\n")
+            sections.append(result['latex_report'][:500] + "...")  # Show preview
+            sections.append("\n```\n")
+            sections.append("*Full LaTeX report available in response data*\n")
+        
+        return "\n".join(sections)
 
     def _trim_messages(self, messages):
         # First limit by message count
         if len(messages) > MAX_MESSAGES:
             messages = messages[-MAX_MESSAGES:]
-
-        # Then limit by token size approximation
-        # total_chars = sum(len(m["content"]) for m in messages)
-        # while total_chars > MAX_TOKENS_APPROX and len(messages) > 1:
-        #     messages.pop(0)
-        #     total_chars = sum(len(m["content"]) for m in messages)
 
         return messages

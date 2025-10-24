@@ -1,4 +1,3 @@
-import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -7,8 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI Tutor",
-  description: "Your intelligent learning companion",
+  title: "ECE MATLAB Helper",
+  description: "Your intelligent ECE MATLAB practical assistant",
 };
 
 export default function RootLayout({

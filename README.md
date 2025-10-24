@@ -1,317 +1,627 @@
-# AI Multi-Agent Tutor System + ECE MATLAB Practical Helper
+# ECE MATLAB Helper# ECE MATLAB Helper
 
-A sophisticated educational platform powered by Google's Gemini AI, featuring specialized agents for Math, Physics, and **ECE MATLAB Practicals** with integrated computational tools and automated report generation.
 
-## 🚀 Live Demo
 
-- **Frontend**: [https://multi-ai-tutor.vercel.app/](https://multi-ai-tutor.vercel.app/)
-- **Backend API**: [Render Deployment](https://ai-tutor-multi-agent.onrender.com)
+A sophisticated educational platform powered by Google's Gemini AI, designed specifically for **Electronics & Communication Engineering (ECE)** students working with MATLAB practicals.A sophisticated educational platform powered by Google's Gemini AI, designed specifically for **Electronics & Communication Engineering (ECE)** students working with MATLAB practicals. Features automated theory explanations, code generation, and LaTeX report generation.
 
-## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Architecture](#architecture)
+
+## 🚀 Features## 🚀 Live Demo
+
+
+
+### Chat Interface- **Frontend**: [https://multi-ai-tutor.vercel.app/](https://multi-ai-tutor.vercel.app/)
+
+- Real-time chat with ECE-focused AI assistant- **Backend API**: [Render Deployment](https://ai-tutor-multi-agent.onrender.com)
+
+- Help with ECE concepts and theory
+
+- MATLAB programming assistance## 📋 Table of Contents
+
+- Code explanations and debugging
+
+- Signal processing guidance- [Overview](#overview)
+
+- Communication systems help- [Architecture](#architecture)
+
 - [Features](#features)
-- [Tech Stack](#tech-stack)
+
+### ECE MATLAB Practical Helper (`/ece-practical` page)- [Tech Stack](#tech-stack)
+
 - [Installation](#installation)
-- [Usage](#usage)
+
+Complete workflow for ECE practicals:- [Usage](#usage)
+
 - [API Documentation](#api-documentation)
-- [Agent System](#agent-system)
-- [Tools](#tools)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
+
+1. **Theory Explanation**: Comprehensive ECE concept explanations- [ECE MATLAB Agent](#ece-matlab-agent)
+
+   - Signal Processing (convolution, FFT, filtering)- [Deployment](#deployment)
+
+   - Communication Systems (modulation, sampling)- [Contributing](#contributing)
+
+   - Circuit Analysis and more
 
 ## 🎯 Overview
 
-This multi-agent tutoring system leverages Google's Gemini AI to provide personalized educational assistance across Math, Physics, and **Electronics & Communication Engineering (ECE)** domains. The system intelligently delegates user queries to specialized agents equipped with domain-specific tools and knowledge bases.
+2. **Brute-Force Code Generation**: Simple, educational MATLAB implementations
 
-### Key Capabilities
+   - Clear comments explaining each stepThis ECE MATLAB Helper leverages Google's Gemini AI to provide personalized educational assistance for **Electronics & Communication Engineering (ECE)** students. The system helps with MATLAB practicals, signal processing, communication systems, and circuit analysis.
 
-- **Intelligent Query Routing**: Automatically determines the most appropriate agent for each question
-- **Specialized Domain Expertise**: Dedicated Math, Physics, and **ECE MATLAB** agents with tailored responses
-- **🆕 ECE MATLAB Practical Helper**: Complete practical workflow from theory to LaTeX report
-  - Theory explanations for ECE concepts
-  - Brute-force MATLAB code generation
+   - Beginner-friendly logic
+
+   - Easy to understand and modify### Key Capabilities
+
+
+
+3. **Code Explanation**: Step-by-step breakdowns- **ECE-Focused Assistance**: Specialized help for ECE concepts and MATLAB programming
+
+   - Line-by-line explanations- **🆕 ECE MATLAB Practical Helper**: Complete practical workflow from theory to LaTeX report
+
+   - MATLAB function descriptions  - Theory explanations for ECE concepts
+
+   - Algorithmic insights  - Brute-force MATLAB code generation
+
   - Optimized code implementations
-  - Step-by-step code explanations
-  - Complete LaTeX academic reports
-- **Computational Tools**: Built-in calculator and physics constants database
-- **Real-time Interaction**: Smooth, responsive chat interface with typing indicators
+
+4. **Optimization (Conditional)**: Efficient implementations  - Step-by-step code explanations
+
+   - Vectorized operations  - Complete LaTeX academic reports
+
+   - Built-in MATLAB functions- **Computational Tools**: Built-in calculator and physics constants database
+
+   - Performance improvements- **Real-time Interaction**: Smooth, responsive chat interface with typing indicators
+
 - **Modern UI/UX**: Dark mode, animations, and mobile-responsive design
 
-## 🏗 Architecture
-
-The system follows a clean multi-agent architecture with clear separation of concerns:
-
-```
-                    ┌─────────────────────────────────────┐
-                    │            USER INTERFACE           │
-                    │         (Next.js Frontend)          │
-                    │                                     │
-                    │  ┌─────────────────────────────┐    │
-                    │  │      Chat Interface         │    │
-                    │  │   • Message Input/Output    │    │
-                    │  │   • Agent Response Display  │    │
-                    │  │   • Real-time Updates       │    │
-                    │  └─────────────────────────────┘    │
-                    └─────────────────┬───────────────────┘
-                                      │ HTTP/REST API
-                                      ▼
-                    ┌─────────────────────────────────────┐
-                    │         FLASK API GATEWAY           │
-                    │                                     │
-                    │  ┌─────────────────────────────┐    │
-                    │  │       Tutor Agent           │    │
-                    │  │    (Request Router)         │    │
-                    │  │                             │    │
-                    │  │  • Query Analysis           │    │
-                    │  │  • Agent Selection Logic    │    │
-                    │  │  • Response Coordination    │    │
-                    │  └─────────────┬───────────────┘    │
-                    │                │                    │
-                    │       ┌────────┴────────┐           │
-                    │       ▼                 ▼           │
-                    │  ┌──────────┐      ┌──────────┐     │
-                    │  │   MATH   │      │ PHYSICS  │     │
-                    │  │  AGENT   │      │  AGENT   │     │
-                    │  │          │      │          │     │
-                    │  │ • Algebra│      │ • Mechanics    │
-                    │  │ • Calculus│     │ • Thermodynamics│
-                    │  │ • Geometry│     │ • Electromagnetism│
-                    │  └────┬─────┘      └─────┬────┘     │
-                    │       │                  │          │
-                    │       └────────┬─────────┘          │
-                    │                ▼                    │
-                    │  ┌─────────────────────────────┐    │
-                    │  │         TOOL LAYER          │    │
-                    │  │                             │    │
-                    │  │  ┌─────────┐ ┌─────────────┐│    │
-                    │  │  │Calculator│ │Physics      ││    │
-                    │  │  │Tool     │ │Constants    ││    │
-                    │  │  │         │ │Database     ││    │
-                    │  │  └─────────┘ └─────────────┘│    │
-                    │  └─────────────────────────────┘    │
-                    └─────────────────┬───────────────────┘
-                                      │
-                                      ▼
-                    ┌─────────────────────────────────────┐
-                    │          GEMINI AI SERVICE          │
-                    │                                     │
-                    │    • Natural Language Processing    │
-                    │    • Mathematical Reasoning         │
-                    │    • Physics Knowledge Base         │
-                    │    • Contextual Understanding       │
-                    └─────────────────────────────────────┘
-```
-
-### Component Interactions:
-
-1. **User Query Flow**: User inputs question → Frontend sends to Flask API
-2. **Agent Routing**: Tutor Agent analyzes query and selects appropriate specialist agent
-3. **Tool Integration**: Specialist agents utilize computational tools when needed
-4. **AI Processing**: Agents leverage Gemini AI for intelligent responses
-5. **Response Delivery**: Formatted response sent back through the chain to user
-
-## ✨ Features
-
-### 🆕 ECE MATLAB Practical Helper
-
-**Access via**: `/ece-practical` page
-
-Complete workflow for ECE practicals:
-
-1. **Theory Explanation**: Comprehensive ECE concept explanations
-   - Signal Processing (convolution, FFT, filtering)
-   - Communication Systems (modulation, sampling)
-   - Circuit Analysis and more
-
-2. **Brute-Force Code Generation**: Simple, educational MATLAB implementations
-   - Clear comments explaining each step
-   - Beginner-friendly logic
-   - Easy to understand and modify
-
-3. **Code Explanation**: Step-by-step breakdowns
-   - Line-by-line explanations
-   - MATLAB function descriptions
-   - Algorithmic insights
-
-4. **Optimization (Conditional)**: Efficient implementations
-   - Vectorized operations
-   - Built-in MATLAB functions
-   - Performance improvements
-
 5. **LaTeX Report Generation**: Academic-ready reports
-   - Aim, Objective, Theory sections
+
+   - Aim, Objective, Theory sections## 🏗 Architecture
+
    - Formatted MATLAB code
-   - Results and Observation placeholders
+
+   - Results and Observation placeholdersThe system follows a clean multi-agent architecture with clear separation of concerns:
+
    - Ready for Overleaf compilation
 
-**Example Topics:**
-- Convolution of two signals
-- Fast Fourier Transform (FFT)
-- FIR/IIR Filter Design
-- Amplitude/Frequency Modulation
-- DFT implementation
-- And many more ECE practicals!
+```
 
-### Frontend Features
+**Example Topics:**                    ┌─────────────────────────────────────┐
 
-- **Interactive Chat Interface**: Real-time messaging with message history
-- **Agent Identification**: Visual badges showing which agent responded
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Dark Mode**: Eye-friendly interface with theme persistence
-- **Typing Indicators**: Visual feedback during AI processing
-- **Smooth Animations**: Framer Motion powered transitions
-- **Copy to Clipboard**: Easy sharing of responses
-- **Error Handling**: Graceful error display and recovery
+- Convolution of two signals                    │            USER INTERFACE           │
 
-### Backend Features
+- Fast Fourier Transform (FFT)                    │         (Next.js Frontend)          │
 
-- **Multi-Agent Architecture**: Specialized agents for different domains
-- **Intelligent Routing**: Context-aware query delegation
-- **Tool Integration**: Seamless access to computational tools
-- **Error Recovery**: Robust error handling and fallback mechanisms
-- **CORS Support**: Secure cross-origin resource sharing
-- **Environment Management**: Secure API key handling
+- FIR/IIR Filter Design                    │                                     │
 
-## 🛠 Tech Stack
+- Amplitude/Frequency Modulation                    │  ┌─────────────────────────────┐    │
 
-### Frontend
+- DFT implementation                    │  │      Chat Interface         │    │
 
-- **Framework**: Next.js 14 with TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui components
-- **Animations**: Framer Motion
-- **State Management**: React hooks (useState, useEffect)
-- **HTTP Client**: Axios with interceptors
-- **Icons**: Lucide React
+- And many more ECE practicals!                    │  │   • Message Input/Output    │    │
 
-### Backend
+                    │  │   • Agent Response Display  │    │
 
-- **Framework**: Flask (Python)
-- **AI Integration**: Google Generative AI (Gemini)
-- **CORS**: Flask-CORS
-- **Environment**: python-dotenv
-- **Error Handling**: Custom middleware
+## 🛠 Tech Stack                    │  │   • Real-time Updates       │    │
 
-### Deployment
+                    │  └─────────────────────────────┘    │
 
-- **Frontend**: Vercel (Global CDN)
-- **Backend**: Render (Containerized deployment)
-- **Environment**: Secure environment variable management
+### Frontend                    └─────────────────┬───────────────────┘
 
-## 🚀 Installation
+- **Framework**: Next.js 15 with TypeScript                                      │ HTTP/REST API
 
-### Prerequisites
+- **UI Library**: React 19                                      ▼
 
-- Node.js 18+ and npm/yarn
-- Python 3.8+
-- Google AI API key ([Get it here](https://ai.google.dev))
+- **Styling**: Tailwind CSS + shadcn/ui components                    ┌─────────────────────────────────────┐
 
-### Backend Setup
+- **Animations**: Framer Motion                    │         FLASK API GATEWAY           │
 
-1. **Clone the repository**
+- **Icons**: Lucide React                    │                                     │
 
-   ```bash
-   git clone https://github.com/Paulie-Aditya/ai-tutor-multi-agent.git
-   cd ai-tutor-multi-agent/backend
-   ```
+                    │  ┌─────────────────────────────┐    │
 
-2. **Create virtual environment**
+### Backend                    │  │       Tutor Agent           │    │
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+- **Framework**: Flask (Python)                    │  │    (Request Router)         │    │
 
-3. **Install dependencies**
+- **AI Integration**: Google Generative AI (Gemini)                    │  │                             │    │
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+- **CORS**: Flask-CORS                    │  │  • Query Analysis           │    │
 
-4. **Environment setup**
+- **Environment**: python-dotenv                    │  │  • Agent Selection Logic    │    │
 
-   ```bash
-   cp .env.example .env
-   # Add your GEMINI_API_KEY to .env
-   ```
+                    │  │  • Response Coordination    │    │
+
+### Deployment                    │  └─────────────┬───────────────┘    │
+
+- **Frontend**: Vercel                    │                │                    │
+
+- **Backend**: Render                    │       ┌────────┴────────┐           │
+
+                    │       ▼                 ▼           │
+
+## 🚀 Installation                    │  ┌──────────┐      ┌──────────┐     │
+
+                    │  │   MATH   │      │ PHYSICS  │     │
+
+### Prerequisites                    │  │  AGENT   │      │  AGENT   │     │
+
+- Node.js 18+ and npm/yarn/pnpm                    │  │          │      │          │     │
+
+- Python 3.8+                    │  │ • Algebra│      │ • Mechanics    │
+
+- Google AI API key ([Get it here](https://ai.google.dev))                    │  │ • Calculus│     │ • Thermodynamics│
+
+                    │  │ • Geometry│     │ • Electromagnetism│
+
+### Backend Setup                    │  └────┬─────┘      └─────┬────┘     │
+
+                    │       │                  │          │
+
+1. **Clone the repository**                    │       └────────┬─────────┘          │
+
+   ```bash                    │                ▼                    │
+
+   git clone https://github.com/Paulie-Aditya/ai-tutor-multi-agent.git                    │  ┌─────────────────────────────┐    │
+
+   cd ai-tutor-multi-agent/backend                    │  │         TOOL LAYER          │    │
+
+   ```                    │  │                             │    │
+
+                    │  │  ┌─────────┐ ┌─────────────┐│    │
+
+2. **Create virtual environment**                    │  │  │Calculator│ │Physics      ││    │
+
+   ```bash                    │  │  │Tool     │ │Constants    ││    │
+
+   python -m venv venv                    │  │  │         │ │Database     ││    │
+
+   source venv/bin/activate  # On Windows: venv\Scripts\activate                    │  │  └─────────┘ └─────────────┘│    │
+
+   ```                    │  └─────────────────────────────┘    │
+
+                    └─────────────────┬───────────────────┘
+
+3. **Install dependencies**                                      │
+
+   ```bash                                      ▼
+
+   pip install -r requirements.txt                    ┌─────────────────────────────────────┐
+
+   ```                    │          GEMINI AI SERVICE          │
+
+                    │                                     │
+
+4. **Environment setup**                    │    • Natural Language Processing    │
+
+   ```bash                    │    • Mathematical Reasoning         │
+
+   # Create .env file and add:                    │    • Physics Knowledge Base         │
+
+   GEMINI_API_KEY=your_gemini_api_key_here                    │    • Contextual Understanding       │
+
+   ```                    └─────────────────────────────────────┘
+
+```
 
 5. **Run the backend**
-   ```bash
-   python app.py
-   ```
-   Backend will start on `http://localhost:5000`
 
-### Frontend Setup
+   ```bash### Component Interactions:
+
+   python app.py
+
+   ```1. **User Query Flow**: User inputs question → Frontend sends to Flask API
+
+   Backend will start on `http://localhost:5000`2. **Agent Routing**: Tutor Agent analyzes query and selects appropriate specialist agent
+
+3. **Tool Integration**: Specialist agents utilize computational tools when needed
+
+### Frontend Setup4. **AI Processing**: Agents leverage Gemini AI for intelligent responses
+
+5. **Response Delivery**: Formatted response sent back through the chain to user
 
 1. **Navigate to frontend directory**
 
-   ```bash
+   ```bash## ✨ Features
+
    cd ../frontend
-   ```
 
-2. **Install dependencies**
+   ```### 🆕 ECE MATLAB Practical Helper
+
+
+
+2. **Install dependencies****Access via**: `/ece-practical` page
 
    ```bash
-   npm install
+
+   npm installComplete workflow for ECE practicals:
+
    # or
-   yarn install
+
+   yarn install1. **Theory Explanation**: Comprehensive ECE concept explanations
+
+   # or   - Signal Processing (convolution, FFT, filtering)
+
+   pnpm install   - Communication Systems (modulation, sampling)
+
+   ```   - Circuit Analysis and more
+
+
+
+3. **Environment setup**2. **Brute-Force Code Generation**: Simple, educational MATLAB implementations
+
+   ```bash   - Clear comments explaining each step
+
+   # Create .env.local and add:   - Beginner-friendly logic
+
+   NEXT_PUBLIC_BACKEND_URL=http://localhost:5000   - Easy to understand and modify
+
    ```
 
-3. **Environment setup**
+3. **Code Explanation**: Step-by-step breakdowns
 
-   ```bash
-   cp .env.example .env.local
-   # Add NEXT_PUBLIC_API_URL=http://localhost:5000
+4. **Run the frontend**   - Line-by-line explanations
+
+   ```bash   - MATLAB function descriptions
+
+   npm run dev   - Algorithmic insights
+
    ```
 
-4. **Run the frontend**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-   Frontend will start on `http://localhost:3000`
+   Frontend will start on `http://localhost:3000`4. **Optimization (Conditional)**: Efficient implementations
 
-## 📖 Usage
+   - Vectorized operations
 
-### Basic Usage
+## 📖 Usage   - Built-in MATLAB functions
 
-1. **Open the application** at `http://localhost:3000`
-2. **Type your question** in the chat input
-3. **Send your message** - the system will automatically route it to the appropriate agent
-4. **View the response** with agent identification badges
+   - Performance improvements
 
-### Example Queries
+### Chat Interface
 
-**Math Questions:**
+1. Open `http://localhost:3000`5. **LaTeX Report Generation**: Academic-ready reports
 
-- "Solve the quadratic equation x² + 5x + 6 = 0"
-- "Calculate the integral of sin(x) from 0 to π"
-- "What is the derivative of e^(2x)?"
+2. Ask questions about ECE concepts, MATLAB programming, signal processing, etc.   - Aim, Objective, Theory sections
 
-**Physics Questions:**
+3. Get instant AI-powered responses   - Formatted MATLAB code
 
-- "Explain Newton's second law of motion"
-- "What is the speed of light in vacuum?"
-- "Calculate the kinetic energy of a 2kg object moving at 10 m/s"
+   - Results and Observation placeholders
 
-**Calculation Requests:**
+**Example Questions:**   - Ready for Overleaf compilation
 
-- "Calculate 15 \* 23 + 47"
-- "What is the square root of 144?"
-- "Evaluate (5 + 3) \* 2 - 4"
+- "Explain convolution of two signals with MATLAB code"
 
-## 📚 API Documentation
+- "How do I implement FFT in MATLAB?"**Example Topics:**
 
-### Base URL
+- "What is amplitude modulation?"- Convolution of two signals
 
-- **Development**: `http://localhost:5000`
+- "Help me design an FIR filter"- Fast Fourier Transform (FFT)
+
+- FIR/IIR Filter Design
+
+### ECE Practical Helper- Amplitude/Frequency Modulation
+
+1. Navigate to `/ece-practical` page- DFT implementation
+
+2. Enter your practical topic (e.g., "Convolution of two signals")- And many more ECE practicals!
+
+3. Get complete practical package:
+
+   - Theory explanation### Frontend Features
+
+   - Brute-force MATLAB code
+
+   - Optimized code (if applicable)- **Interactive Chat Interface**: Real-time messaging with message history
+
+   - Code explanations- **Agent Identification**: Visual badges showing which agent responded
+
+   - LaTeX report- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+
+- **Dark Mode**: Eye-friendly interface with theme persistence
+
+## 📚 API Documentation- **Typing Indicators**: Visual feedback during AI processing
+
+- **Smooth Animations**: Framer Motion powered transitions
+
+### Base URL- **Copy to Clipboard**: Easy sharing of responses
+
+- **Development**: `http://localhost:5000`- **Error Handling**: Graceful error display and recovery
+
 - **Production**: `https://ai-tutor-multi-agent.onrender.com`
+
+### Backend Features
 
 ### Endpoints
 
-#### `POST /api/chat`
+- **Multi-Agent Architecture**: Specialized agents for different domains
+
+#### `POST /api/chat`- **Intelligent Routing**: Context-aware query delegation
+
+Send a message to the ECE MATLAB helper.- **Tool Integration**: Seamless access to computational tools
+
+- **Error Recovery**: Robust error handling and fallback mechanisms
+
+**Request Body:**- **CORS Support**: Secure cross-origin resource sharing
+
+```json- **Environment Management**: Secure API key handling
+
+{
+
+  "messages": [## 🛠 Tech Stack
+
+    { "role": "user", "content": "Explain FFT in MATLAB" }
+
+  ]### Frontend
+
+}
+
+```- **Framework**: Next.js 14 with TypeScript
+
+- **Styling**: Tailwind CSS + shadcn/ui components
+
+**Response:**- **Animations**: Framer Motion
+
+```json- **State Management**: React hooks (useState, useEffect)
+
+{- **HTTP Client**: Axios with interceptors
+
+  "response": "FFT (Fast Fourier Transform) is...",- **Icons**: Lucide React
+
+  "agent": "ECE MATLAB Helper",
+
+  "reason": "ECE MATLAB educational assistant"### Backend
+
+}
+
+```- **Framework**: Flask (Python)
+
+- **AI Integration**: Google Generative AI (Gemini)
+
+#### `POST /api/ece-practical`- **CORS**: Flask-CORS
+
+Process an ECE MATLAB practical topic.- **Environment**: python-dotenv
+
+- **Error Handling**: Custom middleware
+
+**Request Body:**
+
+```json### Deployment
+
+{
+
+  "topic": "Convolution of two signals"- **Frontend**: Vercel (Global CDN)
+
+}- **Backend**: Render (Containerized deployment)
+
+```- **Environment**: Secure environment variable management
+
+
+
+**Response:**## 🚀 Installation
+
+```json
+
+{### Prerequisites
+
+  "status": "success",
+
+  "topic": "Convolution of two signals",- Node.js 18+ and npm/yarn
+
+  "theory": "...",- Python 3.8+
+
+  "brute_force_code": "...",- Google AI API key ([Get it here](https://ai.google.dev))
+
+  "brute_force_explanation": "...",
+
+  "efficient_code": "..." or null,### Backend Setup
+
+  "efficient_explanation": "..." or null,
+
+  "optimization_applicable": true/false,1. **Clone the repository**
+
+  "latex_report": "..."
+
+}   ```bash
+
+```   git clone https://github.com/Paulie-Aditya/ai-tutor-multi-agent.git
+
+   cd ai-tutor-multi-agent/backend
+
+#### `GET /api/health`   ```
+
+Check API health status.
+
+2. **Create virtual environment**
+
+**Response:**
+
+```json   ```bash
+
+{   python -m venv venv
+
+  "status": "ok",   source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+  "message": "Tutor system is healthy."   ```
+
+}
+
+```3. **Install dependencies**
+
+
+
+#### `GET /api/agents`   ```bash
+
+Get information about available agents.   pip install -r requirements.txt
+
+   ```
+
+**Response:**
+
+```json4. **Environment setup**
+
+{
+
+  "available_agents": ["ECE MATLAB Helper"],   ```bash
+
+  "status": "ECE MATLAB agent loaded",   cp .env.example .env
+
+  "description": "Expert assistant for ECE practicals, MATLAB programming, and electronics concepts"   # Add your GEMINI_API_KEY to .env
+
+}   ```
+
+```
+
+5. **Run the backend**
+
+## 🏗 Project Structure   ```bash
+
+   python app.py
+
+```   ```
+
+ece-matlab-helper/   Backend will start on `http://localhost:5000`
+
+├── backend/
+
+│   ├── agents/### Frontend Setup
+
+│   │   ├── base_agent.py           # Base agent class
+
+│   │   ├── ece_matlab_agent.py     # ECE MATLAB specialist1. **Navigate to frontend directory**
+
+│   │   ├── code_generator_agent.py # MATLAB code generator
+
+│   │   ├── code_explainer_agent.py # Code explanation agent   ```bash
+
+│   │   ├── latex_generator_agent.py# LaTeX report generator   cd ../frontend
+
+│   │   └── tutor_agent.py          # Main routing agent   ```
+
+│   ├── tools/                      # (Empty - no tools needed)
+
+│   ├── app.py                      # Flask application2. **Install dependencies**
+
+│   └── requirements.txt            # Python dependencies
+
+├── frontend/   ```bash
+
+│   ├── app/   npm install
+
+│   │   ├── page.tsx                # Main chat page   # or
+
+│   │   ├── layout.tsx              # Root layout   yarn install
+
+│   │   ├── globals.css             # Global styles   ```
+
+│   │   └── ece-practical/
+
+│   │       └── page.tsx            # ECE practical page3. **Environment setup**
+
+│   ├── components/
+
+│   │   ├── chat-interface.tsx      # Chat UI component   ```bash
+
+│   │   ├── ece-practical-interface.tsx # Practical UI   cp .env.example .env.local
+
+│   │   └── ui/                     # shadcn/ui components   # Add NEXT_PUBLIC_API_URL=http://localhost:5000
+
+│   ├── types/   ```
+
+│   │   └── chat.ts                 # TypeScript types
+
+│   ├── utils/4. **Run the frontend**
+
+│   │   └── api.ts                  # API client   ```bash
+
+│   └── package.json   npm run dev
+
+└── README.md   # or
+
+```   yarn dev
+
+   ```
+
+## 🚀 Deployment   Frontend will start on `http://localhost:3000`
+
+
+
+### Frontend (Vercel)## 📖 Usage
+
+1. Connect GitHub repository to Vercel
+
+2. Set environment variable: `NEXT_PUBLIC_BACKEND_URL`### Basic Usage
+
+3. Deploy automatically on push
+
+1. **Open the application** at `http://localhost:3000`
+
+### Backend (Render)2. **Type your question** in the chat input
+
+1. Connect GitHub repository to Render3. **Send your message** - the system will automatically route it to the appropriate agent
+
+2. Set environment variable: `GEMINI_API_KEY`4. **View the response** with agent identification badges
+
+3. Deploy automatically on push
+
+### Example Queries
+
+## 🤝 Contributing
+
+**Math Questions:**
+
+1. Fork the repository
+
+2. Create a feature branch: `git checkout -b feature/amazing-feature`- "Solve the quadratic equation x² + 5x + 6 = 0"
+
+3. Commit your changes: `git commit -m 'Add amazing feature'`- "Calculate the integral of sin(x) from 0 to π"
+
+4. Push to the branch: `git push origin feature/amazing-feature`- "What is the derivative of e^(2x)?"
+
+5. Open a Pull Request
+
+**Physics Questions:**
+
+## 📝 License
+
+- "Explain Newton's second law of motion"
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.- "What is the speed of light in vacuum?"
+
+- "Calculate the kinetic energy of a 2kg object moving at 10 m/s"
+
+## 🙏 Acknowledgments
+
+**Calculation Requests:**
+
+- **Google AI** for providing the Gemini API
+
+- **Vercel** for frontend hosting- "Calculate 15 \* 23 + 47"
+
+- **Render** for backend deployment- "What is the square root of 144?"
+
+- **shadcn/ui** for beautiful UI components- "Evaluate (5 + 3) \* 2 - 4"
+
+- **Next.js** and **Flask** communities
+
+## 📚 API Documentation
+
+## 📞 Support
+
+### Base URL
+
+If you encounter any issues:
+
+1. Check the [Issues](https://github.com/Paulie-Aditya/ai-tutor-multi-agent/issues) page- **Development**: `http://localhost:5000`
+
+2. Create a new issue with detailed description- **Production**: `https://ai-tutor-multi-agent.onrender.com`
+
+
+
+---### Endpoints
+
+
+
+Built with ❤️ for ECE students#### `POST /api/chat`
+
 
 Send a message to the tutor system.
 

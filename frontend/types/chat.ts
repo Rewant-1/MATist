@@ -18,6 +18,7 @@ export interface ChatResponse {
   message?: string
   response?: string
   error?: string
+  ece_data?: ECEPracticalResponse  // Add ece_data field
 }
 
 // ECE MATLAB Practical Types
