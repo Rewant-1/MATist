@@ -1,310 +1,296 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ChatSidebar } from "@/components/chat-sidebar";
-import { ChatInterface } from "@/components/chat-interface";
 import { Button } from "@/components/ui/button";
-import { Menu, Plus, Sparkles, Code } from "lucide-react";
-import type { Chat, Message } from "@/types/chat";
-import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Code, Zap, BookOpen, FileText, Download, Sparkles, ArrowRight, CheckCircle2, Lightbulb, MessageCircle, HelpCircle } from "lucide-react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
-export default function ChatApp() {
-  const [chats, setChats] = useState<Chat[]>([]);
-  const [activeChat, setActiveChat] = useState<string | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [sidebarWidth, setSidebarWidth] = useState(280);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  // Load chats from localStorage on mount
-  useEffect(() => {
-    const savedChats = localStorage.getItem("ai-tutor-chats");
-    const savedSidebarWidth = localStorage.getItem("ai-tutor-sidebar-width");
-
-    if (savedSidebarWidth) {
-      setSidebarWidth(Number.parseInt(savedSidebarWidth));
+export default function LandingPage() {
+  const features = [
+    {
+      icon: BookOpen,
+      title: "Comprehensive Theory",
+      description: "Detailed theoretical explanations for every ECE topic with formulas, diagrams, and concepts.",
+      gradient: "from-amber-500 to-orange-500"
+    },
+    {
+      icon: Code,
+      title: "Dual Implementation",
+      description: "Get both basic (brute-force) and optimized MATLAB code with complete line-by-line explanations.",
+      gradient: "from-teal-500 to-cyan-500"
+    },
+    {
+      icon: Zap,
+      title: "Optimized Solutions",
+      description: "Learn vectorization, built-in functions, and performance optimization techniques.",
+      gradient: "from-sky-500 to-blue-500"
+    },
+    {
+      icon: FileText,
+      title: "LaTeX Reports",
+      description: "Professional academic reports ready for Overleaf - includes theory, code, plots, and analysis.",
+      gradient: "from-emerald-500 to-green-500"
+    },
+    {
+      icon: Download,
+      title: "Export Everything",
+      description: "Download complete LaTeX files, copy code snippets, and save your entire practical.",
+      gradient: "from-rose-500 to-pink-500"
+    },
+    {
+      icon: Sparkles,
+      title: "Instant Generation",
+      description: "Get complete practicals in 20-40 seconds - theory, code, explanations, and reports!",
+      gradient: "from-indigo-500 to-sky-500"
     }
+  ];
 
-    if (savedChats) {
-      const parsedChats = JSON.parse(savedChats).map((chat: any) => ({
-        ...chat,
-        createdAt: new Date(chat.createdAt),
-        updatedAt: new Date(chat.updatedAt),
-        messages: chat.messages.map((message: any) => ({
-          ...message,
-          timestamp: new Date(message.timestamp),
-        })),
-      }));
-
-      const nonEmptyChats = parsedChats.filter(
-        (chat: Chat) => chat.messages.length > 0
-      );
-
-      if (nonEmptyChats.length > 0) {
-        setChats(nonEmptyChats);
-        setActiveChat(nonEmptyChats[0].id);
-      } else {
-        const newChat: Chat = {
-          id: Date.now().toString(),
-          title: "New conversation",
-          messages: [],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-        setChats([newChat]);
-        setActiveChat(newChat.id);
-      }
-    } else {
-      const newChat: Chat = {
-        id: Date.now().toString(),
-        title: "New conversation",
-        messages: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      setChats([newChat]);
-      setActiveChat(newChat.id);
-    }
-    setIsInitialized(true);
-  }, []);
-
-  // Save chats to localStorage whenever chats change
-  useEffect(() => {
-    if (isInitialized && chats.length > 0) {
-      localStorage.setItem("ai-tutor-chats", JSON.stringify(chats));
-    }
-  }, [chats, isInitialized]);
-
-  // Save sidebar width to localStorage
-  useEffect(() => {
-    localStorage.setItem("ai-tutor-sidebar-width", sidebarWidth.toString());
-  }, [sidebarWidth]);
-
-  const createNewChat = () => {
-    const newChat: Chat = {
-      id: Date.now().toString(),
-      title: "New conversation",
-      messages: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    setChats((prev) => [newChat, ...prev]);
-    setActiveChat(newChat.id);
-  };
-
-  const updateChat = (chatId: string, updates: Partial<Chat>) => {
-    setChats((prev) => {
-      const updated = prev.map((chat) =>
-        chat.id === chatId
-          ? { ...chat, ...updates, updatedAt: new Date() }
-          : chat
-      );
-      return updated;
-    });
-  };
-
-  const deleteChat = (chatId: string) => {
-    setChats((prev) => {
-      const filtered = prev.filter((chat) => chat.id !== chatId);
-      if (activeChat === chatId && filtered.length > 0) {
-        setActiveChat(filtered[0].id);
-      } else if (filtered.length === 0) {
-        const newChat: Chat = {
-          id: Date.now().toString(),
-          title: "New conversation",
-          messages: [],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-        setActiveChat(newChat.id);
-        return [newChat];
-      }
-      return filtered;
-    });
-  };
-
-  const renameChat = (chatId: string, newTitle: string) => {
-    updateChat(chatId, { title: newTitle });
-  };
-
-  const addMessage = (chatId: string, message: Message) => {
-    setChats((prev) => {
-      const updated = prev.map((chat) => {
-        if (chat.id === chatId) {
-          const newMessages = [...chat.messages, message];
-          return {
-            ...chat,
-            messages: newMessages,
-            updatedAt: new Date(),
-          };
-        }
-        return chat;
-      });
-      return updated;
-    });
-  };
-
-  const updateChatTitle = (chatId: string, firstMessage: string) => {
-    const title =
-      firstMessage.length > 30
-        ? firstMessage.substring(0, 30) + "..."
-        : firstMessage;
-    updateChat(chatId, { title });
-  };
-
-  const currentChat = chats.find((chat) => chat.id === activeChat);
-
-  if (!isInitialized) {
-    return (
-      <div className="flex h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 items-center justify-center">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-purple-500 rounded-lg flex items-center justify-center animate-pulse">
-            <Code className="h-4 w-4 text-white" />
-          </div>
-          <span className="text-slate-600 dark:text-slate-400">
-            Loading ECE MATLAB Helper...
-          </span>
-        </div>
-      </div>
-    );
-  }
+  const popularTopics = [
+    "Convolution of two signals",
+    "Fast Fourier Transform (FFT)",
+    "FIR Filter Design",
+    "Amplitude Modulation & Demodulation",
+    "Sampling and Aliasing",
+    "IIR Filter Design"
+  ];
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-      {/* Sidebar */}
-      <AnimatePresence mode="wait">
-        {sidebarOpen && (
-          <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: sidebarWidth, opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden border-r border-slate-200 dark:border-slate-800"
-          >
-            <ChatSidebar
-              chats={chats}
-              activeChat={activeChat}
-              onSelectChat={setActiveChat}
-              onDeleteChat={deleteChat}
-              onRenameChat={renameChat}
-              onNewChat={createNewChat}
-              width={sidebarWidth}
-              onWidthChange={setSidebarWidth}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-cyan-950">
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 p-4 flex items-center justify-between"
+          className="text-center mb-16"
         >
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
-                <Code className="h-4 w-4 text-white" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
-                  {currentChat?.title || "ECE MATLAB Helper"}
-                </h1>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Your ECE MATLAB practical assistant
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-2">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+            className="w-20 h-20 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl"
+          >
+            <Code className="h-10 w-10 text-white" />
+          </motion.div>
+          
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-6xl font-bold bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-600 bg-clip-text text-transparent mb-4"
+          >
+            ECE MATLAB Helper
+          </motion.h1>
+          
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto"
+          >
+            Get complete ECE MATLAB practicals in seconds - Theory, Dual Implementations, Explanations & LaTeX Reports
+          </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex gap-4 justify-center"
+          >
             <Link href="/ece-practical">
-              <Button
-                variant="outline"
-                className="border-violet-200 dark:border-violet-800 hover:bg-violet-50 dark:hover:bg-violet-950"
-              >
-                <Code className="h-4 w-4 mr-2" />
-                ECE MATLAB Helper
+              <Button className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-200 px-8 py-6 text-lg group">
+                <Sparkles className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
+                Generate Complete Practical
+                <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Button
-              onClick={createNewChat}
-              className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
+          </motion.div>
+        </motion.div>
+
+        {/* Features Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
+        >
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 + index * 0.1 }}
             >
-              <Plus className="h-4 w-4 mr-2" />
-              New Chat
-            </Button>
+              <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-teal-200 dark:hover:border-cyan-800 group">
+                <CardHeader>
+                  <div className={`w-12 h-12 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <feature.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Simple Q&A Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0 }}
+          className="max-w-4xl mx-auto mb-16"
+        >
+          <Card className="border-2 border-slate-200 dark:border-slate-800 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <MessageCircle className="h-6 w-6 text-teal-500" />
+                Quick Questions & Answers
+              </CardTitle>
+              <CardDescription>
+                Have a simple question? Get instant answers without generating a full practical
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
+                  Perfect for quick clarifications, concept explanations, or debugging help.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {[
+                    "What is the difference between FFT and DFT?",
+                    "How does sampling rate affect signal quality?",
+                    "Explain amplitude modulation in simple terms",
+                    "What are the applications of convolution?"
+                  ].map((question, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg"
+                    >
+                      <HelpCircle className="h-4 w-4 text-teal-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-slate-700 dark:text-slate-300">
+                        {question}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <Link href="/chat">
+                  <Button className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg">
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Start Q&A Chat
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Popular Topics */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="max-w-4xl mx-auto"
+        >
+          <Card className="border-2 border-slate-200 dark:border-slate-800 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <Lightbulb className="h-6 w-6 text-amber-500" />
+                Popular Practical Topics
+              </CardTitle>
+              <CardDescription>
+                Click any topic to get started instantly
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {popularTopics.map((topic, index) => (
+                  <motion.div
+                    key={topic}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 1.3 + index * 0.1 }}
+                  >
+                    <Link href={`/ece-practical?topic=${encodeURIComponent(topic)}`}>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left h-auto py-4 px-4 hover:bg-cyan-50 dark:hover:bg-cyan-950/30 hover:border-cyan-300 dark:hover:border-cyan-700 group"
+                      >
+                        <CheckCircle2 className="h-4 w-4 mr-3 text-cyan-600 group-hover:scale-110 transition-transform flex-shrink-0" />
+                        <span className="text-sm">{topic}</span>
+                      </Button>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* How It Works */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8 }}
+          className="mt-16 text-center"
+        >
+          <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
+            How It Works
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {[
+              { step: "1", title: "Enter Topic", desc: "Type your ECE practical topic" },
+              { step: "2", title: "AI Generation", desc: "Our AI generates complete content" },
+              { step: "3", title: "Review Tabs", desc: "Explore theory, code & explanations" },
+              { step: "4", title: "Download Report", desc: "Get LaTeX report for submission" }
+            ].map((item, index) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.9 + index * 0.1 }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold shadow-xl">
+                  {item.step}
+                </div>
+                <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">{item.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
 
-        {/* Chat Interface */}
-        <div className="flex-1 min-h-0">
-          {currentChat ? (
-            <ChatInterface
-              key={currentChat.id}
-              chat={currentChat}
-              onAddMessage={addMessage}
-              onUpdateTitle={updateChatTitle}
-            />
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex items-center justify-center h-full"
-            >
-              <div className="text-center max-w-md mx-auto p-8">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                  className="w-20 h-20 bg-gradient-to-r from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
-                >
-                  <Code className="h-10 w-10 text-white" />
-                </motion.div>
-                <motion.h2
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent mb-4"
-                >
-                  Welcome to ECE MATLAB Helper
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed"
-                >
-                  Your intelligent ECE MATLAB assistant is ready to help you with
-                  ECE practicals, MATLAB programming, signal processing, and 
-                  communication systems.
-                </motion.p>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <Button
-                    onClick={createNewChat}
-                    className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200 px-8 py-3 text-lg"
-                  >
-                    <Plus className="h-5 w-5 mr-2" />
-                    Start Learning
-                  </Button>
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-        </div>
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.3 }}
+          className="mt-16 text-center"
+        >
+          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-teal-500 to-cyan-500 border-0 shadow-2xl">
+            <CardContent className="pt-8 pb-8">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Ready to create your ECE practical?
+              </h3>
+              <p className="text-cyan-100 mb-6">
+                Get theory, dual implementations, detailed explanations, and professional LaTeX reports in 20-40 seconds!
+              </p>
+              <Link href="/ece-practical">
+                <Button className="bg-white text-teal-600 hover:bg-cyan-50 shadow-xl px-8 py-6 text-lg group">
+                  <Code className="h-5 w-5 mr-2" />
+                  Start Generating Now
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );

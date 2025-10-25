@@ -212,7 +212,7 @@ export function ChatSidebar({
         {/* Header */}
         <div className="p-3 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-6 h-6 bg-gradient-to-r from-violet-500 to-purple-500 rounded-md flex items-center justify-center">
+            <div className="w-6 h-6 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-md flex items-center justify-center">
               <Sparkles className="h-3 w-3 text-white" />
             </div>
             <div className="flex-1 min-w-0">
@@ -227,7 +227,7 @@ export function ChatSidebar({
           </div>
           <Button
             onClick={onNewChat}
-            className="w-full h-8 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 text-sm"
+            className="w-full h-8 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 text-sm"
           >
             <Plus className="h-3 w-3 mr-1" />
             New Chat
@@ -255,7 +255,7 @@ export function ChatSidebar({
                       transition={{ delay: index * 0.02 }}
                       className={`group relative mb-1 rounded-lg cursor-pointer transition-all duration-200 ${
                         activeChat === chat.id
-                          ? "bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/50 dark:to-purple-950/50 border border-violet-200 dark:border-violet-800"
+                          ? "bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-950/50 dark:to-cyan-950/50 border border-teal-200 dark:border-teal-800"
                           : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
                       }`}
                       onMouseEnter={() => handleChatMouseEnter(chat.id)}
@@ -266,7 +266,7 @@ export function ChatSidebar({
                         <div
                           className={`w-1.5 h-1.5 rounded-full flex-shrink-0 transition-colors ${
                             activeChat === chat.id
-                              ? "bg-gradient-to-r from-violet-500 to-purple-500"
+                              ? "bg-gradient-to-r from-teal-500 to-cyan-500"
                               : "bg-slate-300 dark:bg-slate-600"
                           }`}
                         />
@@ -280,7 +280,7 @@ export function ChatSidebar({
                                 onChange={(e) => setEditTitle(e.target.value)}
                                 onKeyDown={handleEditKeyDown}
                                 onBlur={saveEdit}
-                                className="h-6 text-xs px-1 py-0 border-violet-300 dark:border-violet-600"
+                                className="h-6 text-xs px-1 py-0 border-teal-300 dark:border-teal-600"
                                 onClick={(e) => e.stopPropagation()}
                               />
                               <Button
@@ -311,7 +311,7 @@ export function ChatSidebar({
                               <div
                                 className={`text-xs font-medium truncate transition-colors ${
                                   activeChat === chat.id
-                                    ? "text-violet-700 dark:text-violet-300"
+                                    ? "text-teal-700 dark:text-teal-300"
                                     : "text-slate-700 dark:text-slate-300"
                                 }`}
                               >
@@ -401,10 +401,10 @@ export function ChatSidebar({
 
       {/* Resize Handle */}
       <div
-        className="w-1 bg-transparent hover:bg-violet-300 dark:hover:bg-violet-600 cursor-col-resize transition-colors flex items-center justify-center group"
+        className="w-1 bg-transparent hover:bg-teal-300 dark:hover:bg-teal-600 cursor-col-resize transition-colors flex items-center justify-center group"
         onMouseDown={() => setIsResizing(true)}
       >
-        <div className="w-0.5 h-8 bg-slate-300 dark:bg-slate-600 group-hover:bg-violet-400 dark:group-hover:bg-violet-500 transition-colors rounded-full opacity-0 group-hover:opacity-100" />
+        <div className="w-0.5 h-8 bg-slate-300 dark:bg-slate-600 group-hover:bg-teal-400 dark:group-hover:bg-teal-500 transition-colors rounded-full opacity-0 group-hover:opacity-100" />
       </div>
     </div>
   );

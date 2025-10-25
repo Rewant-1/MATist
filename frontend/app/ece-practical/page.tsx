@@ -2,7 +2,7 @@
 
 import { ECEPracticalInterface } from "@/components/ece-practical-interface";
 import { Button } from "@/components/ui/button";
-import { Home } from "lucide-react";
+import { Home, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 export default function ECEPracticalPage() {
@@ -14,7 +14,16 @@ export default function ECEPracticalPage() {
           <Link href="/">
             <Button variant="ghost" size="sm">
               <Home className="mr-2 h-4 w-4" />
-              Back to Chat
+              Home
+            </Button>
+          </Link>
+          <Link href="/chat">
+            <Button 
+              variant="outline" 
+              className="border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900"
+            >
+              <MessageCircle className="mr-2 h-4 w-4" />
+              Q&A Chat
             </Button>
           </Link>
         </div>

@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response, stream_with_context
 from dotenv import load_dotenv
 from agents.tutor_agent import TutorAgent
 from agents.ece_matlab_agent import ECEMatlabAgent
 from flask_cors import CORS
+import json
 
 
 app = Flask(__name__)
@@ -19,7 +20,7 @@ def hello():
 
 @app.route("/api/chat", methods=["POST"])
 def chat():
-    # will have to introduce chat id based messages retrieval, since frontend might not be able to send in all messages from frontend 
+    """Non-streaming chat endpoint for backward compatibility"""
     try:
         data = request.get_json()
         messages = data.get("messages",[])
@@ -34,6 +35,36 @@ def chat():
         })
         return jsonify(response)
 
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
+
+@app.route("/api/chat/stream", methods=["POST"])
+def chat_stream():
+    """Streaming chat endpoint for real-time responses"""
+    try:
+        data = request.get_json()
+        messages = data.get("messages", [])
+        
+        if not messages:
+            return jsonify({"error": "Missing messages"}), 400
+        
+        def generate():
+            try:
+                for chunk in tutor_agent.route_stream(messages):
+                    # Send Server-Sent Events format
+                    yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+                yield f"data: {json.dumps({'done': True})}\n\n"
+            except Exception as e:
+                yield f"data: {json.dumps({'error': str(e)})}\n\n"
+        
+        return Response(
+            stream_with_context(generate()),
+            mimetype='text/event-stream',
+            headers={
+                'Cache-Control': 'no-cache',
+                'X-Accel-Buffering': 'no'
+            }
+        )
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
     

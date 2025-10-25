@@ -12,7 +12,7 @@ Key points
 - Single agent focus: All queries route through `TutorAgent` to ECE MATLAB assistance
 - Agents live in `backend/agents/` and inherit from `BaseAgent` (`backend/agents/base_agent.py`)
 - The `TutorAgent` now routes all questions to ECE MATLAB focused responses
-- Gemini (Google Generative AI) is used in `BaseAgent` via `google-generativeai`. API key comes from `GEMINI_API_KEY` in `.env`.
+- Gemini (Google Generative AI) is used in `BaseAgent` via `google-generative`. API key comes from `GEMINI_API_KEY` in `.env`.
 - Frontend: Next.js 15 app (TypeScript, React 19) under `frontend/` using `chatApi.sendMessage` (`frontend/utils/api.ts`) to POST `{ messages: [{role, content}] }`.
 
 Important file references

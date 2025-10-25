@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -13,30 +14,45 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export function ECEPracticalInterface() {
+  const searchParams = useSearchParams();
   const [topic, setTopic] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<ECEPracticalResponse | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!topic.trim() || isLoading) return;
+  // Load topic from URL query parameter
+  useEffect(() => {
+    const urlTopic = searchParams.get("topic");
+    if (urlTopic) {
+      setTopic(urlTopic);
+      // Auto-submit if topic is from URL
+      handleSubmitWithTopic(urlTopic);
+    }
+  }, [searchParams]);
+
+  const handleSubmitWithTopic = async (topicToSubmit: string) => {
+    if (!topicToSubmit.trim() || isLoading) return;
 
     setIsLoading(true);
     setResult(null);
 
     try {
-      const response = await chatApi.processECEPractical(topic.trim());
+      const response = await chatApi.processECEPractical(topicToSubmit.trim());
       setResult(response);
     } catch (error) {
       console.error("Error processing practical:", error);
       setResult({
         status: "error",
-        topic: topic,
+        topic: topicToSubmit,
         error_message: "Failed to process the practical. Please try again.",
       });
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleSubmitWithTopic(topic);
   };
 
   const downloadLatex = () => {
@@ -65,7 +81,7 @@ export function ECEPracticalInterface() {
   return (
     <div className="container mx-auto p-6 max-w-7xl">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
           ECE MATLAB Practical Helper
         </h1>
         <p className="text-slate-600 dark:text-slate-400">

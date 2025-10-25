@@ -26,6 +26,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { TypingMessage } from "@/components/typing-message";
+import { PracticalTabs } from "@/components/practical-tabs";
 
 interface ChatInterfaceProps {
   chat: Chat;
@@ -101,7 +102,7 @@ const MathRenderer = ({
 
   return (
     <span
-      className="font-mono mx-1 text-violet-600 dark:text-violet-400"
+      className="font-mono mx-1 text-blue-600 dark:text-blue-400"
       dangerouslySetInnerHTML={{ __html: rendered }}
     />
   );
@@ -264,123 +265,28 @@ export function ChatInterface({
   };
 
   const suggestedPrompts = [
-    "Generate complete practical for convolution of two signals",
-    "Create full practical on Fast Fourier Transform (FFT)",
-    "What is amplitude modulation?",
-    "Generate complete FIR filter design practical",
+    "What is the difference between FFT and DFT?",
+    "Explain convolution in signal processing",
+    "How does amplitude modulation work?",
+    "What are FIR and IIR filters?",
   ];
 
-  // Render ECE Practical Data in a beautiful format
+  // Render ECE Practical Data using the new tab component
   const renderECEPracticalData = (eceData: any, messageId: string) => {
     if (!eceData || eceData.status !== "success") return null;
 
-    const downloadLatex = () => {
-      if (!eceData.latex_report) return;
-      const blob = new Blob([eceData.latex_report], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${eceData.topic.replace(/\s+/g, "_")}_report.tex`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    };
-
     return (
-      <div className="mt-4 space-y-3">
-        {/* Key Features Banner */}
-        <div className="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-violet-200 dark:border-violet-800">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles className="h-5 w-5 text-violet-600 dark:text-violet-400" />
-            <h4 className="font-semibold text-violet-900 dark:text-violet-100">
-              Complete ECE MATLAB Practical Generated
+      <div className="mt-4">
+        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 p-4 rounded-xl border border-blue-200 dark:border-blue-800 mb-4">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100">
+              ✨ Complete ECE MATLAB Practical Generated
             </h4>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
-            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-              <BookOpen className="h-3.5 w-3.5 text-violet-600" />
-              <span>Theory Explanation</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-              <Code className="h-3.5 w-3.5 text-violet-600" />
-              <span>Dual Code Generation</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-              <FileText className="h-3.5 w-3.5 text-violet-600" />
-              <span>Step-by-Step Explanation</span>
-            </div>
-            {eceData.optimization_applicable && (
-              <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                <Zap className="h-3.5 w-3.5 text-violet-600" />
-                <span>Optimized Version</span>
-              </div>
-            )}
-            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-              <FileText className="h-3.5 w-3.5 text-violet-600" />
-              <span>LaTeX Report</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-              <Download className="h-3.5 w-3.5 text-violet-600" />
-              <span>One-Click Download</span>
-            </div>
-          </div>
         </div>
-
-        {/* Download LaTeX Button */}
-        {eceData.latex_report && (
-          <Button
-            onClick={downloadLatex}
-            className="w-full bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white"
-          >
-            <Download className="mr-2 h-4 w-4" />
-            Download Complete LaTeX Report
-          </Button>
-        )}
-
-        {/* Quick Access Buttons */}
-        <div className="grid grid-cols-2 gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              if (eceData.brute_force_code) {
-                navigator.clipboard.writeText(eceData.brute_force_code);
-              }
-            }}
-            className="text-xs"
-          >
-            <Code className="mr-1.5 h-3.5 w-3.5" />
-            Copy Basic Code
-          </Button>
-          {eceData.efficient_code && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                if (eceData.efficient_code) {
-                  navigator.clipboard.writeText(eceData.efficient_code);
-                }
-              }}
-              className="text-xs"
-            >
-              <Zap className="mr-1.5 h-3.5 w-3.5" />
-              Copy Optimized Code
-            </Button>
-          )}
-        </div>
-
-        {/* Info Box */}
-        <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-3 text-xs text-blue-900 dark:text-blue-100">
-          <p className="font-semibold mb-1">✨ What you received:</p>
-          <ul className="space-y-0.5 ml-4 list-disc">
-            <li>Comprehensive theory explanation</li>
-            <li>Well-commented MATLAB code (basic implementation)</li>
-            {eceData.optimization_applicable && <li>Optimized version with performance improvements</li>}
-            <li>Step-by-step code explanation</li>
-            <li>Complete academic LaTeX report ready for Overleaf</li>
-          </ul>
-        </div>
+        
+        <PracticalTabs eceData={eceData} />
       </div>
     );
   };
@@ -428,7 +334,7 @@ export function ChatInterface({
       const isInline = !className;
       if (isInline) {
         return (
-          <code className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono text-violet-600 dark:text-violet-400">
+          <code className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono text-blue-600 dark:text-blue-400">
             {children}
           </code>
         );
@@ -442,7 +348,7 @@ export function ChatInterface({
       );
     },
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-violet-300 dark:border-violet-600 pl-4 py-2 mb-3 bg-violet-50 dark:bg-violet-950/20 rounded-r">
+      <blockquote className="border-l-4 border-blue-300 dark:border-blue-600 pl-4 py-2 mb-3 bg-blue-50 dark:bg-blue-950/20 rounded-r">
         {children}
       </blockquote>
     ),
@@ -451,7 +357,7 @@ export function ChatInterface({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 underline"
+        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline"
       >
         {children}
       </a>
@@ -548,7 +454,7 @@ export function ChatInterface({
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="w-16 h-16 bg-gradient-to-r from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                className="w-16 h-16 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
               >
                 <Bot className="h-8 w-8 text-white" />
               </motion.div>
@@ -558,7 +464,7 @@ export function ChatInterface({
                 transition={{ delay: 0.3 }}
                 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2"
               >
-                Ready to work on ECE practicals?
+                Ask Me Anything About ECE
               </motion.h3>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -566,13 +472,12 @@ export function ChatInterface({
                 transition={{ delay: 0.4 }}
                 className="text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto"
               >
-                Ask me anything about ECE concepts, MATLAB programming, signal processing,
-                communication systems, and more!
+                Get quick answers to your ECE questions - concepts, MATLAB code, debugging help, and explanations.
                 <br />
                 <br />
-                <strong className="text-violet-600 dark:text-violet-400">
-                  💡 Pro Tip: Say "generate complete practical for [topic]" to get theory, code, explanations, and LaTeX report!
-                </strong>
+                <span className="text-sm text-teal-600 dark:text-teal-400">
+                  💡 Tip: For complete practicals with theory, code & LaTeX reports, use the <strong>ECE MATLAB Helper</strong> page!
+                </span>
               </motion.p>
 
               <motion.div
@@ -588,24 +493,24 @@ export function ChatInterface({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 + index * 0.1 }}
                     onClick={() => setInput(prompt)}
-                    className="p-4 text-left bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-md transition-all duration-200 group"
+                    className="p-4 text-left bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-teal-300 dark:hover:border-teal-600 hover:shadow-md transition-all duration-200 group"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-r from-violet-100 to-purple-100 dark:from-violet-900 dark:to-purple-900 rounded-lg flex items-center justify-center group-hover:from-violet-200 group-hover:to-purple-200 dark:group-hover:from-violet-800 dark:group-hover:to-purple-800 transition-colors">
+                      <div className="w-8 h-8 bg-gradient-to-r from-teal-100 to-cyan-100 dark:from-teal-900 dark:to-cyan-900 rounded-lg flex items-center justify-center group-hover:from-teal-200 group-hover:to-cyan-200 dark:group-hover:from-teal-800 dark:group-hover:to-cyan-800 transition-colors">
                         {index === 0 && (
-                          <BookOpen className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                          <BookOpen className="h-4 w-4 text-teal-600 dark:text-teal-400" />
                         )}
                         {index === 1 && (
-                          <Lightbulb className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                          <Lightbulb className="h-4 w-4 text-teal-600 dark:text-teal-400" />
                         )}
                         {index === 2 && (
-                          <Bot className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                          <Bot className="h-4 w-4 text-teal-600 dark:text-teal-400" />
                         )}
                         {index === 3 && (
-                          <Sparkles className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                          <Sparkles className="h-4 w-4 text-teal-600 dark:text-teal-400" />
                         )}
                       </div>
-                      <span className="text-sm text-slate-700 dark:text-slate-300 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors">
+                      <span className="text-sm text-slate-700 dark:text-slate-300 group-hover:text-teal-700 dark:group-hover:text-teal-300 transition-colors">
                         {prompt}
                       </span>
                     </div>
@@ -627,7 +532,7 @@ export function ChatInterface({
                 >
                   {message.role === "assistant" && (
                     <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                         <Bot className="h-5 w-5 text-white" />
                       </div>
                     </div>
@@ -643,7 +548,7 @@ export function ChatInterface({
                       animate={{ scale: 1 }}
                       className={`p-4 rounded-2xl shadow-sm ${
                         message.role === "user"
-                          ? "bg-gradient-to-r from-violet-500 to-purple-500 text-white"
+                          ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white"
                           : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
                       }`}
                     >
@@ -652,7 +557,7 @@ export function ChatInterface({
                           {message.content}
                         </div>
                       ) : (
-                        <div className="prose prose-sm max-w-none dark:prose-invert prose-violet [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                        <div className="prose prose-sm max-w-none dark:prose-invert prose-blue [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
                           {processMessageContent(message.content)}
                         </div>
                       )}
@@ -706,7 +611,7 @@ export function ChatInterface({
                   className="flex gap-4 justify-start"
                 >
                   <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                       <Bot className="h-5 w-5 text-white" />
                     </div>
                   </div>
@@ -733,14 +638,14 @@ export function ChatInterface({
                 className="flex gap-4 justify-start"
               >
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                     <Bot className="h-5 w-5 text-white" />
                   </div>
                 </div>
                 <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">
                   <div className="flex space-x-2">
                     <motion.div
-                      className="w-2 h-2 bg-violet-500 rounded-full"
+                      className="w-2 h-2 bg-teal-500 rounded-full"
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{
                         duration: 1,
@@ -749,7 +654,7 @@ export function ChatInterface({
                       }}
                     />
                     <motion.div
-                      className="w-2 h-2 bg-violet-500 rounded-full"
+                      className="w-2 h-2 bg-teal-500 rounded-full"
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{
                         duration: 1,
@@ -758,7 +663,7 @@ export function ChatInterface({
                       }}
                     />
                     <motion.div
-                      className="w-2 h-2 bg-violet-500 rounded-full"
+                      className="w-2 h-2 bg-teal-500 rounded-full"
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{
                         duration: 1,
@@ -784,13 +689,13 @@ export function ChatInterface({
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask me anything..."
-              className="min-h-[56px] max-h-32 resize-none pr-12 border-slate-200 dark:border-slate-700 focus:border-violet-300 dark:focus:border-violet-600 focus:ring-violet-200 dark:focus:ring-violet-800 rounded-xl bg-white dark:bg-slate-800"
+              className="min-h-[56px] max-h-32 resize-none pr-12 border-slate-200 dark:border-slate-700 focus:border-teal-300 dark:focus:border-teal-600 focus:ring-teal-200 dark:focus:ring-teal-800 rounded-xl bg-white dark:bg-slate-800"
               disabled={isLoading}
             />
             <Button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="absolute right-2 bottom-2 h-10 w-10 p-0 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 disabled:from-slate-300 disabled:to-slate-400 border-0 shadow-lg hover:shadow-xl transition-all duration-200"
+              className="absolute right-2 bottom-2 h-10 w-10 p-0 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 disabled:from-slate-300 disabled:to-slate-400 border-0 shadow-lg hover:shadow-xl transition-all duration-200"
             >
               <Send className="h-4 w-4" />
             </Button>

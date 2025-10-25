@@ -130,6 +130,36 @@ class TutorAgent(BaseAgent):
                 "reason": "Processing error."
             }
     
+    def route_stream(self, messages: list[dict]):
+        """Streaming version of route method"""
+        trimmed_messages = self._trim_messages(messages)
+
+        user_query = ""
+        for msg in reversed(trimmed_messages):
+            if msg["role"] == "user":
+                user_query = msg["content"]
+                break
+
+        if not user_query:
+            yield "No user question found in the message history."
+            return
+
+        try:
+            # For simple questions, stream the response
+            context = "\n".join([
+                f"{msg['role']}: {msg['content']}" 
+                for msg in trimmed_messages[-5:]
+            ])
+            
+            full_query = f"Context:\n{context}\n\nCurrent query: {user_query}"
+            
+            # Use streaming response
+            for chunk in super().respond_stream(full_query):
+                yield chunk
+
+        except Exception as e:
+            yield f"Sorry, there was an error processing your request: {str(e)}"
+    
     def _format_complete_practical_response(self, result: dict) -> str:
         """Format the complete practical result into a readable response"""
         sections = []

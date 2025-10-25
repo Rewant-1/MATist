@@ -79,7 +79,7 @@ const MathRenderer = ({
 
   return (
     <span
-      className="font-mono mx-1 text-violet-600 dark:text-violet-400"
+      className="font-mono mx-1 text-teal-600 dark:text-teal-400"
       dangerouslySetInnerHTML={{ __html: rendered }}
     />
   );
@@ -138,7 +138,7 @@ export function TypingMessage({
       const isInline = !className;
       if (isInline) {
         return (
-          <code className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono text-violet-600 dark:text-violet-400">
+          <code className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono text-teal-600 dark:text-teal-400">
             {children}
           </code>
         );
@@ -152,7 +152,7 @@ export function TypingMessage({
       );
     },
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-violet-300 dark:border-violet-600 pl-4 py-2 mb-3 bg-violet-50 dark:bg-violet-950/20 rounded-r">
+      <blockquote className="border-l-4 border-teal-300 dark:border-teal-600 pl-4 py-2 mb-3 bg-teal-50 dark:bg-teal-950/20 rounded-r">
         {children}
       </blockquote>
     ),
@@ -161,7 +161,7 @@ export function TypingMessage({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 underline"
+        className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 underline"
       >
         {children}
       </a>
@@ -248,7 +248,7 @@ export function TypingMessage({
   }, [content]);
 
   return (
-    <div className="prose prose-sm max-w-none dark:prose-invert prose-violet [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+    <div className="prose prose-sm max-w-none dark:prose-invert prose-teal [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
       {processMessageContent(displayedContent)}
       {!isComplete && (
         <motion.span
@@ -258,7 +258,7 @@ export function TypingMessage({
             repeat: Number.POSITIVE_INFINITY,
             repeatType: "reverse",
           }}
-          className="inline-block w-2 h-4 bg-violet-500 ml-1"
+          className="inline-block w-2 h-4 bg-teal-500 ml-1"
         />
       )}
     </div>
