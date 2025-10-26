@@ -19,7 +19,8 @@ class BaseAgent:
             "max_output_tokens": 8192,
         }
         self.model = genai.GenerativeModel(
-            'gemini-2.5-flash',  # Latest stable Flash model with proven reliability            generation_config=generation_config
+            'gemini-1.5-flash',  # Stable model with proven reliability
+            generation_config=generation_config
         )
     
     def respond(self, query: str) -> str:
