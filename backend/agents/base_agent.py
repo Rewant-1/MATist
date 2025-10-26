@@ -11,29 +11,29 @@ class BaseAgent:
     def __init__(self, name: str, instructions: str):
         self.name = name
         self.instructions = instructions
-        # Configure for faster responses
+        # Configure for faster responses with lower token limits
         generation_config = {
             "temperature": 0.7,
             "top_p": 0.95,
             "top_k": 40,
-            "max_output_tokens": 8192,
+            "max_output_tokens": 4096,  # Reduced for faster responses
         }
         self.model = genai.GenerativeModel(
-            'gemini-2.5-flash',  # Stable model with lower latency for production
+            'gemini-2.0-flash-exp',  # Faster experimental model
             generation_config=generation_config
         )
     
     def respond(self, query: str) -> str:
         """Non-streaming response with retry logic and timeout"""
-        max_retries = 3
-        retry_delay = 2  # seconds
+        max_retries = 2  # Reduce retries for faster failure
+        retry_delay = 1  # seconds
         
         for attempt in range(max_retries):
             try:
-                # Add timeout to prevent hanging
+                # Reduced timeout for production environment
                 response = self.model.generate_content(
                     f"{self.instructions}\nUser: {query}",
-                    request_options={'timeout': 60}  # 60 second timeout
+                    request_options={'timeout': 25}  # 25 second timeout to avoid worker timeout
                 )
                 return response.text
             except Exception as e:
@@ -44,19 +44,32 @@ class BaseAgent:
                     if attempt < max_retries - 1:
                         print(f"⏳ Quota exceeded, retrying in {retry_delay}s... (Attempt {attempt + 1}/{max_retries})")
                         time.sleep(retry_delay)
-                        retry_delay *= 2  # Exponential backoff
                         continue
                     else:
-                        return f"⚠️ API Quota Exceeded. Please try again in a few minutes. Free tier limit: 50 requests/day per model."
+                        return f"⚠️ API Quota Exceeded. Please try again in a few minutes."
                 
-                # Check for timeout
-                if "timeout" in error_msg.lower() or "deadline" in error_msg.lower():
-                    return f"⚠️ Request timed out. The topic might be too complex. Please try a simpler query or try again later."
+                # Check for timeout or deadline
+                if "timeout" in error_msg.lower() or "deadline" in error_msg.lower() or "DEADLINE_EXCEEDED" in error_msg:
+                    if attempt < max_retries - 1:
+                        print(f"⏳ Timeout occurred, retrying... (Attempt {attempt + 1}/{max_retries})")
+                        time.sleep(retry_delay)
+                        continue
+                    else:
+                        return f"⚠️ Request timed out. Please try again with a simpler topic."
                 
-                # Other errors
-                return f"Agent {self.name} failed: {error_msg}"
+                # Worker killed or system exit
+                if "SIGKILL" in error_msg or "SystemExit" in error_msg:
+                    return f"⚠️ Server resource limit reached. Please try again."
+                
+                # Other errors - retry once
+                if attempt < max_retries - 1:
+                    print(f"⏳ Error occurred, retrying... (Attempt {attempt + 1}/{max_retries}): {error_msg}")
+                    time.sleep(retry_delay)
+                    continue
+                else:
+                    return f"⚠️ Service temporarily unavailable. Please try again later."
         
-        return f"Agent {self.name} failed after {max_retries} retries."
+        return f"⚠️ Service temporarily unavailable after {max_retries} attempts."
     
     def respond_stream(self, query: str):
         """Streaming response with error handling"""

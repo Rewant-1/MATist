@@ -1,1 +1,1 @@
-web: cd backend && gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --workers 2 --threads 2 --worker-class sync
+web: cd backend && gunicorn app:app --bind 0.0.0.0:$PORT --timeout 180 --graceful-timeout 30 --workers 2 --threads 2 --worker-class sync --max-requests 1000 --max-requests-jitter 50

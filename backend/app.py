@@ -116,16 +116,35 @@ def ece_practical():
         if not topic:
             return jsonify({"error": "Missing topic parameter"}), 400
         
-        # Process the practical using the ECE MATLAB agent
-        result = ece_matlab_agent.process_practical(topic)
+        print(f"[API] Processing ECE practical request for topic: {topic}")
         
-        return jsonify(result)
+        # Process the practical using the ECE MATLAB agent with timeout handling
+        try:
+            result = ece_matlab_agent.process_practical(topic)
+            print(f"[API] Processing completed with status: {result.get('status', 'unknown')}")
+            return jsonify(result)
+        except Exception as agent_error:
+            print(f"[API] Agent processing error: {str(agent_error)}")
+            # Return user-friendly error
+            return jsonify({
+                "status": "error",
+                "error_message": "⚠️ Service temporarily unavailable. Please try again in a moment.",
+                "topic": topic,
+                "theory": None,
+                "brute_force_code": None,
+                "brute_force_explanation": None,
+                "efficient_code": None,
+                "efficient_explanation": None,
+                "optimization_applicable": False,
+                "latex_report": None
+            }), 200  # Return 200 to avoid frontend error handling issues
     
     except Exception as e:
+        print(f"[API] Request handling error: {str(e)}")
         return jsonify({
             "status": "error",
-            "error": f"Server error: {str(e)}"
-        }), 500
+            "error": f"Invalid request: {str(e)}"
+        }), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
