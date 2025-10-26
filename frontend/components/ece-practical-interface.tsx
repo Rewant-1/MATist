@@ -5,13 +5,10 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { chatApi } from "@/utils/api";
 import type { ECEPracticalResponse } from "@/types/chat";
-import { Loader2, Download, Code, BookOpen, Zap, FileText } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { Loader2, Sparkles } from "lucide-react";
+import { PracticalTabs } from "@/components/practical-tabs";
 
 export function ECEPracticalInterface() {
   const searchParams = useSearchParams();
@@ -53,20 +50,6 @@ export function ECEPracticalInterface() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await handleSubmitWithTopic(topic);
-  };
-
-  const downloadLatex = () => {
-    if (!result?.latex_report) return;
-
-    const blob = new Blob([result.latex_report], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${result.topic.replace(/\s+/g, "_")}_report.tex`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   const suggestedTopics = [
@@ -142,165 +125,23 @@ export function ECEPracticalInterface() {
 
       {/* Results */}
       {result && result.status === "success" && (
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle>Results for: {result.topic}</CardTitle>
-                <CardDescription>
-                  {result.optimization_applicable
-                    ? "Both brute-force and optimized solutions generated"
-                    : "Brute-force solution generated"}
-                </CardDescription>
-              </div>
-              {result.latex_report && (
-                <Button onClick={downloadLatex} variant="outline" size="sm">
-                  <Download className="mr-2 h-4 w-4" />
-                  Download LaTeX Report
-                </Button>
-              )}
+        <div className="space-y-4">
+          <div className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30 p-4 rounded-xl border border-teal-200 dark:border-teal-800">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+              <h3 className="font-semibold text-teal-900 dark:text-teal-100">
+                ✨ Complete ECE MATLAB Practical Generated for: {result.topic}
+              </h3>
             </div>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="theory" className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="theory">
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Theory
-                </TabsTrigger>
-                <TabsTrigger value="brute-force">
-                  <Code className="mr-2 h-4 w-4" />
-                  Basic Code
-                </TabsTrigger>
-                {result.optimization_applicable && (
-                  <TabsTrigger value="efficient">
-                    <Zap className="mr-2 h-4 w-4" />
-                    Optimized Code
-                  </TabsTrigger>
-                )}
-                <TabsTrigger value="explanation">
-                  <FileText className="mr-2 h-4 w-4" />
-                  Explanation
-                </TabsTrigger>
-                <TabsTrigger value="latex">
-                  <FileText className="mr-2 h-4 w-4" />
-                  LaTeX Report
-                </TabsTrigger>
-              </TabsList>
-
-              {/* Theory Tab */}
-              <TabsContent value="theory">
-                <ScrollArea className="h-[600px] w-full rounded-md border p-4">
-                  <div className="prose prose-sm max-w-none dark:prose-invert">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {result.theory || "No theory available"}
-                    </ReactMarkdown>
-                  </div>
-                </ScrollArea>
-              </TabsContent>
-
-              {/* Brute Force Code Tab */}
-              <TabsContent value="brute-force">
-                <ScrollArea className="h-[600px] w-full rounded-md border p-4">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold mb-2">Brute-Force MATLAB Code</h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                      Simple, easy-to-understand implementation
-                    </p>
-                  </div>
-                  <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                    <code>{result.brute_force_code || "% No code available"}</code>
-                  </pre>
-                  
-                  {result.brute_force_explanation && (
-                    <div className="mt-6">
-                      <h4 className="text-md font-semibold mb-2">Code Explanation</h4>
-                      <div className="prose prose-sm max-w-none dark:prose-invert">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                          {result.brute_force_explanation}
-                        </ReactMarkdown>
-                      </div>
-                    </div>
-                  )}
-                </ScrollArea>
-              </TabsContent>
-
-              {/* Efficient Code Tab */}
-              {result.optimization_applicable && result.efficient_code && (
-                <TabsContent value="efficient">
-                  <ScrollArea className="h-[600px] w-full rounded-md border p-4">
-                    <div className="mb-4">
-                      <h3 className="text-lg font-semibold mb-2">Optimized MATLAB Code</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                        Efficient implementation with vectorization and built-in functions
-                      </p>
-                    </div>
-                    <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                      <code>{result.efficient_code}</code>
-                    </pre>
-                    
-                    {result.efficient_explanation && (
-                      <div className="mt-6">
-                        <h4 className="text-md font-semibold mb-2">Optimization Details</h4>
-                        <div className="prose prose-sm max-w-none dark:prose-invert">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {result.efficient_explanation}
-                          </ReactMarkdown>
-                        </div>
-                      </div>
-                    )}
-                  </ScrollArea>
-                </TabsContent>
-              )}
-
-              {/* Explanation Tab */}
-              <TabsContent value="explanation">
-                <ScrollArea className="h-[600px] w-full rounded-md border p-4">
-                  <div className="prose prose-sm max-w-none dark:prose-invert">
-                    {result.brute_force_explanation && (
-                      <div className="mb-6">
-                        <h3>Brute-Force Code Explanation</h3>
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                          {result.brute_force_explanation}
-                        </ReactMarkdown>
-                      </div>
-                    )}
-                    
-                    {result.efficient_explanation && (
-                      <div>
-                        <h3>Optimization Analysis</h3>
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                          {result.efficient_explanation}
-                        </ReactMarkdown>
-                      </div>
-                    )}
-                  </div>
-                </ScrollArea>
-              </TabsContent>
-
-              {/* LaTeX Report Tab */}
-              <TabsContent value="latex">
-                <ScrollArea className="h-[600px] w-full rounded-md border p-4">
-                  <div className="mb-4 flex justify-between items-center">
-                    <div>
-                      <h3 className="text-lg font-semibold">Complete LaTeX Report</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
-                        Ready to use in Overleaf
-                      </p>
-                    </div>
-                    <Button onClick={downloadLatex} size="sm">
-                      <Download className="mr-2 h-4 w-4" />
-                      Download .tex File
-                    </Button>
-                  </div>
-                  <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-xs">
-                    <code>{result.latex_report || "% No LaTeX report available"}</code>
-                  </pre>
-                </ScrollArea>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+            <p className="text-sm text-teal-700 dark:text-teal-300 mt-2">
+              {result.optimization_applicable
+                ? "Both basic and optimized implementations are ready!"
+                : "Basic implementation is ready to use!"}
+            </p>
+          </div>
+          
+          <PracticalTabs eceData={result} />
+        </div>
       )}
 
       {/* Error Display */}
