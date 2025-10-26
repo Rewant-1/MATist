@@ -1,4 +1,5 @@
 from .base_agent import BaseAgent
+import re
 
 class LaTeXGeneratorAgent(BaseAgent):
     """Agent specialized in generating LaTeX reports for ECE practicals."""
@@ -14,9 +15,30 @@ Your role is to generate complete, well-formatted LaTeX code that:
 4. Creates clear sections with proper headings
 5. Is ready to compile in Overleaf without modifications
 
-Output ONLY valid LaTeX code that can be directly copied to a .tex file.
+IMPORTANT: Output ONLY valid LaTeX code WITHOUT markdown code fences.
+Do NOT wrap the LaTeX code in ```latex or ``` markers.
 """
         super().__init__("LaTeXGeneratorAgent", instructions)
+    
+    @staticmethod
+    def clean_latex(latex_code: str) -> str:
+        """
+        Remove markdown code fences from generated LaTeX.
+        
+        Args:
+            latex_code: Raw LaTeX string that may contain markdown formatting
+            
+        Returns:
+            Cleaned LaTeX string
+        """
+        # Remove markdown code fences
+        cleaned = re.sub(r'^```[a-zA-Z]*\n?', '', latex_code.strip(), flags=re.MULTILINE)
+        cleaned = re.sub(r'\n?```$', '', cleaned.strip(), flags=re.MULTILINE)
+        
+        # Remove any remaining backticks at start/end
+        cleaned = cleaned.strip('`').strip()
+        
+        return cleaned
     
     def generate_report(self, 
                        topic: str,
@@ -118,16 +140,18 @@ Content to include:
 
 **CRITICAL REQUIREMENTS:**
 1. Generate ONLY the LaTeX code, nothing else
-2. Properly format mathematical equations using amsmath
-3. Use the listings package for MATLAB code
-4. Create professional-looking sections
-5. Include placeholders for Results and Observations that students can fill
-6. Make it ready to compile in Overleaf
-7. Ensure all LaTeX syntax is correct
+2. Do NOT wrap the LaTeX in markdown code fences (```latex or ```)
+3. Properly format mathematical equations using amsmath
+4. Use the listings package for MATLAB code
+5. Create professional-looking sections
+6. Include placeholders for Results and Observations that students can fill
+7. Make it ready to compile in Overleaf
+8. Ensure all LaTeX syntax is correct
 
-Generate the complete LaTeX document now:
+Generate the complete LaTeX document now (WITHOUT code fences):
 """
-        return self.respond(prompt)
+        raw_latex = self.respond(prompt)
+        return self.clean_latex(raw_latex)
     
     def create_aim_and_objective(self, topic: str) -> dict:
         """

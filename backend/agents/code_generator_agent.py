@@ -1,4 +1,5 @@
 from .base_agent import BaseAgent
+import re
 
 class CodeGeneratorAgent(BaseAgent):
     """Agent specialized in generating MATLAB code for ECE practicals."""
@@ -18,6 +19,7 @@ Your role is to generate clear, well-commented MATLAB code that:
 CRITICAL REQUIREMENTS:
 - Generate ONLY the MATLAB code, nothing else
 - Start directly with MATLAB code (no explanatory text before or after)
+- Do NOT wrap code in markdown code fences (```)
 - Use clear, descriptive variable names
 - Add comments for every significant operation
 - Keep logic straightforward and easy to follow
@@ -26,6 +28,26 @@ CRITICAL REQUIREMENTS:
 Your output should be pure MATLAB code ready to copy into MATLAB editor.
 """
         super().__init__("CodeGeneratorAgent", instructions)
+    
+    @staticmethod
+    def clean_code(code: str) -> str:
+        """
+        Remove markdown code fences and other formatting from generated code.
+        
+        Args:
+            code: Raw code string that may contain markdown formatting
+            
+        Returns:
+            Cleaned code string ready for direct use
+        """
+        # Remove markdown code fences (```matlab, ```python, ```)
+        cleaned = re.sub(r'^```[a-zA-Z]*\n?', '', code.strip(), flags=re.MULTILINE)
+        cleaned = re.sub(r'\n?```$', '', cleaned.strip(), flags=re.MULTILINE)
+        
+        # Remove any remaining backticks at start/end
+        cleaned = cleaned.strip('`').strip()
+        
+        return cleaned
     
     def generate_brute_force_code(self, topic: str, theory_context: str = "") -> str:
         """
@@ -53,10 +75,12 @@ Requirements:
 - Use clear plotting if visualization is needed
 - Make it educational and easy to understand
 
-Generate ONLY the MATLAB code without any additional explanation or text.
+IMPORTANT: Generate ONLY the MATLAB code without any markdown code fences or additional text.
+Do NOT wrap the code in ```matlab or ``` markers.
 Start directly with the code.
 """
-        return self.respond(prompt)
+        raw_code = self.respond(prompt)
+        return self.clean_code(raw_code)
     
     def generate_efficient_code(self, topic: str, brute_force_code: str) -> str:
         """
@@ -73,9 +97,7 @@ Start directly with the code.
 Analyze the following brute-force MATLAB code for: {topic}
 
 Brute-Force Code:
-```matlab
 {brute_force_code}
-```
 
 Task:
 1. Identify if there are significant optimization opportunities (vectorization, built-in functions, algorithm improvements)
@@ -89,7 +111,9 @@ If generating optimized code:
 - Maintain the same functionality
 - Add comments highlighting optimizations
 
-Generate ONLY the optimized MATLAB code or the "No significant optimization possible" message.
+IMPORTANT: Generate ONLY the optimized MATLAB code or the "No significant optimization possible" message.
+Do NOT wrap the code in ```matlab or ``` markers.
 No additional explanation.
 """
-        return self.respond(prompt)
+        raw_code = self.respond(prompt)
+        return self.clean_code(raw_code)

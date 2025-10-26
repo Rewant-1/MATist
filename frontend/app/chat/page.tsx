@@ -201,57 +201,59 @@ export default function ChatPage() {
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 p-4 flex items-center justify-between"
+          className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b"
         >
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <Code className="h-4 w-4 text-white" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
-                  {currentChat?.title || "ECE MATLAB Helper"}
-                </h1>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Your ECE MATLAB practical assistant
-                </p>
+          <div className="container mx-auto p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg">
+                  <Code className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-semibold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
+                    {currentChat?.title || "ECE MATLAB Helper"}
+                  </h1>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Your ECE MATLAB practical assistant
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex gap-2">
-            <Link href="/">
+            <div className="flex gap-2">
+              <Link href="/">
+                <Button
+                  variant="outline"
+                  className="border-slate-200/50 dark:border-slate-700/50 hover:bg-white/50 dark:hover:bg-slate-800/50 backdrop-blur-sm"
+                >
+                  <Home className="h-4 w-4 mr-2" />
+                  Home
+                </Button>
+              </Link>
+              <Link href="/ece-practical">
+                <Button
+                  variant="outline"
+                  className="border-slate-200/50 dark:border-slate-700/50 hover:bg-white/50 dark:hover:bg-slate-800/50 backdrop-blur-sm"
+                >
+                  <Code className="h-4 w-4 mr-2" />
+                  ECE MATLAB Helper
+                </Button>
+              </Link>
               <Button
-                variant="outline"
-                className="border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900"
+                onClick={createNewChat}
+                className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
               >
-                <Home className="h-4 w-4 mr-2" />
-                Home
+                <Plus className="h-4 w-4 mr-2" />
+                New Chat
               </Button>
-            </Link>
-            <Link href="/ece-practical">
-              <Button
-                variant="outline"
-                className="border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900"
-              >
-                <Code className="h-4 w-4 mr-2" />
-                ECE MATLAB Helper
-              </Button>
-            </Link>
-            <Button
-              onClick={createNewChat}
-              className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              New Chat
-            </Button>
+            </div>
           </div>
         </motion.div>
 

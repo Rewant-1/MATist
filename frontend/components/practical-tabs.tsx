@@ -53,32 +53,32 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
         <TabsList className="grid w-full grid-cols-4 bg-slate-100 dark:bg-slate-800">
           <TabsTrigger 
             value="theory" 
-            className="flex items-center gap-2 data-[state=active]:bg-teal-500 data-[state=active]:text-white"
+            className="flex items-center gap-2 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-700"
           >
             <BookOpen className="h-4 w-4" />
-            <span className="hidden sm:inline">Theory</span>
+            <span className="hidden sm:inline font-semibold text-teal-600 dark:text-teal-400">Theory</span>
           </TabsTrigger>
           <TabsTrigger 
             value="basic" 
-            className="flex items-center gap-2 data-[state=active]:bg-teal-500 data-[state=active]:text-white"
+            className="flex items-center gap-2 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-700"
           >
             <Code className="h-4 w-4" />
-            <span className="hidden sm:inline">Basic Code</span>
+            <span className="hidden sm:inline font-semibold text-cyan-600 dark:text-cyan-400">Basic Code</span>
           </TabsTrigger>
           <TabsTrigger 
             value="advanced" 
-            className="flex items-center gap-2 data-[state=active]:bg-teal-500 data-[state=active]:text-white"
+            className="flex items-center gap-2 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-700"
             disabled={!eceData.optimization_applicable}
           >
             <Zap className="h-4 w-4" />
-            <span className="hidden sm:inline">Advanced</span>
+            <span className="hidden sm:inline font-semibold text-amber-600 dark:text-amber-400">Advanced</span>
           </TabsTrigger>
           <TabsTrigger 
             value="latex" 
-            className="flex items-center gap-2 data-[state=active]:bg-teal-500 data-[state=active]:text-white"
+            className="flex items-center gap-2 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-700"
           >
             <FileText className="h-4 w-4" />
-            <span className="hidden sm:inline">LaTeX</span>
+            <span className="hidden sm:inline font-semibold text-indigo-600 dark:text-indigo-400">LaTeX</span>
           </TabsTrigger>
         </TabsList>
 
