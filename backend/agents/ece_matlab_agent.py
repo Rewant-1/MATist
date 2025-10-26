@@ -43,17 +43,18 @@ class ECEMatlabAgent(BaseAgent):
             # Step 1: Generate Theory Explanation
             print("[ECEMatlabAgent] Step 1: Generating theory explanation...")
             theory = self.theory_agent.explain_concept(topic)
-            
-            # Check if theory generation failed
-            if "failed" in theory.lower() or "error" in theory.lower():
-                raise Exception(f"Theory generation failed: {theory}")
-            
+
+            # Check if theory generation failed (only check for actual error messages, not content)
+            if not theory or len(theory.strip()) < 50:  # Basic validation
+                raise Exception(f"Theory generation failed: Empty or too short response")
+
             # Step 2: Generate Brute-Force Code
             print("[ECEMatlabAgent] Step 2: Generating brute-force MATLAB code...")
             brute_force_code = self.code_generator_agent.generate_brute_force_code(topic, theory)
-            
-            if "failed" in brute_force_code.lower() or "error" in brute_force_code.lower():
-                raise Exception(f"Code generation failed: {brute_force_code}")
+
+            # Check if code generation failed
+            if not brute_force_code or len(brute_force_code.strip()) < 20:
+                raise Exception(f"Code generation failed: Empty or too short response")
             
             # Step 3: Explain Brute-Force Code
             print("[ECEMatlabAgent] Step 3: Explaining brute-force code...")
