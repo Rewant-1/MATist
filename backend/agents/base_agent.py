@@ -1,4 +1,5 @@
 import os
+import time
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -18,20 +19,39 @@ class BaseAgent:
             "max_output_tokens": 8192,
         }
         self.model = genai.GenerativeModel(
-            'gemini-2.5-flash',
+            'gemini-2.5-flash',  # Stable model with better quota limits
             generation_config=generation_config
         )
     
     def respond(self, query: str) -> str:
-        """Non-streaming response for backward compatibility"""
-        try:
-            response = self.model.generate_content(f"{self.instructions}\nUser: {query}")
-            return response.text
-        except Exception as e:
-            return f"Agent {self.name} failed: {str(e)}"
+        """Non-streaming response with retry logic"""
+        max_retries = 3
+        retry_delay = 2  # seconds
+        
+        for attempt in range(max_retries):
+            try:
+                response = self.model.generate_content(f"{self.instructions}\nUser: {query}")
+                return response.text
+            except Exception as e:
+                error_msg = str(e)
+                
+                # Check if it's a quota error
+                if "429" in error_msg or "quota" in error_msg.lower():
+                    if attempt < max_retries - 1:
+                        print(f"⏳ Quota exceeded, retrying in {retry_delay}s... (Attempt {attempt + 1}/{max_retries})")
+                        time.sleep(retry_delay)
+                        retry_delay *= 2  # Exponential backoff
+                        continue
+                    else:
+                        return f"⚠️ API Quota Exceeded. Please try again in a few minutes. Free tier limit: 50 requests/day per model."
+                
+                # Other errors
+                return f"Agent {self.name} failed: {error_msg}"
+        
+        return f"Agent {self.name} failed after {max_retries} retries."
     
     def respond_stream(self, query: str):
-        """Streaming response for real-time output"""
+        """Streaming response with error handling"""
         try:
             response = self.model.generate_content(
                 f"{self.instructions}\nUser: {query}",
@@ -41,4 +61,8 @@ class BaseAgent:
                 if chunk.text:
                     yield chunk.text
         except Exception as e:
-            yield f"Agent {self.name} failed: {str(e)}"
+            error_msg = str(e)
+            if "429" in error_msg or "quota" in error_msg.lower():
+                yield "⚠️ API Quota Exceeded. Please try again later. Free tier limit: 50 requests/day per model."
+            else:
+                yield f"Agent {self.name} failed: {error_msg}"
