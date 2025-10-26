@@ -18,7 +18,7 @@ class BaseAgent:
             "max_output_tokens": 8192,
         }
         self.model = genai.GenerativeModel(
-            'gemini-2.0-flash-exp',
+            'gemini-2.5-flash',
             generation_config=generation_config
         )
     
