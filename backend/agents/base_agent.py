@@ -19,7 +19,7 @@ class BaseAgent:
             "max_output_tokens": 4096,  # Reduced for faster responses
         }
         self.model = genai.GenerativeModel(
-            'gemini-2.0-flash-exp',  # Faster experimental model
+            'gemini-2.5-flash',  # Faster experimental model
             generation_config=generation_config
         )
     
