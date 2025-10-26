@@ -5,28 +5,9 @@ class CodeGeneratorAgent(BaseAgent):
     """Agent specialized in generating MATLAB code for ECE practicals."""
     
     def __init__(self):
-        instructions = """
-You are an expert MATLAB programmer specializing in Electronics and Communication Engineering practicals.
-
-Your role is to generate clear, well-commented MATLAB code that:
-1. Uses a BRUTE-FORCE approach (simple, easy-to-understand logic)
-2. Avoids complex optimizations initially
-3. Has extensive comments explaining each step
-4. Follows good coding practices (clear variable names, modular structure)
-5. Includes proper initialization and result display
-6. Is beginner-friendly and educational
-
-CRITICAL REQUIREMENTS:
-- Generate ONLY the MATLAB code, nothing else
-- Start directly with MATLAB code (no explanatory text before or after)
-- Do NOT wrap code in markdown code fences (```)
-- Use clear, descriptive variable names
-- Add comments for every significant operation
-- Keep logic straightforward and easy to follow
-- Focus on correctness over efficiency in this brute-force version
-
-Your output should be pure MATLAB code ready to copy into MATLAB editor.
-"""
+        instructions = """MATLAB code generator for ECE practicals.
+Generate clean, well-commented code. Use simple logic. NO markdown fences.
+Output only MATLAB code, nothing else."""
         super().__init__("CodeGeneratorAgent", instructions)
     
     @staticmethod
@@ -63,21 +44,11 @@ Your output should be pure MATLAB code ready to copy into MATLAB editor.
         context_str = f"\n\nTheoretical Context:\n{theory_context}" if theory_context else ""
         
         prompt = f"""
-Generate clear, brute-force MATLAB code for the following ECE practical:
+Generate simple MATLAB code for: {topic}
+{context_str}
 
-Topic: {topic}{context_str}
-
-Requirements:
-- Use simple, straightforward logic (brute-force approach)
-- Add detailed comments explaining each section
-- Include proper variable initialization
-- Display results with appropriate labels
-- Use clear plotting if visualization is needed
-- Make it educational and easy to understand
-
-IMPORTANT: Generate ONLY the MATLAB code without any markdown code fences or additional text.
-Do NOT wrap the code in ```matlab or ``` markers.
-Start directly with the code.
+Requirements: Well-commented, brute-force approach, beginner-friendly.
+NO markdown fences. Output only code.
 """
         raw_code = self.respond(prompt)
         return self.clean_code(raw_code)
@@ -94,26 +65,13 @@ Start directly with the code.
             Optimized MATLAB code or message if no optimization needed
         """
         prompt = f"""
-Analyze the following brute-force MATLAB code for: {topic}
+Optimize this MATLAB code for: {topic}
 
-Brute-Force Code:
 {brute_force_code}
 
-Task:
-1. Identify if there are significant optimization opportunities (vectorization, built-in functions, algorithm improvements)
-2. If YES, generate an optimized version of the code
-3. If NO significant optimizations are possible, respond with exactly: "No significant optimization possible for this implementation."
-
-If generating optimized code:
-- Use vectorized operations instead of loops where applicable
-- Utilize MATLAB built-in functions
-- Improve algorithmic efficiency
-- Maintain the same functionality
-- Add comments highlighting optimizations
-
-IMPORTANT: Generate ONLY the optimized MATLAB code or the "No significant optimization possible" message.
-Do NOT wrap the code in ```matlab or ``` markers.
-No additional explanation.
+If optimization possible: generate optimized version (vectorization, built-ins).
+If not: reply "No significant optimization possible"
+NO markdown fences. Output only code or message.
 """
         raw_code = self.respond(prompt)
         return self.clean_code(raw_code)

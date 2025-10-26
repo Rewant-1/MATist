@@ -5,19 +5,9 @@ class LaTeXGeneratorAgent(BaseAgent):
     """Agent specialized in generating LaTeX reports for ECE practicals."""
     
     def __init__(self):
-        instructions = """
-You are an expert in creating professional LaTeX documents for academic ECE lab reports.
-
-Your role is to generate complete, well-formatted LaTeX code that:
-1. Follows standard academic report structure
-2. Uses appropriate LaTeX packages (listings for code, amsmath for equations)
-3. Formats MATLAB code properly with syntax highlighting
-4. Creates clear sections with proper headings
-5. Is ready to compile in Overleaf without modifications
-
-IMPORTANT: Output ONLY valid LaTeX code WITHOUT markdown code fences.
-Do NOT wrap the LaTeX code in ```latex or ``` markers.
-"""
+        instructions = """LaTeX report generator for ECE lab reports.
+Create complete, compilable LaTeX with proper structure and code formatting.
+NO markdown fences. Output only LaTeX."""
         super().__init__("LaTeXGeneratorAgent", instructions)
     
     @staticmethod
@@ -62,93 +52,15 @@ Do NOT wrap the LaTeX code in ```latex or ``` markers.
             Complete LaTeX document as string
         """
         prompt = f"""
-Generate a complete LaTeX document for an ECE practical lab report on: {topic}
+Generate complete LaTeX lab report for: {topic}
 
-Content to include:
+Theory: {theory}
+Code: {matlab_code}
+Explanation: {code_explanation if code_explanation else "In comments"}
+Optimizations: {optimization_notes if optimization_notes else "N/A"}
 
-**Theory:**
-{theory}
-
-**MATLAB Code (Final Version):**
-```matlab
-{matlab_code}
-```
-
-**Additional Context:**
-- Code Explanation: {code_explanation if code_explanation else "Available in comments"}
-- Optimization Notes: {optimization_notes if optimization_notes else "N/A"}
-
-**Required LaTeX Structure:**
-
-\\documentclass[12pt]{{article}}
-\\usepackage{{amsmath, amssymb, graphicx, listings, xcolor, geometry}}
-\\geometry{{a4paper, margin=1in}}
-
-% MATLAB code formatting
-\\lstset{{
-    language=Matlab,
-    basicstyle=\\ttfamily\\small,
-    keywordstyle=\\color{{blue}},
-    commentstyle=\\color{{green!50!black}},
-    stringstyle=\\color{{red}},
-    numbers=left,
-    numberstyle=\\tiny\\color{{gray}},
-    stepnumber=1,
-    frame=single,
-    breaklines=true,
-    captionpos=b
-}}
-
-\\begin{{document}}
-
-\\title{{ECE Practical: {topic}}}
-\\author{{Student Name}}
-\\date{{\\today}}
-\\maketitle
-
-\\section{{Aim}}
-% Brief 1-2 sentence aim derived from the topic
-
-\\section{{Objective}}
-% Specific objectives of this practical (2-3 bullet points)
-
-\\section{{Theory}}
-% Insert the theoretical explanation here, formatted properly with LaTeX
-
-\\section{{MATLAB Code}}
-% Insert the MATLAB code in a listings environment
-
-\\section{{Results}}
-% Add placeholder text:
-% Results will be displayed here after running the MATLAB code.
-% Include:
-% - Output values/data
-% - Plots/graphs (if applicable)
-% - Observations from the output
-
-\\section{{Observation}}
-% Add placeholder text:
-% Key observations from the practical:
-% 1. [Observation point 1]
-% 2. [Observation point 2]
-% 3. [Observation point 3]
-
-\\section{{Conclusion}}
-% Brief conclusion about what was learned/achieved
-
-\\end{{document}}
-
-**CRITICAL REQUIREMENTS:**
-1. Generate ONLY the LaTeX code, nothing else
-2. Do NOT wrap the LaTeX in markdown code fences (```latex or ```)
-3. Properly format mathematical equations using amsmath
-4. Use the listings package for MATLAB code
-5. Create professional-looking sections
-6. Include placeholders for Results and Observations that students can fill
-7. Make it ready to compile in Overleaf
-8. Ensure all LaTeX syntax is correct
-
-Generate the complete LaTeX document now (WITHOUT code fences):
+Include standard sections: Aim, Theory, Code, Results, Conclusion.
+NO markdown fences. Output compilable LaTeX only.
 """
         raw_latex = self.respond(prompt)
         return self.clean_latex(raw_latex)
