@@ -19,7 +19,7 @@ class BaseAgent:
             "max_output_tokens": 8192,
         }
         self.model = genai.GenerativeModel(
-            'gemini-1.5-flash',  # Stable model with lower latency for production
+            'gemini-2.5-flash',  # Stable model with lower latency for production
             generation_config=generation_config
         )
     
