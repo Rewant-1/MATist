@@ -35,19 +35,7 @@ class ECEMatlabAgent(BaseAgent):
             topic: The ECE practical topic (e.g., "Convolution of two signals")
             
         Returns:
-            Dictionary containing all generated content:
-            {
-                "topic": str,
-                "theory": str,
-                "brute_force_code": str,
-                "brute_force_explanation": str,
-                "efficient_code": str or None,
-                "efficient_explanation": str or None,
-                "optimization_applicable": bool,
-                "latex_report": str,
-                "status": "success" or "error",
-                "error_message": str (if error occurred)
-            }
+            Dictionary containing all generated content
         """
         try:
             print(f"[ECEMatlabAgent] Starting processing for topic: {topic}")
@@ -56,9 +44,16 @@ class ECEMatlabAgent(BaseAgent):
             print("[ECEMatlabAgent] Step 1: Generating theory explanation...")
             theory = self.theory_agent.explain_concept(topic)
             
+            # Check if theory generation failed
+            if "failed" in theory.lower() or "error" in theory.lower():
+                raise Exception(f"Theory generation failed: {theory}")
+            
             # Step 2: Generate Brute-Force Code
             print("[ECEMatlabAgent] Step 2: Generating brute-force MATLAB code...")
             brute_force_code = self.code_generator_agent.generate_brute_force_code(topic, theory)
+            
+            if "failed" in brute_force_code.lower() or "error" in brute_force_code.lower():
+                raise Exception(f"Code generation failed: {brute_force_code}")
             
             # Step 3: Explain Brute-Force Code
             print("[ECEMatlabAgent] Step 3: Explaining brute-force code...")
@@ -119,11 +114,22 @@ class ECEMatlabAgent(BaseAgent):
             }
             
         except Exception as e:
-            print(f"[ECEMatlabAgent] Error occurred: {str(e)}")
+            error_message = str(e)
+            print(f"[ECEMatlabAgent] Error occurred: {error_message}")
+            
+            # Return user-friendly error message
+            user_message = "Failed to process practical. "
+            if "quota" in error_message.lower() or "429" in error_message:
+                user_message += "API quota exceeded. Please try again later."
+            elif "timeout" in error_message.lower():
+                user_message += "Request timed out. Please try again or use a simpler topic."
+            else:
+                user_message += "Please try again later."
+            
             return {
                 "topic": topic,
                 "status": "error",
-                "error_message": f"Failed to process practical: {str(e)}",
+                "error_message": user_message,
                 "theory": None,
                 "brute_force_code": None,
                 "brute_force_explanation": None,

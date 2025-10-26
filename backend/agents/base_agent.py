@@ -19,18 +19,22 @@ class BaseAgent:
             "max_output_tokens": 8192,
         }
         self.model = genai.GenerativeModel(
-            'gemini-2.5-flash',  # Stable model with better quota limits
+            'gemini-1.5-flash',  # Stable model with proven reliability
             generation_config=generation_config
         )
     
     def respond(self, query: str) -> str:
-        """Non-streaming response with retry logic"""
+        """Non-streaming response with retry logic and timeout"""
         max_retries = 3
         retry_delay = 2  # seconds
         
         for attempt in range(max_retries):
             try:
-                response = self.model.generate_content(f"{self.instructions}\nUser: {query}")
+                # Add timeout to prevent hanging
+                response = self.model.generate_content(
+                    f"{self.instructions}\nUser: {query}",
+                    request_options={'timeout': 60}  # 60 second timeout
+                )
                 return response.text
             except Exception as e:
                 error_msg = str(e)
@@ -44,6 +48,10 @@ class BaseAgent:
                         continue
                     else:
                         return f"⚠️ API Quota Exceeded. Please try again in a few minutes. Free tier limit: 50 requests/day per model."
+                
+                # Check for timeout
+                if "timeout" in error_msg.lower() or "deadline" in error_msg.lower():
+                    return f"⚠️ Request timed out. The topic might be too complex. Please try a simpler query or try again later."
                 
                 # Other errors
                 return f"Agent {self.name} failed: {error_msg}"
