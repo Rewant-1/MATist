@@ -50,35 +50,35 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
   return (
     <div className="w-full mt-4">
       <Tabs defaultValue="theory" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-slate-100 dark:bg-slate-800">
+        <TabsList className="grid w-full grid-cols-4 bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm p-1 rounded-xl gap-1">
           <TabsTrigger 
             value="theory" 
-            className="flex items-center gap-2 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-700"
+            className="flex items-center justify-center gap-1.5 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md rounded-lg transition-all duration-200"
           >
-            <BookOpen className="h-4 w-4" />
-            <span className="hidden sm:inline font-semibold text-teal-600 dark:text-teal-400">Theory</span>
+            <BookOpen className="h-4 w-4 flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-teal-600 dark:text-teal-400 truncate">Theory</span>
           </TabsTrigger>
           <TabsTrigger 
             value="basic" 
-            className="flex items-center gap-2 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-700"
+            className="flex items-center justify-center gap-1.5 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md rounded-lg transition-all duration-200"
           >
-            <Code className="h-4 w-4" />
-            <span className="hidden sm:inline font-semibold text-cyan-600 dark:text-cyan-400">Basic Code</span>
+            <Code className="h-4 w-4 flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-cyan-600 dark:text-cyan-400 truncate">Basic</span>
           </TabsTrigger>
           <TabsTrigger 
             value="advanced" 
-            className="flex items-center gap-2 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-700"
+            className="flex items-center justify-center gap-1.5 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!eceData.optimization_applicable}
           >
-            <Zap className="h-4 w-4" />
-            <span className="hidden sm:inline font-semibold text-amber-600 dark:text-amber-400">Advanced</span>
+            <Zap className="h-4 w-4 flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-amber-600 dark:text-amber-400 truncate">Advanced</span>
           </TabsTrigger>
           <TabsTrigger 
             value="latex" 
-            className="flex items-center gap-2 data-[state=active]:bg-slate-200 dark:data-[state=active]:bg-slate-700"
+            className="flex items-center justify-center gap-1.5 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md rounded-lg transition-all duration-200"
           >
-            <FileText className="h-4 w-4" />
-            <span className="hidden sm:inline font-semibold text-indigo-600 dark:text-indigo-400">LaTeX</span>
+            <FileText className="h-4 w-4 flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400 truncate">LaTeX</span>
           </TabsTrigger>
         </TabsList>
 
@@ -172,8 +172,8 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                   </Button>
                 </div>
                 <div className="relative group">
-                  <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto text-sm border border-slate-700 shadow-lg">
-                    <code className="font-mono">{eceData.brute_force_code || "% No code available"}</code>
+                  <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto text-sm border border-slate-700 shadow-lg scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 hover:scrollbar-thumb-slate-500">
+                    <code className="font-mono leading-relaxed">{eceData.brute_force_code || "% No code available"}</code>
                   </pre>
                 </div>
               </div>
@@ -254,8 +254,8 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                       </Button>
                     </div>
                     <div className="relative group">
-                      <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto text-sm border border-slate-700 shadow-lg">
-                        <code className="font-mono">{eceData.efficient_code || "% No optimized code available"}</code>
+                      <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto text-sm border border-slate-700 shadow-lg scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 hover:scrollbar-thumb-slate-500">
+                        <code className="font-mono leading-relaxed">{eceData.efficient_code || "% No optimized code available"}</code>
                       </pre>
                     </div>
                   </div>
@@ -372,8 +372,8 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                   </Button>
                 </div>
                 <div className="relative group">
-                  <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto text-xs max-h-[500px] border border-slate-700 shadow-lg">
-                    <code className="font-mono">{eceData.latex_report || "% No LaTeX report available"}</code>
+                  <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto text-xs max-h-[500px] border border-slate-700 shadow-lg scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 hover:scrollbar-thumb-slate-500">
+                    <code className="font-mono leading-relaxed">{eceData.latex_report || "% No LaTeX report available"}</code>
                   </pre>
                 </div>
               </div>

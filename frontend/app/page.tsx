@@ -122,7 +122,7 @@ export default function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 + index * 0.1 }}
             >
-              <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-teal-200 dark:hover:border-cyan-800 group">
+              <Card className="h-full hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 hover:border-teal-200 dark:hover:border-cyan-800 group shadow-lg dark:shadow-slate-950">
                 <CardHeader>
                   <div className={`w-12 h-12 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                     <feature.icon className="h-6 w-6 text-white" />
@@ -146,7 +146,7 @@ export default function LandingPage() {
           transition={{ delay: 1.0 }}
           className="max-w-4xl mx-auto mb-16"
         >
-          <Card className="border-2 border-slate-200 dark:border-slate-800 shadow-xl">
+          <Card className="border-2 border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-slate-950">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2">
                 <MessageCircle className="h-6 w-6 text-teal-500" />
@@ -197,7 +197,7 @@ export default function LandingPage() {
           transition={{ delay: 1.2 }}
           className="max-w-4xl mx-auto"
         >
-          <Card className="border-2 border-slate-200 dark:border-slate-800 shadow-xl">
+          <Card className="border-2 border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-slate-950">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2">
                 <Lightbulb className="h-6 w-6 text-amber-500" />
@@ -273,7 +273,7 @@ export default function LandingPage() {
           transition={{ delay: 2.3 }}
           className="mt-16 text-center"
         >
-          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-teal-500 to-cyan-500 border-0 shadow-2xl">
+          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-teal-500 to-cyan-500 border-0 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
             <CardContent className="pt-8 pb-8">
               <h3 className="text-2xl font-bold text-white mb-4">
                 Ready to create your ECE practical?

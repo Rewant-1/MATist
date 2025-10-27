@@ -210,14 +210,14 @@ export function ChatSidebar({
     >
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="p-3 border-b border-slate-200 dark:border-slate-800">
+        <div className="p-3 border-b border-slate-200 dark:border-slate-800 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-6 h-6 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-md flex items-center justify-center">
-              <Sparkles className="h-3 w-3 text-white" />
+            <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg">
+              <Sparkles className="h-4 w-4 text-white" />
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="font-semibold text-sm text-slate-900 dark:text-slate-100 truncate">
-                AI Tutor
+                ECE Helper
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Learning companion
@@ -227,9 +227,9 @@ export function ChatSidebar({
           </div>
           <Button
             onClick={onNewChat}
-            className="w-full h-8 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 text-sm"
+            className="w-full h-9 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 text-sm"
           >
-            <Plus className="h-3 w-3 mr-1" />
+            <Plus className="h-4 w-4 mr-1" />
             New Chat
           </Button>
         </div>
@@ -401,10 +401,10 @@ export function ChatSidebar({
 
       {/* Resize Handle */}
       <div
-        className="w-1 bg-transparent hover:bg-teal-300 dark:hover:bg-teal-600 cursor-col-resize transition-colors flex items-center justify-center group"
+        className="w-1.5 bg-transparent hover:bg-gradient-to-b hover:from-teal-300 hover:to-cyan-300 dark:hover:from-teal-600 dark:hover:to-cyan-600 cursor-col-resize transition-all duration-200 flex items-center justify-center group"
         onMouseDown={() => setIsResizing(true)}
       >
-        <div className="w-0.5 h-8 bg-slate-300 dark:bg-slate-600 group-hover:bg-teal-400 dark:group-hover:bg-teal-500 transition-colors rounded-full opacity-0 group-hover:opacity-100" />
+        <div className="w-1 h-12 bg-slate-300 dark:bg-slate-600 group-hover:bg-teal-400 dark:group-hover:bg-teal-500 transition-colors rounded-full opacity-0 group-hover:opacity-100" />
       </div>
     </div>
   );

@@ -539,17 +539,17 @@ export function ChatInterface({
                   )}
 
                   <div
-                    className={`group max-w-[75%] ${
+                    className={`group max-w-[85%] md:max-w-[75%] ${
                       message.role === "user" ? "order-1" : ""
                     }`}
                   >
                     <motion.div
                       initial={{ scale: 0.95 }}
                       animate={{ scale: 1 }}
-                      className={`p-4 rounded-2xl shadow-sm ${
+                      className={`p-4 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 ${
                         message.role === "user"
                           ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white"
-                          : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                          : "bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700"
                       }`}
                     >
                       {message.role === "user" ? (
@@ -615,8 +615,8 @@ export function ChatInterface({
                       <Bot className="h-5 w-5 text-white" />
                     </div>
                   </div>
-                  <div className="group max-w-[75%]">
-                    <div className="p-4 rounded-2xl shadow-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                  <div className="group max-w-[85%] md:max-w-[75%]">
+                    <div className="p-4 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700">
                       <TypingMessage
                         content={typingMessage.content}
                         onComplete={handleTypingComplete}
@@ -642,7 +642,7 @@ export function ChatInterface({
                     <Bot className="h-5 w-5 text-white" />
                   </div>
                 </div>
-                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">
+                <div className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-md">
                   <div className="flex space-x-2">
                     <motion.div
                       className="w-2 h-2 bg-teal-500 rounded-full"
@@ -680,7 +680,7 @@ export function ChatInterface({
       </ScrollArea>
 
       {/* Input Form */}
-      <div className="border-t border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-4">
+      <div className="border-t border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-4 shadow-lg">
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
           <div className="relative">
             <Textarea
@@ -689,24 +689,24 @@ export function ChatInterface({
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask me anything..."
-              className="min-h-[56px] max-h-32 resize-none pr-12 border-slate-200 dark:border-slate-700 focus:border-teal-300 dark:focus:border-teal-600 focus:ring-teal-200 dark:focus:ring-teal-800 rounded-xl bg-white dark:bg-slate-800"
+              className="min-h-[56px] max-h-32 resize-none pr-12 border-2 border-slate-200 dark:border-slate-700 focus:border-teal-400 dark:focus:border-teal-500 focus:ring-2 focus:ring-teal-200 dark:focus:ring-teal-800 rounded-xl bg-white dark:bg-slate-800 transition-all duration-200"
               disabled={isLoading}
             />
             <Button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="absolute right-2 bottom-2 h-10 w-10 p-0 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 disabled:from-slate-300 disabled:to-slate-400 border-0 shadow-lg hover:shadow-xl transition-all duration-200"
+              className="absolute right-2 bottom-2 h-10 w-10 p-0 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed border-0 shadow-lg hover:shadow-xl transition-all duration-200"
             >
               <Send className="h-4 w-4" />
             </Button>
           </div>
           <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">
             Press{" "}
-            <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-xs">
+            <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs font-mono">
               Enter
             </kbd>{" "}
             to send,{" "}
-            <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-xs">
+            <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs font-mono">
               Shift + Enter
             </kbd>{" "}
             for new line

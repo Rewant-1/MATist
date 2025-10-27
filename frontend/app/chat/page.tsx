@@ -201,7 +201,7 @@ export default function ChatPage() {
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b"
+          className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 shadow-sm"
         >
           <div className="container mx-auto p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -231,7 +231,7 @@ export default function ChatPage() {
               <Link href="/">
                 <Button
                   variant="outline"
-                  className="border-slate-200/50 dark:border-slate-700/50 hover:bg-white/50 dark:hover:bg-slate-800/50 backdrop-blur-sm"
+                  className="border-2 border-slate-200 dark:border-slate-700 hover:bg-white hover:border-teal-300 dark:hover:bg-slate-800 dark:hover:border-teal-600 backdrop-blur-sm transition-all duration-200"
                 >
                   <Home className="h-4 w-4 mr-2" />
                   Home
@@ -240,7 +240,7 @@ export default function ChatPage() {
               <Link href="/ece-practical">
                 <Button
                   variant="outline"
-                  className="border-slate-200/50 dark:border-slate-700/50 hover:bg-white/50 dark:hover:bg-slate-800/50 backdrop-blur-sm"
+                  className="border-2 border-slate-200 dark:border-slate-700 hover:bg-white hover:border-teal-300 dark:hover:bg-slate-800 dark:hover:border-teal-600 backdrop-blur-sm transition-all duration-200"
                 >
                   <Code className="h-4 w-4 mr-2" />
                   ECE MATLAB Helper

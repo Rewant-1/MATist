@@ -4,14 +4,15 @@ from agents.tutor_agent import TutorAgent
 from agents.ece_matlab_agent import ECEMatlabAgent
 from flask_cors import CORS
 import json
+import os
 
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 tutor_agent = TutorAgent()
 ece_matlab_agent = ECEMatlabAgent()
-
-load_dotenv()
 
 
 @app.route("/",methods=["GET"])
@@ -147,4 +148,12 @@ def ece_practical():
         }), 400
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Use environment variable for debug mode, default to False for production
+    debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
+    port = int(os.getenv("PORT", 5000))
+    
+    app.run(
+        host="0.0.0.0",  # Allow external connections (required for production)
+        port=port,
+        debug=debug_mode
+    )

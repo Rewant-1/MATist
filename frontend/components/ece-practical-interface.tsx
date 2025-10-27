@@ -73,10 +73,10 @@ export function ECEPracticalInterface() {
       </div>
 
       {/* Input Form */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Enter Your Practical Topic</CardTitle>
-          <CardDescription>
+      <Card className="mb-6 shadow-xl border-2 border-slate-200 dark:border-slate-700">
+        <CardHeader className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30">
+          <CardTitle className="text-xl">Enter Your Practical Topic</CardTitle>
+          <CardDescription className="text-base">
             Describe the ECE practical you want to implement in MATLAB
           </CardDescription>
         </CardHeader>
@@ -89,9 +89,13 @@ export function ECEPracticalInterface() {
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 border-2 border-slate-200 dark:border-slate-700 focus:border-teal-400 dark:focus:border-teal-500 focus:ring-2 focus:ring-teal-200 dark:focus:ring-teal-800 transition-all duration-200"
               />
-              <Button type="submit" disabled={!topic.trim() || isLoading}>
+              <Button 
+                type="submit" 
+                disabled={!topic.trim() || isLoading}
+                className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed"
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -146,9 +150,11 @@ export function ECEPracticalInterface() {
 
       {/* Error Display */}
       {result && result.status === "error" && (
-        <Card className="border-red-200 dark:border-red-800">
-          <CardHeader>
-            <CardTitle className="text-red-600 dark:text-red-400">Error</CardTitle>
+        <Card className="border-2 border-red-200 dark:border-red-800 shadow-xl dark:shadow-red-950/50">
+          <CardHeader className="bg-red-50 dark:bg-red-950/30">
+            <CardTitle className="text-red-600 dark:text-red-400 flex items-center gap-2">
+              <span>❌</span> Error
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-red-600 dark:text-red-400">
