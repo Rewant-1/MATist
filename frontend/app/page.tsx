@@ -12,38 +12,32 @@ export default function LandingPage() {
       icon: BookOpen,
       title: "Comprehensive Theory",
       description: "Detailed theoretical explanations for every ECE topic with formulas, diagrams, and concepts.",
-      gradient: "from-amber-500 to-orange-500"
     },
     {
       icon: Code,
       title: "Dual Implementation",
       description: "Get both basic (brute-force) and optimized MATLAB code with complete line-by-line explanations.",
-      gradient: "from-teal-500 to-cyan-500"
     },
     {
       icon: Zap,
       title: "Optimized Solutions",
       description: "Learn vectorization, built-in functions, and performance optimization techniques.",
-      gradient: "from-sky-500 to-blue-500"
     },
     {
       icon: FileText,
       title: "LaTeX Reports",
       description: "Professional academic reports ready for Overleaf - includes theory, code, plots, and analysis.",
-      gradient: "from-emerald-500 to-green-500"
     },
     {
       icon: Download,
       title: "Export Everything",
       description: "Download complete LaTeX files, copy code snippets, and save your entire practical.",
-      gradient: "from-rose-500 to-pink-500"
     },
     {
       icon: Sparkles,
       title: "Instant Generation",
       description: "Get complete practicals in 20-40 seconds - theory, code, explanations, and reports!",
-      gradient: "from-indigo-500 to-sky-500"
-    }
+    },
   ];
 
   const popularTopics = [
@@ -52,14 +46,30 @@ export default function LandingPage() {
     "FIR Filter Design",
     "Amplitude Modulation & Demodulation",
     "Sampling and Aliasing",
-    "IIR Filter Design"
+    "IIR Filter Design",
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-cyan-950">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
-        {/* Header */}
+    <div className="min-h-screen w-full bg-black relative">
+      {/* Crimson Core Glow */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            "linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), radial-gradient(68% 58% at 50% 50%, #c81e3a 0%, #a51d35 16%, #7d1a2f 32%, #591828 46%, #3c1722 60%, #2a151d 72%, #1f1317 84%, #141013 94%, #0a0a0a 100%), radial-gradient(90% 75% at 50% 50%, rgba(228,42,66,0.06) 0%, rgba(228,42,66,0) 55%), radial-gradient(150% 120% at 8% 8%, rgba(0,0,0,0) 42%, #0b0a0a 82%, #070707 100%), radial-gradient(150% 120% at 92% 92%, rgba(0,0,0,0) 42%, #0b0a0a 82%, #070707 100%), radial-gradient(60% 50% at 50% 60%, rgba(240,60,80,0.06), rgba(0,0,0,0) 60%), #050505",
+        }}
+      />
+      {/* Soft vignette to blend edges */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%)",
+          opacity: 0.95,
+        }}
+      />
+
+      <div className="relative container mx-auto px-4 py-16">
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -69,29 +79,29 @@ export default function LandingPage() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
-            className="w-20 h-20 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl"
+            className="w-20 h-20 rounded-3xl bg-white/10 flex items-center justify-center mx-auto mb-6 shadow-2xl"
           >
             <Code className="h-10 w-10 text-white" />
           </motion.div>
-          
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-6xl font-bold bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-600 bg-clip-text text-transparent mb-4"
+            className="text-6xl font-bold tracking-tight text-white mb-4"
           >
             ECE MATLAB Helper
           </motion.h1>
-          
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto"
+            className="text-lg text-white/70 mb-8 max-w-2xl mx-auto"
           >
-            Get complete ECE MATLAB practicals in seconds - Theory, Dual Implementations, Explanations & LaTeX Reports
+            Generate full-length MATLAB practicals with theory, dual implementations, detailed commentary, and polished LaTeX reports in seconds.
           </motion.p>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -99,16 +109,15 @@ export default function LandingPage() {
             className="flex gap-4 justify-center"
           >
             <Link href="/ece-practical">
-              <Button className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-200 px-8 py-6 text-lg group">
-                <Sparkles className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
+              <Button className="bg-white text-black hover:bg-gray-200 border border-white/20 px-8 py-6 text-lg font-semibold transition-all duration-200">
+                <Sparkles className="h-5 w-5 mr-2 text-black" />
                 Generate Complete Practical
-                <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="h-5 w-5 ml-2 text-black" />
               </Button>
             </Link>
           </motion.div>
         </motion.div>
 
-        {/* Features Grid */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -122,15 +131,15 @@ export default function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 + index * 0.1 }}
             >
-              <Card className="h-full hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 hover:border-teal-200 dark:hover:border-cyan-800 group shadow-lg dark:shadow-slate-950">
+              <Card className="h-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:-translate-y-2 hover:border-white/20 hover:bg-white/10">
                 <CardHeader>
-                  <div className={`w-12 h-12 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4">
                     <feature.icon className="h-6 w-6 text-white" />
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <CardTitle className="text-xl text-white">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base">
+                  <CardDescription className="text-base text-white/70">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
@@ -139,49 +148,46 @@ export default function LandingPage() {
           ))}
         </motion.div>
 
-        {/* Simple Q&A Section */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.0 }}
           className="max-w-4xl mx-auto mb-16"
         >
-          <Card className="border-2 border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-slate-950">
+          <Card className="border border-white/10 bg-white/5 text-white shadow-2xl">
             <CardHeader>
-              <CardTitle className="text-2xl flex items-center gap-2">
-                <MessageCircle className="h-6 w-6 text-teal-500" />
+              <CardTitle className="text-2xl flex items-center gap-2 text-white">
+                <MessageCircle className="h-6 w-6" />
                 Quick Questions & Answers
               </CardTitle>
-              <CardDescription>
-                Have a simple question? Get instant answers without generating a full practical
+              <CardDescription className="text-white/60">
+                Have a simple question? Get instant answers without generating a full practical.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Perfect for quick clarifications, concept explanations, or debugging help.
+                <p className="text-sm text-white/60">
+                  Perfect for quick clarifications, concept refreshers, or debugging guidance.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {[
                     "What is the difference between FFT and DFT?",
                     "How does sampling rate affect signal quality?",
                     "Explain amplitude modulation in simple terms",
-                    "What are the applications of convolution?"
-                  ].map((question, index) => (
+                    "What are the applications of convolution?",
+                  ].map((question) => (
                     <div
-                      key={index}
-                      className="flex items-start gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg"
+                      key={question}
+                      className="flex items-start gap-2 rounded-lg border border-white/10 bg-white/5 p-3"
                     >
-                      <HelpCircle className="h-4 w-4 text-teal-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-slate-700 dark:text-slate-300">
-                        {question}
-                      </span>
+                      <HelpCircle className="h-4 w-4 mt-0.5 text-white" />
+                      <span className="text-sm text-white/80">{question}</span>
                     </div>
                   ))}
                 </div>
                 <Link href="/chat">
-                  <Button className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg">
-                    <MessageCircle className="h-4 w-4 mr-2" />
+                  <Button className="w-full border border-white/20 bg-white text-black hover:bg-gray-200 transition-colors">
+                    <MessageCircle className="h-4 w-4 mr-2 text-black" />
                     Start Q&A Chat
                   </Button>
                 </Link>
@@ -190,21 +196,20 @@ export default function LandingPage() {
           </Card>
         </motion.div>
 
-        {/* Popular Topics */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
           className="max-w-4xl mx-auto"
         >
-          <Card className="border-2 border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-slate-950">
+          <Card className="border border-white/10 bg-white/5 text-white shadow-2xl">
             <CardHeader>
-              <CardTitle className="text-2xl flex items-center gap-2">
-                <Lightbulb className="h-6 w-6 text-amber-500" />
+              <CardTitle className="text-2xl flex items-center gap-2 text-white">
+                <Lightbulb className="h-6 w-6" />
                 Popular Practical Topics
               </CardTitle>
-              <CardDescription>
-                Click any topic to get started instantly
+              <CardDescription className="text-white/60">
+                Click any topic to launch a complete practical instantly.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -219,10 +224,10 @@ export default function LandingPage() {
                     <Link href={`/ece-practical?topic=${encodeURIComponent(topic)}`}>
                       <Button
                         variant="outline"
-                        className="w-full justify-start text-left h-auto py-4 px-4 hover:bg-cyan-50 dark:hover:bg-cyan-950/30 hover:border-cyan-300 dark:hover:border-cyan-700 group"
+                        className="group w-full justify-start rounded-xl border border-white/20 bg-transparent px-4 py-4 text-left text-white transition-colors hover:border-white/40 hover:bg-white/10"
                       >
-                        <CheckCircle2 className="h-4 w-4 mr-3 text-cyan-600 group-hover:scale-110 transition-transform flex-shrink-0" />
-                        <span className="text-sm">{topic}</span>
+                        <CheckCircle2 className="h-4 w-4 mr-3 text-white group-hover:scale-110 transition-transform" />
+                        <span className="text-sm text-white">{topic}</span>
                       </Button>
                     </Link>
                   </motion.div>
@@ -232,22 +237,19 @@ export default function LandingPage() {
           </Card>
         </motion.div>
 
-        {/* How It Works */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.8 }}
           className="mt-16 text-center"
         >
-          <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-            How It Works
-          </h2>
+          <h2 className="text-3xl font-bold mb-8 text-white">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {[
               { step: "1", title: "Enter Topic", desc: "Type your ECE practical topic" },
-              { step: "2", title: "AI Generation", desc: "Our AI generates complete content" },
-              { step: "3", title: "Review Tabs", desc: "Explore theory, code & explanations" },
-              { step: "4", title: "Download Report", desc: "Get LaTeX report for submission" }
+              { step: "2", title: "AI Generation", desc: "Our AI builds the complete workflow" },
+              { step: "3", title: "Review Tabs", desc: "Explore theory, code, and explanations" },
+              { step: "4", title: "Download Report", desc: "Grab the LaTeX report for submission" },
             ].map((item, index) => (
               <motion.div
                 key={item.step}
@@ -256,36 +258,35 @@ export default function LandingPage() {
                 transition={{ delay: 1.9 + index * 0.1 }}
                 className="text-center"
               >
-                <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold shadow-xl">
+                <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-white text-2xl font-bold text-black shadow-xl">
                   {item.step}
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">{item.desc}</p>
+                <h3 className="font-semibold text-lg text-white mb-2">{item.title}</h3>
+                <p className="text-sm text-white/60">{item.desc}</p>
               </motion.div>
             ))}
           </div>
         </motion.div>
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.3 }}
           className="mt-16 text-center"
         >
-          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-teal-500 to-cyan-500 border-0 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+          <Card className="max-w-2xl mx-auto border border-white/15 bg-white/5 text-white shadow-2xl">
             <CardContent className="pt-8 pb-8">
               <h3 className="text-2xl font-bold text-white mb-4">
                 Ready to create your ECE practical?
               </h3>
-              <p className="text-cyan-100 mb-6">
-                Get theory, dual implementations, detailed explanations, and professional LaTeX reports in 20-40 seconds!
+              <p className="text-white/70 mb-6">
+                Deliver polished MATLAB practicals with zero guesswork — from theory to LaTeX — in under a minute.
               </p>
               <Link href="/ece-practical">
-                <Button className="bg-white text-teal-600 hover:bg-cyan-50 shadow-xl px-8 py-6 text-lg group">
-                  <Code className="h-5 w-5 mr-2" />
+                <Button className="bg-white text-black hover:bg-gray-200 border border-white/20 px-8 py-6 text-lg font-semibold transition-all duration-200">
+                  <Code className="h-5 w-5 mr-2 text-black" />
                   Start Generating Now
-                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-5 w-5 ml-2 text-black" />
                 </Button>
               </Link>
             </CardContent>

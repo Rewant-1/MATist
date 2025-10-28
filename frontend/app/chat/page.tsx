@@ -156,9 +156,9 @@ export default function ChatPage() {
 
   if (!isInitialized) {
     return (
-      <div className="flex h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 items-center justify-center">
+      <div className="flex h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 items-center justify-center">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center animate-pulse">
+          <div className="w-8 h-8 bg-linear-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center animate-pulse">
             <Code className="h-4 w-4 text-white" />
           </div>
           <span className="text-slate-600 dark:text-slate-400">
@@ -170,7 +170,9 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+    <div className="relative flex h-screen overflow-hidden bg-linear-to-br from-slate-50 via-cyan-50/40 to-slate-100 dark:from-slate-950 dark:via-slate-900/70 dark:to-slate-900">
+      <div className="pointer-events-none absolute inset-y-0 -right-72 z-0 h-[140%] w-220 rotate-12 rounded-full bg-[radial-gradient(circle_at_center,var(--glow-secondary),transparent_70%)] opacity-40 blur-[140px]" />
+      <div className="pointer-events-none absolute inset-y-0 -left-64 z-0 h-[140%] w-180 -rotate-6 rounded-full bg-[radial-gradient(circle_at_center,var(--glow-primary),transparent_70%)] opacity-35 blur-[140px]" />
       {/* Sidebar */}
       <AnimatePresence mode="wait">
         {sidebarOpen && (
@@ -201,24 +203,24 @@ export default function ChatPage() {
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 shadow-sm"
+          className="glass-surface relative z-10 mx-auto my-4 flex w-[calc(100%-1.5rem)] max-w-6xl items-center justify-between rounded-2xl border border-white/20 px-4 py-3 shadow-xl backdrop-blur-xl dark:border-white/10"
         >
-          <div className="container mx-auto p-4 flex items-center justify-between">
+          <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="hover:bg-white/50 dark:hover:bg-slate-800/50 transition-colors"
+                className="hover:bg-white/70 dark:hover:bg-white/10 transition-colors"
               >
                 <Menu className="h-5 w-5" />
               </Button>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg">
+                <div className="w-8 h-8 bg-linear-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg">
                   <Code className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-semibold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
+                  <h1 className="text-lg font-semibold bg-linear-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
                     {currentChat?.title || "ECE MATLAB Helper"}
                   </h1>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -231,7 +233,7 @@ export default function ChatPage() {
               <Link href="/">
                 <Button
                   variant="outline"
-                  className="border-2 border-slate-200 dark:border-slate-700 hover:bg-white hover:border-teal-300 dark:hover:bg-slate-800 dark:hover:border-teal-600 backdrop-blur-sm transition-all duration-200"
+                  className="border-2 border-white/50 bg-white/70 text-slate-700 hover:border-teal-300 hover:bg-white/90 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100 dark:hover:border-teal-500"
                 >
                   <Home className="h-4 w-4 mr-2" />
                   Home
@@ -240,7 +242,7 @@ export default function ChatPage() {
               <Link href="/ece-practical">
                 <Button
                   variant="outline"
-                  className="border-2 border-slate-200 dark:border-slate-700 hover:bg-white hover:border-teal-300 dark:hover:bg-slate-800 dark:hover:border-teal-600 backdrop-blur-sm transition-all duration-200"
+                  className="border-2 border-white/50 bg-white/70 text-slate-700 hover:border-teal-300 hover:bg-white/90 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100 dark:hover:border-teal-500"
                 >
                   <Code className="h-4 w-4 mr-2" />
                   ECE MATLAB Helper
@@ -248,7 +250,7 @@ export default function ChatPage() {
               </Link>
               <Button
                 onClick={createNewChat}
-                className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
+                className="bg-linear-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 New Chat
@@ -277,7 +279,7 @@ export default function ChatPage() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                  className="w-20 h-20 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                  className="w-20 h-20 bg-linear-to-r from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
                 >
                   <Code className="h-10 w-10 text-white" />
                 </motion.div>
@@ -285,7 +287,7 @@ export default function ChatPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent mb-4"
+                  className="text-3xl font-bold bg-linear-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent mb-4"
                 >
                   Welcome to ECE MATLAB Helper
                 </motion.h2>
@@ -306,7 +308,7 @@ export default function ChatPage() {
                 >
                   <Button
                     onClick={createNewChat}
-                    className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200 px-8 py-3 text-lg"
+                    className="bg-linear-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200 px-8 py-3 text-lg"
                   >
                     <Plus className="h-5 w-5 mr-2" />
                     Start Chatting

@@ -6,32 +6,104 @@ import Link from "next/link";
 
 export default function ECEPracticalPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-      {/* Header */}
-      <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 shadow-sm">
-        <div className="container mx-auto p-4 flex justify-between items-center">
-          <Link href="/">
-            <Button variant="ghost" size="sm" className="hover:bg-white dark:hover:bg-slate-800 transition-colors">
-              <Home className="mr-2 h-4 w-4" />
-              Home
-            </Button>
-          </Link>
-          <Link href="/chat">
-            <Button 
-              variant="outline" 
-              className="border-2 border-slate-200 dark:border-slate-700 hover:bg-white hover:border-teal-300 dark:hover:bg-slate-800 dark:hover:border-teal-600 backdrop-blur-sm transition-all duration-200"
-            >
-              <MessageCircle className="mr-2 h-4 w-4" />
-              Q&A Chat
-            </Button>
-          </Link>
+    <>
+      {/* Light Mode Background */}
+      <div className="min-h-screen w-full bg-white relative text-gray-800 dark:hidden">
+        {/* Circuit Board - Light Pattern */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            backgroundImage: `
+              repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+              repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+              radial-gradient(circle at 20px 20px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
+              radial-gradient(circle at 40px 40px, rgba(55, 65, 81, 0.12) 2px, transparent 2px)
+            `,
+            backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
+          }}
+        />
+
+        {/* Header */}
+        <div className="sticky top-0 z-20 bg-transparent">
+          <div className="glass-surface mx-auto flex w-full max-w-6xl items-center justify-between rounded-2xl border border-white/20 px-4 py-4 shadow-2xl backdrop-blur-xl">
+            <Link href="/">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hover:bg-white/70 transition-colors"
+              >
+                <Home className="mr-2 h-4 w-4" />
+                Home
+              </Button>
+            </Link>
+            <Link href="/chat">
+              <Button
+                variant="outline"
+                className="border-2 border-slate-200/70 bg-white/60 text-slate-700 hover:border-teal-300 hover:bg-white/90 transition-all duration-200"
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                Q&A Chat
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Main Content: wrap client component in Suspense so useSearchParams is allowed */}
+        <div className="pb-16 pt-10">
+          <Suspense fallback={<div className="p-6 text-center">Loading practical interface...</div>}>
+            <ECEPracticalInterface />
+          </Suspense>
         </div>
       </div>
 
-      {/* Main Content: wrap client component in Suspense so useSearchParams is allowed */}
-      <Suspense fallback={<div className="p-6 text-center">Loading practical interface...</div>}>
-        <ECEPracticalInterface />
-      </Suspense>
-    </div>
+      {/* Dark Mode Background */}
+      <div className="min-h-screen w-full bg-[#0f0f0f] relative text-white hidden dark:block">
+        {/* Circuit Board - Dark Pattern */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            backgroundImage: `
+              repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(34, 197, 94, 0.15) 19px, rgba(34, 197, 94, 0.15) 20px, transparent 20px, transparent 39px, rgba(34, 197, 94, 0.15) 39px, rgba(34, 197, 94, 0.15) 40px),
+              repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(34, 197, 94, 0.15) 19px, rgba(34, 197, 94, 0.15) 20px, transparent 20px, transparent 39px, rgba(34, 197, 94, 0.15) 39px, rgba(34, 197, 94, 0.15) 40px),
+              radial-gradient(circle at 20px 20px, rgba(16, 185, 129, 0.18) 2px, transparent 2px),
+              radial-gradient(circle at 40px 40px, rgba(16, 185, 129, 0.18) 2px, transparent 2px)
+            `,
+            backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
+          }}
+        />
+
+        {/* Header */}
+        <div className="sticky top-0 z-20 bg-transparent">
+          <div className="glass-surface mx-auto flex w-full max-w-6xl items-center justify-between rounded-2xl border border-white/10 px-4 py-4 shadow-2xl backdrop-blur-xl">
+            <Link href="/">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hover:bg-white/10 transition-colors"
+              >
+                <Home className="mr-2 h-4 w-4" />
+                Home
+              </Button>
+            </Link>
+            <Link href="/chat">
+              <Button
+                variant="outline"
+                className="border-2 border-slate-700/70 bg-slate-900/60 text-slate-100 hover:border-teal-500 hover:bg-slate-900/90 transition-all duration-200"
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                Q&A Chat
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Main Content: wrap client component in Suspense so useSearchParams is allowed */}
+        <div className="pb-16 pt-10">
+          <Suspense fallback={<div className="p-6 text-center">Loading practical interface...</div>}>
+            <ECEPracticalInterface />
+          </Suspense>
+        </div>
+      </div>
+    </>
   );
 }
