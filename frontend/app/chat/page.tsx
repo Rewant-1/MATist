@@ -233,7 +233,7 @@ export default function ChatPage() {
               <Link href="/">
                 <Button
                   variant="outline"
-                  className="border-2 border-white/50 bg-white/70 text-slate-700 hover:border-teal-300 hover:bg-white/90 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100 dark:hover:border-teal-500"
+                  className="border-2 border-white/50 bg-white/70 text-slate-700 hover:border-teal-300 hover:bg-white/90 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100 dark:hover:border-teal-500 dark:hover:bg-slate-800/80 transition-all duration-200"
                 >
                   <Home className="h-4 w-4 mr-2" />
                   Home
@@ -242,7 +242,7 @@ export default function ChatPage() {
               <Link href="/ece-practical">
                 <Button
                   variant="outline"
-                  className="border-2 border-white/50 bg-white/70 text-slate-700 hover:border-teal-300 hover:bg-white/90 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100 dark:hover:border-teal-500"
+                  className="border-2 border-white/50 bg-white/70 text-slate-700 hover:border-teal-300 hover:bg-white/90 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100 dark:hover:border-teal-500 dark:hover:bg-slate-800/80 transition-all duration-200"
                 >
                   <Code className="h-4 w-4 mr-2" />
                   ECE MATLAB Helper

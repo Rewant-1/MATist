@@ -1,7 +1,9 @@
-List of things to do: DONT REMOVE ANYTHING ONLY ENHANCE. IT IS VERY GOOD AS IT IS.
-1) Add a mode switch in the /ece-helper route as well to switch between light and dark mode there only.
-2) In dark mode the /chat route has extreme white on hover on Home tab and ECE Helper tab.
-3) Take this as eg. for few shot prompting procedure, here few latex files so that agent knows which type of latex files to be generated
+"""
+Few-shot examples for LaTeX report generation.
+These examples demonstrate the expected format and structure for ECE MATLAB practical reports.
+"""
+
+LATEX_EXAMPLE_1 = r"""
 %-----------------------------------------------
 % EXPERIMENT 4
 %-----------------------------------------------
@@ -16,7 +18,7 @@ matrix multiplication method}
 \end{itemize}
 
 \section{Theory}
-Convolution is essential for analyzing Linear Time-Invariant (LTI) systems in signal processing. It describes how an input signal $x[n]$ interacts with a system’s impulse response $h[n]$, with the output:
+Convolution is essential for analyzing Linear Time-Invariant (LTI) systems in signal processing. It describes how an input signal $x[n]$ interacts with a system's impulse response $h[n]$, with the output:
 \[
 y[n] = (x * h)[n] = \sum_{k=0}^{N_x-1} x[k] \cdot h[n-k]
 \]
@@ -134,9 +136,8 @@ Using DTFT property (complex values):
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{Screenshot 2025-08-25 012955.png}
-    \caption{ Linear Convolution of two discrete time sequences}
+    \caption{Linear Convolution of two discrete time sequences}
     \label{fig:conv_input}
-
 \end{figure}
 
 \section{Conclusion}
@@ -145,7 +146,9 @@ Using DTFT property (complex values):
     \item The identical outputs from all three methods reinforce the accuracy and flexibility of the Toeplitz approach.
     \item Visual plots highlight each step of the convolution process, providing deeper understanding of signal manipulation in digital processing.
 \end{itemize}
+"""
 
+LATEX_EXAMPLE_2 = r"""
 %-----------------------------------------------
 % EXPERIMENT 3
 %-----------------------------------------------
@@ -229,47 +232,6 @@ disp(info2);
 
 disp('System 3: 1/(s^4+s^3+4s^2+s)');
 disp(info3);
-t = 0:0.1:20;
-
-num1 = [1]; den1 = [1 1 4];        
-num2 = [1]; den2 = [1 1 4 0];     
-num3 = [1]; den3 = [1 1 4 1 0];    
-
-sys1 = tf(num1, den1);
-sys2 = tf(num2, den2);
-sys3 = tf(num3, den3);
-
-[y1, t1] = impulse(sys1, t);
-[y2, t2] = impulse(sys2, t);
-[y3, t3] = impulse(sys3, t);
-
-plot(t1, y1, 'r-', 'LineWidth', 1.5); hold on;
-plot(t2, y2, 'b--', 'LineWidth', 1.5);
-plot(t3, y3, 'g:', 'LineWidth', 2);
-hold off;
-
-xlabel('Time (s)');
-ylabel('Impulse Response');
-title('Impulse Response Comparison of Different Systems');
-legend('System 1: 1/(s^2+s+4)', ...
-       'System 2: 1/(s^3+s^2+4s)', ...
-       'System 3: 1/(s^4+s^3+4s^2+s)', ...
-       'Location','best');
-grid on;
-
-info1 = stepinfo(sys1);
-info2 = stepinfo(sys2);
-info3 = stepinfo(sys3);
-
-disp('--- Impulse Response Characteristics ---');
-disp('System 1: 1/(s^2+s+4)');
-disp(info1);
-
-disp('System 2: 1/(s^3+s^2+4s)');
-disp(info2);
-
-disp('System 3: 1/(s^4+s^3+4s^2+s)');
-disp(info3);
 \end{lstlisting}
 
 \section{Result}
@@ -294,32 +256,11 @@ Peak Time (s)        & 1.6579 & Inf & Inf \\
 \caption{Step Response Characteristics of Type-0, Type-1, and Type-2 Systems}
 \label{tab:step_response}
 \end{table}
-\begin{table}[h!]
-\centering
-\begin{tabular}{|l|c|c|c|}
-\hline
-\textbf{Characteristic} & \textbf{Type-0} & \textbf{Type-1} & \textbf{Type-2} \\
-\hline
-Stable            & Yes     & No      & No \\
-Energy            & 0.125   & 0.66377 & Inf \\
-Settling Time (s) & 11.0524 & 10.4998 & NaN \\
-Rise Time (s)     & 0.46052 & 0.92103 & NaN \\
-Peak Time (s)     & 0.64472 & 1.6579  & NaN \\
-Transient Time (s)& 2.5789  & 6.6314  & NaN \\
-\hline
-\end{tabular}
-\caption{Impulse Response Characteristics of Type-0, Type-1, and Type-2 Systems}
-\label{tab:stability_energy}
-\end{table}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.1\textwidth]{Screenshot 2025-08-25 171241.png}
+    \includegraphics[width=1.1\textwidth]{step_response.png}
     \caption{Step response for type 0, type 1 and type 2 function}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1.1\textwidth]{Screenshot 2025-08-25 171754.png}
-    \caption{Impulse response for type 0, type 1 and type 2 function}
 \end{figure}
 
 \section{Conclusion}
@@ -327,14 +268,34 @@ Transient Time (s)& 2.5789  & 6.6314  & NaN \\
 \item \textbf{Type 0 system:} Settles to a finite steady value for a step input, showing a finite steady-state error. Its impulse response decays stably.
 \item \textbf{Type 1 system:} Produces an unbounded ramp in response to a step input (does not settle), but tracks a ramp input with finite error. Its impulse response decays, but the step never reaches steady state.
 \item \textbf{Type 2 system:} Diverges even faster for a step input (parabolic growth), meaning it cannot handle step inputs without infinite error.
-\item Thus, only the Type-0 system produces a stable and meaningful step response. Higher
-order types are useful for tracking higher-order inputs (ramp, parabolic), but they lose
- stability when subjected to simple step inputs.
+\item Thus, only the Type-0 system produces a stable and meaningful step response. Higher order types are useful for tracking higher-order inputs (ramp, parabolic), but they lose stability when subjected to simple step inputs.
 \end{itemize}
-reference for how and what type of latex reports needed.
+"""
 
+# Template structure for LaTeX reports
+LATEX_STRUCTURE_GUIDELINES = """
+REQUIRED SECTIONS:
+1. \\chapter{} - The experiment title
+2. \\section{Aim} - Use itemized list for objectives
+3. \\section{Apparatus} - List required hardware/software
+4. \\section{Theory} - Detailed theoretical background with formulas
+5. \\section{MATLAB Code} - Code in lstlisting environment
+6. \\section{Result} - Output tables, verbatim results, figures
+7. \\section{Conclusion} - Bullet points summarizing findings
 
-4) Similiarly for /chat interface enhance the ai prompt guidelines to be very good professor like detailed prompt so that AI knows how to respond.
-In fact do this for every agent by giving eg of how answers are expected.
-Also do this for basic code and optimized code agent one as well so that it knwos that for basic ones we want to know the most basic beginner friendly intuitive way to implement things. Then the optimized should give advanced code which is actually used. 
+FORMATTING RULES:
+- Use \\textbf{} for bold text
+- Mathematical equations: inline with $...$ or display with \\[...\\]
+- Code: \\begin{lstlisting}[caption={...}] ... \\end{lstlisting}
+- Tables: Use tabular environment with proper formatting
+- Figures: Use figure[H] environment with centering
+- Lists: Use itemize or enumerate as appropriate
+- Always include proper labels (\\label{}) for cross-referencing
 
+STYLE GUIDELINES:
+- Professional academic tone
+- Clear, concise explanations
+- Well-commented code
+- Proper mathematical notation
+- Comprehensive conclusion linking theory to results
+"""

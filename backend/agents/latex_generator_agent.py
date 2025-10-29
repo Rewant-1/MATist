@@ -1,13 +1,36 @@
 from .base_agent import BaseAgent
+from .latex_examples import LATEX_EXAMPLE_1, LATEX_EXAMPLE_2, LATEX_STRUCTURE_GUIDELINES
 import re
 
 class LaTeXGeneratorAgent(BaseAgent):
     """Agent specialized in generating LaTeX reports for ECE practicals."""
     
     def __init__(self):
-        instructions = """LaTeX report generator for ECE lab reports.
-Create complete, compilable LaTeX with proper structure and code formatting.
-NO markdown fences. Output only LaTeX."""
+        instructions = f"""You are a LaTeX report generator for ECE laboratory reports. 
+Your role is to create professional, compilable LaTeX documents following academic standards.
+
+{LATEX_STRUCTURE_GUIDELINES}
+
+REFERENCE EXAMPLES:
+Here are two complete examples of well-formatted ECE practical reports to guide your output:
+
+EXAMPLE 1 - Linear Convolution:
+{LATEX_EXAMPLE_1}
+
+EXAMPLE 2 - System Response Analysis:
+{LATEX_EXAMPLE_2}
+
+KEY REQUIREMENTS:
+1. Output ONLY LaTeX code - NO markdown fences, NO explanations
+2. Follow the exact structure shown in examples
+3. Use proper mathematical notation with $ and \\[ \\]
+4. Include well-formatted code in lstlisting environment
+5. Add comprehensive theory with formulas
+6. Create professional tables and figures
+7. Write clear, academic-style conclusions
+8. Ensure all LaTeX is compilable
+
+Match the professional quality and structure of the provided examples."""
         super().__init__("LaTeXGeneratorAgent", instructions)
     
     @staticmethod
@@ -52,15 +75,43 @@ NO markdown fences. Output only LaTeX."""
             Complete LaTeX document as string
         """
         prompt = f"""
-Generate complete LaTeX lab report for: {topic}
+Generate a complete, professional LaTeX lab report for the ECE practical topic: "{topic}"
 
-Theory: {theory}
-Code: {matlab_code}
-Explanation: {code_explanation if code_explanation else "In comments"}
-Optimizations: {optimization_notes if optimization_notes else "N/A"}
+CONTENT TO INCLUDE:
 
-Include standard sections: Aim, Theory, Code, Results, Conclusion.
-NO markdown fences. Output compilable LaTeX only.
+THEORY SECTION:
+{theory}
+{theory_explanation if theory_explanation else ""}
+
+MATLAB CODE SECTION:
+{matlab_code}
+
+CODE EXPLANATION (to be incorporated as comments or in description):
+{code_explanation if code_explanation else "Code is self-explanatory with inline comments"}
+
+OPTIMIZATION NOTES (if applicable):
+{optimization_notes if optimization_notes else "Standard implementation approach used"}
+
+INSTRUCTIONS:
+1. Follow the EXACT structure from the reference examples
+2. Create a proper \\chapter{{}} with the topic as title
+3. Write a clear Aim section with itemized objectives
+4. Include Apparatus section (MATLAB software)
+5. Develop comprehensive Theory section with:
+   - Clear introduction and definitions
+   - Mathematical formulas using proper LaTeX notation
+   - Explanation of methodology
+   - Any relevant theoretical background
+6. Present MATLAB code in lstlisting environment with descriptive caption
+7. Create Results section with:
+   - Sample output in verbatim environment
+   - Placeholder for figures (e.g., \\includegraphics)
+   - Tables if applicable
+8. Write detailed Conclusion with bullet points linking theory to implementation
+9. Use professional academic language throughout
+10. Ensure all LaTeX is properly formatted and compilable
+
+OUTPUT ONLY THE LATEX CODE - NO MARKDOWN FENCES, NO EXPLANATIONS.
 """
         raw_latex = self.respond(prompt)
         return self.clean_latex(raw_latex)

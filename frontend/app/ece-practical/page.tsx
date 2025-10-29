@@ -3,6 +3,7 @@ import { ECEPracticalInterface } from "@/components/ece-practical-interface";
 import { Button } from "@/components/ui/button";
 import { Home, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function ECEPracticalPage() {
   return (
@@ -36,15 +37,18 @@ export default function ECEPracticalPage() {
                 Home
               </Button>
             </Link>
-            <Link href="/chat">
-              <Button
-                variant="outline"
-                className="border-2 border-slate-200/70 bg-white/60 text-slate-700 hover:border-teal-300 hover:bg-white/90 transition-all duration-200"
-              >
-                <MessageCircle className="mr-2 h-4 w-4" />
-                Q&A Chat
-              </Button>
-            </Link>
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <Link href="/chat">
+                <Button
+                  variant="outline"
+                  className="border-2 border-slate-200/70 bg-white/60 text-slate-700 hover:border-teal-300 hover:bg-white/90 transition-all duration-200"
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  Q&A Chat
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -85,15 +89,18 @@ export default function ECEPracticalPage() {
                 Home
               </Button>
             </Link>
-            <Link href="/chat">
-              <Button
-                variant="outline"
-                className="border-2 border-slate-700/70 bg-slate-900/60 text-slate-100 hover:border-teal-500 hover:bg-slate-900/90 transition-all duration-200"
-              >
-                <MessageCircle className="mr-2 h-4 w-4" />
-                Q&A Chat
-              </Button>
-            </Link>
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <Link href="/chat">
+                <Button
+                  variant="outline"
+                  className="border-2 border-slate-700/70 bg-slate-900/60 text-slate-100 hover:border-teal-500 hover:bg-slate-900/90 transition-all duration-200"
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  Q&A Chat
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
 

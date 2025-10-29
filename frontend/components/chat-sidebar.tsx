@@ -394,7 +394,7 @@ export function ChatSidebar({
         {/* Footer */}
         <div className="p-3 border-t border-slate-200 dark:border-slate-800">
           <div className="text-xs text-slate-500 dark:text-slate-400 text-center">
-            AI Tutor v1.0
+            ECE-Chat
           </div>
         </div>
       </div>

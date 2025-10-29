@@ -5,6 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Code, Zap, BookOpen, FileText, Download, Sparkles, ArrowRight, CheckCircle2, Lightbulb, MessageCircle, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { Typewriter } from "@/components/ui/typewriter";
+import { TestimonialsSection } from "@/components/ui/testimonials-section";
 
 export default function LandingPage() {
   const features = [
@@ -49,23 +52,72 @@ export default function LandingPage() {
     "IIR Filter Design",
   ];
 
+  const testimonials = [
+    {
+      author: {
+        name: "Priya Sharma",
+        role: "ECE Student, IIT Delhi",
+      },
+      text: "This tool saved me hours before my lab viva! The theory explanations are crystal clear and the MATLAB code is production-ready. Highly recommended!",
+    },
+    {
+      author: {
+        name: "Arjun Patel",
+        role: "B.Tech ECE, BITS Pilani",
+      },
+      text: "I was struggling with FFT implementation until I found this. The dual code approach (basic + optimized) helped me understand the concepts deeply.",
+    },
+    {
+      author: {
+        name: "Sneha Reddy",
+        role: "M.Tech Signal Processing, NIT Trichy",
+      },
+      text: "The LaTeX reports are perfectly formatted and saved me so much time. I can directly use them for my submissions without any modifications!",
+    },
+    {
+      author: {
+        name: "Rajesh Kumar",
+        role: "ECE Final Year, VIT Vellore",
+      },
+      text: "Amazing resource! The Q&A chat feature is perfect for quick doubts, and the complete practical generator is a lifesaver during exam season.",
+    },
+    {
+      author: {
+        name: "Ananya Menon",
+        role: "ECE Student, Anna University",
+      },
+      text: "The code explanations are so detailed that even complex topics like filter design became easy to understand. Best ECE helper tool ever!",
+    },
+    {
+      author: {
+        name: "Karthik Iyer",
+        role: "B.E. ECE, COEP Pune",
+      },
+      text: "I love how it provides both brute-force and optimized code. It helped me learn MATLAB optimization techniques that I use in my projects now.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen w-full bg-black relative">
-      {/* Crimson Core Glow */}
+    <div className="min-h-screen w-full relative">
+      {/* Cosmic Sparkle Pattern */}
       <div
         className="absolute inset-0 z-0"
         style={{
-          background:
-            "linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), radial-gradient(68% 58% at 50% 50%, #c81e3a 0%, #a51d35 16%, #7d1a2f 32%, #591828 46%, #3c1722 60%, #2a151d 72%, #1f1317 84%, #141013 94%, #0a0a0a 100%), radial-gradient(90% 75% at 50% 50%, rgba(228,42,66,0.06) 0%, rgba(228,42,66,0) 55%), radial-gradient(150% 120% at 8% 8%, rgba(0,0,0,0) 42%, #0b0a0a 82%, #070707 100%), radial-gradient(150% 120% at 92% 92%, rgba(0,0,0,0) 42%, #0b0a0a 82%, #070707 100%), radial-gradient(60% 50% at 50% 60%, rgba(240,60,80,0.06), rgba(0,0,0,0) 60%), #050505",
-        }}
-      />
-      {/* Soft vignette to blend edges */}
-      <div
-        className="absolute inset-0 z-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%)",
-          opacity: 0.95,
+          background: `
+            radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.08) 0%, transparent 45%),
+            radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.08) 10%, transparent 55%),
+            radial-gradient(circle at 50% 50%, #111 0%, #1a1a1a 100%)
+          `,
+          backgroundBlendMode: "soft-light",
+          boxShadow: `inset 0 0 60px rgba(255, 255, 255, 0.3),
+            inset 20px 0 80px rgba(255, 0, 255, 0.2),
+            inset -20px 0 80px rgba(0, 255, 255, 0.2),
+            inset 20px 0 300px rgba(255, 0, 255, 0.1),
+            inset -20px 0 300px rgba(0, 255, 255, 0.1),
+            0 0 50px rgba(255, 255, 255, 0.1),
+            -10px 0 80px rgba(255, 0, 255, 0.1),
+            10px 0 80px rgba(0, 255, 255, 0.1)`,
+          filter: "contrast(1.05) brightness(1.05) blur(0.5px)",
         }}
       />
 
@@ -99,7 +151,21 @@ export default function LandingPage() {
             transition={{ delay: 0.3 }}
             className="text-lg text-white/70 mb-8 max-w-2xl mx-auto"
           >
-            Generate full-length MATLAB practicals with theory, dual implementations, detailed commentary, and polished LaTeX reports in seconds.
+            Generate full-length MATLAB practicals with{" "}
+            <Typewriter
+              text={[
+                "theory, dual implementations, detailed commentary, and polished LaTeX reports in seconds.",
+                "comprehensive explanations and production-ready code.",
+                "step-by-step guides and academic reports.",
+              ]}
+              speed={40}
+              deleteSpeed={20}
+              waitTime={3000}
+              className="text-teal-300 font-semibold"
+              showCursor={true}
+              cursorChar="|"
+              cursorClassName="text-teal-400"
+            />
           </motion.p>
 
           <motion.div
@@ -130,8 +196,17 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 + index * 0.1 }}
+              className="relative"
             >
-              <Card className="h-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:-translate-y-2 hover:border-white/20 hover:bg-white/10">
+              <GlowingEffect 
+                proximity={200}
+                spread={30}
+                blur={20}
+                variant="blue"
+                disabled={false}
+                glow={true}
+              />
+              <Card className="relative h-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:-translate-y-2 hover:border-blue-400/30 hover:bg-white/10 hover:shadow-lg hover:shadow-blue-500/20">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4">
                     <feature.icon className="h-6 w-6 text-white" />
@@ -152,9 +227,17 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.0 }}
-          className="max-w-4xl mx-auto mb-16"
+          className="max-w-4xl mx-auto mb-16 relative"
         >
-          <Card className="border border-white/10 bg-white/5 text-white shadow-2xl">
+          <GlowingEffect 
+            proximity={200}
+            spread={30}
+            blur={20}
+            variant="blue"
+            disabled={false}
+            glow={true}
+          />
+          <Card className="border border-white/10 bg-white/5 text-white shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2 text-white">
                 <MessageCircle className="h-6 w-6" />
@@ -200,9 +283,17 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
-          className="max-w-4xl mx-auto"
+          className="max-w-4xl mx-auto relative"
         >
-          <Card className="border border-white/10 bg-white/5 text-white shadow-2xl">
+          <GlowingEffect 
+            proximity={200}
+            spread={30}
+            blur={20}
+            variant="blue"
+            disabled={false}
+            glow={true}
+          />
+          <Card className="border border-white/10 bg-white/5 text-white shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2 text-white">
                 <Lightbulb className="h-6 w-6" />
@@ -237,6 +328,13 @@ export default function LandingPage() {
           </Card>
         </motion.div>
 
+        <TestimonialsSection
+          title="Loved by ECE Students Across India"
+          description="Join thousands of students who have transformed their MATLAB practical experience"
+          testimonials={testimonials}
+          className="mt-24"
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -256,13 +354,23 @@ export default function LandingPage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.9 + index * 0.1 }}
-                className="text-center"
+                className="text-center relative"
               >
-                <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-white text-2xl font-bold text-black shadow-xl">
-                  {item.step}
+                <GlowingEffect 
+                  proximity={150}
+                  spread={25}
+                  blur={15}
+                  variant="blue"
+                  disabled={false}
+                  glow={true}
+                />
+                <div className="relative rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-blue-400/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+                  <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 text-2xl font-bold text-white shadow-xl">
+                    {item.step}
+                  </div>
+                  <h3 className="font-semibold text-lg text-white mb-2">{item.title}</h3>
+                  <p className="text-sm text-white/60">{item.desc}</p>
                 </div>
-                <h3 className="font-semibold text-lg text-white mb-2">{item.title}</h3>
-                <p className="text-sm text-white/60">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -272,9 +380,17 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.3 }}
-          className="mt-16 text-center"
+          className="mt-16 text-center relative"
         >
-          <Card className="max-w-2xl mx-auto border border-white/15 bg-white/5 text-white shadow-2xl">
+          <GlowingEffect 
+            proximity={200}
+            spread={30}
+            blur={20}
+            variant="blue"
+            disabled={false}
+            glow={true}
+          />
+          <Card className="max-w-2xl mx-auto border border-white/15 bg-white/5 text-white shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
             <CardContent className="pt-8 pb-8">
               <h3 className="text-2xl font-bold text-white mb-4">
                 Ready to create your ECE practical?

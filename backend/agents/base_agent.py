@@ -1,5 +1,6 @@
 import os
 import time
+import datetime
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -38,11 +39,12 @@ class BaseAgent:
                 return response.text
             except Exception as e:
                 error_msg = str(e)
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 
                 # Check if it's a quota error
                 if "429" in error_msg or "quota" in error_msg.lower():
                     if attempt < max_retries - 1:
-                        print(f"⏳ Quota exceeded, retrying in {retry_delay}s... (Attempt {attempt + 1}/{max_retries})")
+                        print(f"[{timestamp}] ⏳ Quota exceeded, retrying in {retry_delay}s... (Attempt {attempt + 1}/{max_retries})")
                         time.sleep(retry_delay)
                         continue
                     else:
@@ -51,7 +53,7 @@ class BaseAgent:
                 # Check for timeout or deadline
                 if "timeout" in error_msg.lower() or "deadline" in error_msg.lower() or "DEADLINE_EXCEEDED" in error_msg:
                     if attempt < max_retries - 1:
-                        print(f"⏳ Timeout occurred, retrying... (Attempt {attempt + 1}/{max_retries})")
+                        print(f"[{timestamp}] ⏳ Timeout occurred, retrying... (Attempt {attempt + 1}/{max_retries})")
                         time.sleep(retry_delay)
                         continue
                     else:
@@ -63,7 +65,7 @@ class BaseAgent:
                 
                 # Other errors - retry once
                 if attempt < max_retries - 1:
-                    print(f"⏳ Error occurred, retrying... (Attempt {attempt + 1}/{max_retries}): {error_msg}")
+                    print(f"[{timestamp}] ⏳ Error occurred, retrying... (Attempt {attempt + 1}/{max_retries}): {error_msg}")
                     time.sleep(retry_delay)
                     continue
                 else:

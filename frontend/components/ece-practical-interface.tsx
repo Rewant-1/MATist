@@ -9,6 +9,7 @@ import { chatApi } from "@/utils/api";
 import type { ECEPracticalResponse } from "@/types/chat";
 import { Loader2, Sparkles } from "lucide-react";
 import { PracticalTabs } from "@/components/practical-tabs";
+import { TextShimmer } from "@/components/ui/text-shimmer";
 import { cn } from "@/lib/utils";
 
 export function ECEPracticalInterface() {
@@ -153,6 +154,43 @@ export function ECEPracticalInterface() {
           </form>
         </CardContent>
       </Card>
+
+      {/* Loading State with Shimmer Effect */}
+      {isLoading && (
+        <Card className="glass-surface border border-teal-200/60 bg-linear-to-r from-teal-50/90 to-cyan-50/70 shadow-2xl dark:border-teal-800/70 dark:from-teal-950/40 dark:to-cyan-950/35">
+          <CardContent className="py-12">
+            <div className="flex flex-col items-center gap-6">
+              <Loader2 className="h-12 w-12 animate-spin text-teal-500 dark:text-teal-400" />
+              <div className="text-center space-y-4">
+                <TextShimmer 
+                  duration={1.5}
+                  spread={3}
+                  className="text-2xl font-bold text-slate-800 dark:text-slate-100"
+                >
+                  Generating your ECE MATLAB practical...
+                </TextShimmer>
+                <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                  <p className="flex items-center justify-center gap-2">
+                    <span className="inline-block h-2 w-2 rounded-full bg-teal-500 animate-pulse"></span>
+                    Analyzing topic and generating comprehensive theory
+                  </p>
+                  <p className="flex items-center justify-center gap-2">
+                    <span className="inline-block h-2 w-2 rounded-full bg-cyan-500 animate-pulse delay-75"></span>
+                    Creating beginner-friendly and optimized MATLAB code
+                  </p>
+                  <p className="flex items-center justify-center gap-2">
+                    <span className="inline-block h-2 w-2 rounded-full bg-sky-500 animate-pulse delay-150"></span>
+                    Preparing detailed explanations and LaTeX report
+                  </p>
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-4">
+                  This typically takes 20-40 seconds
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Results */}
       {result && result.status === "success" && (
