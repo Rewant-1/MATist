@@ -175,11 +175,11 @@ export function ECEPracticalInterface() {
                     Analyzing topic and generating comprehensive theory
                   </p>
                   <p className="flex items-center justify-center gap-2">
-                    <span className="inline-block h-2 w-2 rounded-full bg-cyan-500 animate-pulse delay-75"></span>
+                    <span className="inline-block h-2 w-2 rounded-full bg-cyan-500 animate-pulse" style={{ animationDelay: '75ms' }}></span>
                     Creating beginner-friendly and optimized MATLAB code
                   </p>
                   <p className="flex items-center justify-center gap-2">
-                    <span className="inline-block h-2 w-2 rounded-full bg-sky-500 animate-pulse delay-150"></span>
+                    <span className="inline-block h-2 w-2 rounded-full bg-sky-500 animate-pulse" style={{ animationDelay: '150ms' }}></span>
                     Preparing detailed explanations and LaTeX report
                   </p>
                 </div>

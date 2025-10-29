@@ -1,4 +1,4 @@
-﻿"use client";
+﻿﻿"use client";
 
 import { memo, useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
@@ -29,11 +29,10 @@ const GlowingEffect = memo(
     borderWidth = 1,
     disabled = true,
   }: GlowingEffectProps) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const lastPosition = useRef({ x: 0, y: 0 });
-    const animationFrameRef = useRef<number>(0);
-
-    const handleMove = useCallback(
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lastPosition = useRef({ x: 0, y: 0 });
+  const animationFrameRef = useRef<number>(0);
+  const animationControlsRef = useRef<any>(null);    const handleMove = useCallback(
       (e?: MouseEvent | { x: number; y: number }) => {
         if (!containerRef.current) return;
 
@@ -85,7 +84,12 @@ const GlowingEffect = memo(
           const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
 
-          animate(currentAngle, newAngle, {
+          // Stop any existing animation before starting a new one
+          if (animationControlsRef.current) {
+            animationControlsRef.current.stop();
+          }
+
+          animationControlsRef.current = animate(currentAngle, newAngle, {
             duration: movementDuration,
             ease: [0.16, 1, 0.3, 1],
             onUpdate: (value) => {
@@ -112,6 +116,9 @@ const GlowingEffect = memo(
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current);
         }
+        if (animationControlsRef.current) {
+          animationControlsRef.current.stop();
+        }
         window.removeEventListener("scroll", handleScroll);
         document.body.removeEventListener("pointermove", handlePointerMove);
       };
@@ -131,8 +138,8 @@ const GlowingEffect = memo(
       <>
         <div
           className={cn(
-            "pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity",
-            glow && "opacity-100",
+            "pointer-events-none absolute -inset-px rounded-[inherit] border transition-opacity",
+            glow ? "opacity-100" : "opacity-0",
             variant === "white" && "border-white",
             disabled && "block!"
           )}

@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
+import { useState } from "react"
 
 export interface TestimonialAuthor {
   name: string
@@ -21,6 +22,11 @@ export function TestimonialCard({
   href,
   className,
 }: TestimonialCardProps) {
+  const [avatarError, setAvatarError] = useState(false);
+
+  const getFallbackAvatar = (name: string) => {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0ea5e9&color=fff&size=40`;
+  };
   const content = (
     <div className="relative">
       <GlowingEffect 
@@ -42,15 +48,15 @@ export function TestimonialCard({
           <div className="flex items-center gap-3">
             {author.avatar ? (
               <img
-                src={author.avatar}
+                src={avatarError ? getFallbackAvatar(author.name) : author.avatar}
                 alt={author.name}
                 className="h-10 w-10 rounded-full border-2 border-white/30"
+                onError={() => setAvatarError(true)}
               />
             ) : (
               <div className="h-10 w-10 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white font-semibold text-sm">
-                {author.name.charAt(0)}
-              </div>
-            )}
+                {author.name.charAt(0).toUpperCase() || '?'}
+              </div>            )}
             <div>
               <p className="font-semibold text-sm text-white">
                 {author.name}

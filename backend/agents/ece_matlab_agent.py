@@ -6,10 +6,17 @@ from .latex_generator_agent import LaTeXGeneratorAgent
 import json
 import time
 import threading
+import os
 
 # In-memory cache for practical results
 PRACTICAL_CACHE = {}
 CACHE_MAX_SIZE = 50  # Limit cache size to prevent memory issues
+PRACTICAL_CACHE_LOCK = threading.Lock()
+
+# Validation thresholds - configurable via environment variables
+MIN_THEORY_LENGTH = int(os.getenv('MIN_THEORY_LENGTH', 50))
+MIN_CODE_LENGTH = int(os.getenv('MIN_CODE_LENGTH', 20))
+MIN_THEORY_WORDS = int(os.getenv('MIN_THEORY_WORDS', 20))  # approximate minimum word count
 
 class ECEMatlabAgent(BaseAgent):
     """
@@ -49,7 +56,7 @@ class ECEMatlabAgent(BaseAgent):
         try:
             print("[THREAD] Generating brute code...")
             start = time.time()
-            # Pass minimal context since theory might not be ready yet
+            # Pass minimal context initially; will be improved with theory later for better quality
             results['brute_code'] = self.code_generator_agent.generate_brute_force_code(topic, "")
             print(f"[THREAD] Brute code finished in {time.time() - start:.2f}s")
         except Exception as e:
@@ -68,11 +75,14 @@ class ECEMatlabAgent(BaseAgent):
         """
         # --- Caching: Check if result exists ---
         normalized_topic = topic.strip().lower()
-        if normalized_topic in PRACTICAL_CACHE:
-            print(f"[CACHE] HIT for topic: {topic}")
-            return PRACTICAL_CACHE[normalized_topic]
+        with PRACTICAL_CACHE_LOCK:
+            if normalized_topic in PRACTICAL_CACHE:
+                print(f"[CACHE] HIT for topic: {topic}")
+                return PRACTICAL_CACHE[normalized_topic]
         print(f"[CACHE] MISS for topic: {topic}")
         # --- End Caching Check ---
+        
+        results = {}  # Initialize results dict for thread communication
         
         try:
             print(f"[ECEMatlabAgent] Starting processing for topic: {topic}")
@@ -80,22 +90,29 @@ class ECEMatlabAgent(BaseAgent):
             
             # Steps 1 & 2: Generate Theory and Brute-Force Code in Parallel
             print("[ECEMatlabAgent] Steps 1 & 2: Generating theory and brute-force code in parallel...")
-            results = {}  # Dictionary to store results from threads
+            # results = {}  # Dictionary to store results from threads
             
             # Create threads for Step 1 and Step 2
-            theory_thread = threading.Thread(target=self._generate_theory_thread, args=(topic, results))
-            brute_code_thread = threading.Thread(target=self._generate_brute_code_thread, args=(topic, results))
+            theory_thread = threading.Thread(target=self._generate_theory_thread, args=(topic, results), daemon=True)
+            brute_code_thread = threading.Thread(target=self._generate_brute_code_thread, args=(topic, results), daemon=True)
             
             # Start both threads
             step1_2_start = time.time()
             theory_thread.start()
             brute_code_thread.start()
             
-            # Wait for both threads to complete
-            theory_thread.join()
-            brute_code_thread.join()
+            # Wait for both threads to complete with timeout
+            THREAD_TIMEOUT = 30  # seconds
+            theory_thread.join(timeout=THREAD_TIMEOUT)
+            brute_code_thread.join(timeout=THREAD_TIMEOUT)
             step1_2_duration = time.time() - step1_2_start
             print(f"[TIMER] Parallel Steps 1 & 2 took: {step1_2_duration:.2f} seconds")
+            
+            # Check for thread timeouts
+            if theory_thread.is_alive():
+                raise Exception(f"Theory generation thread timed out after {THREAD_TIMEOUT} seconds for topic: {topic}")
+            if brute_code_thread.is_alive():
+                raise Exception(f"Brute-force code generation thread timed out after {THREAD_TIMEOUT} seconds for topic: {topic}")
             
             # Check for errors from threads
             if 'theory_error' in results:
@@ -106,11 +123,33 @@ class ECEMatlabAgent(BaseAgent):
             theory = results.get('theory')
             brute_force_code = results.get('brute_code')
             
+            # Improve brute-force code quality by regenerating with theory context
+            if theory and brute_force_code:
+                try:
+                    print("[ECEMatlabAgent] Regenerating brute-force code with theory context for better quality...")
+                    improved_code = self.code_generator_agent.generate_brute_force_code(topic, theory)
+                    if improved_code and len(improved_code.strip()) > 10:  # basic validation
+                        brute_force_code = improved_code
+                        results['brute_code'] = brute_force_code
+                        print("[ECEMatlabAgent] Brute-force code improved with theory context")
+                except Exception as e:
+                    print(f"[ECEMatlabAgent] Failed to improve brute-force code: {e}")
+                    # Keep original brute_force_code
+            
             # Validate results
-            if not theory or len(theory.strip()) < 50:
-                raise Exception(f"Theory generation failed: Empty or too short response")
-            if not brute_force_code or len(brute_force_code.strip()) < 20:
-                raise Exception(f"Code generation failed: Empty or too short response")
+            theory_stripped = theory.strip() if theory else ""
+            theory_length = len(theory_stripped)
+            theory_words = len(theory_stripped.split()) if theory_stripped else 0
+            
+            if not theory or theory_length < MIN_THEORY_LENGTH or theory_words < MIN_THEORY_WORDS:
+                raise Exception(f"Theory generation failed: Empty or too short response (length: {theory_length}, words: {theory_words}, min_length: {MIN_THEORY_LENGTH}, min_words: {MIN_THEORY_WORDS})")
+            
+            code_stripped = brute_force_code.strip() if brute_force_code else ""
+            code_length = len(code_stripped)
+            has_code_elements = '=' in code_stripped or '(' in code_stripped or '[' in code_stripped  # basic check for code-like content
+            
+            if not brute_force_code or code_length < MIN_CODE_LENGTH or not has_code_elements:
+                raise Exception(f"Code generation failed: Empty, too short, or invalid response (length: {code_length}, has_code_elements: {has_code_elements}, min_length: {MIN_CODE_LENGTH})")
             
             # Step 3: Explain Brute-Force Code
             print("[ECEMatlabAgent] Step 3: Explaining brute-force code...")
@@ -186,14 +225,15 @@ class ECEMatlabAgent(BaseAgent):
             
             # --- Caching: Store successful result ---
             if result["status"] == "success":
-                # Simple FIFO cache size limiting
-                if len(PRACTICAL_CACHE) >= CACHE_MAX_SIZE:
-                    # Remove the oldest item
-                    oldest_key = next(iter(PRACTICAL_CACHE))
-                    del PRACTICAL_CACHE[oldest_key]
-                    print(f"[CACHE] Removed oldest entry to make space")
-                PRACTICAL_CACHE[normalized_topic] = result
-                print(f"[CACHE] Stored result for topic: {topic}")
+                with PRACTICAL_CACHE_LOCK:
+                    # Simple FIFO cache size limiting
+                    if len(PRACTICAL_CACHE) >= CACHE_MAX_SIZE:
+                        # Remove the oldest item
+                        oldest_key = next(iter(PRACTICAL_CACHE))
+                        del PRACTICAL_CACHE[oldest_key]
+                        print(f"[CACHE] Removed oldest entry to make space")
+                    PRACTICAL_CACHE[normalized_topic] = result
+                    print(f"[CACHE] Stored result for topic: {topic}")
             # --- End Caching Storage ---
             
             return result

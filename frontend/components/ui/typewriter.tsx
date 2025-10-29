@@ -54,9 +54,20 @@ const Typewriter = ({
   const texts = Array.isArray(text) ? text : [text]
 
   useEffect(() => {
+    setDisplayText("")
+    setCurrentIndex(0)
+    setIsDeleting(false)
+    setCurrentTextIndex(0)
+  }, [text])
+
+  useEffect(() => {
     let timeout: NodeJS.Timeout
 
     const currentText = texts[currentTextIndex]
+
+    if (texts.length === 0 || !currentText) {
+      return
+    }
 
     const startTyping = () => {
       if (isDeleting) {
