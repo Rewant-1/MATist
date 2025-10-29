@@ -317,7 +317,7 @@ OPTIMIZATION STRATEGIES BY TOPIC TYPE:
 **For Matrix Operations**:
 - Use MATLAB's optimized matrix functions
 - Avoid element-wise loops
-- Utilize \ operator instead of inv()
+- Utilize \\ operator instead of inv()
 
 **For Signal Processing**:
 - Use filter() instead of manual difference equations
