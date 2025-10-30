@@ -7,8 +7,15 @@ import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ECE MATLAB Helper",
-  description: "Your intelligent ECE MATLAB practical assistant",
+  title: "ECE MATLAB Helper - AI-Powered Practical Assistant",
+  description: "Transform your ECE MATLAB practicals with AI. Get theory, dual code implementations, explanations, and publication-ready LaTeX reports in minutes.",
+  keywords: ["ECE", "MATLAB", "Signal Processing", "LaTeX", "AI Tutor", "ECE Practicals"],
+  authors: [{ name: "ECE Helper Team" }],
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
 };
 
 export default function RootLayout({

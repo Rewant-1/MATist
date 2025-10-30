@@ -206,7 +206,7 @@ export default function LandingPage() {
                 disabled={false}
                 glow={true}
               />
-              <Card className="relative h-full border border-white/10 bg-white/5 text-white transition-all duration-300 hover:-translate-y-2 hover:border-blue-400/30 hover:bg-white/10 hover:shadow-lg hover:shadow-blue-500/20">
+              <Card className="relative h-full bg-white/5 text-white border-white/10 transition-all duration-300 hover:-translate-y-2 hover:border-blue-400/30 hover:bg-white/10 hover:shadow-lg hover:shadow-blue-500/20">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4">
                     <feature.icon className="h-6 w-6 text-white" />
@@ -237,7 +237,7 @@ export default function LandingPage() {
             disabled={false}
             glow={true}
           />
-          <Card className="border border-white/10 bg-white/5 text-white shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
+          <Card className="bg-white/5 text-white border-white/10 shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2 text-white">
                 <MessageCircle className="h-6 w-6" />
@@ -261,7 +261,7 @@ export default function LandingPage() {
                   ].map((question) => (
                     <div
                       key={question}
-                      className="flex items-start gap-2 rounded-lg border border-white/10 bg-white/5 p-3"
+                      className="flex items-start gap-2 rounded-lg bg-white/5 p-3"
                     >
                       <HelpCircle className="h-4 w-4 mt-0.5 text-white" />
                       <span className="text-sm text-white/80">{question}</span>
@@ -293,7 +293,7 @@ export default function LandingPage() {
             disabled={false}
             glow={true}
           />
-          <Card className="border border-white/10 bg-white/5 text-white shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
+          <Card className="bg-white/5 text-white border-white/10 shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2 text-white">
                 <Lightbulb className="h-6 w-6" />
@@ -315,7 +315,7 @@ export default function LandingPage() {
                     <Link href={`/ece-practical?topic=${encodeURIComponent(topic)}`}>
                       <Button
                         variant="outline"
-                        className="group w-full justify-start rounded-xl border border-white/20 bg-transparent px-4 py-4 text-left text-white transition-colors hover:border-white/40 hover:bg-white/10"
+                        className="group w-full justify-start rounded-xl bg-transparent px-4 py-4 text-left text-white transition-colors hover:border-white/40 hover:bg-white/10"
                       >
                         <CheckCircle2 className="h-4 w-4 mr-3 text-white group-hover:scale-110 transition-transform" />
                         <span className="text-sm text-white">{topic}</span>
@@ -364,7 +364,7 @@ export default function LandingPage() {
                   disabled={false}
                   glow={true}
                 />
-                <div className="relative rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-blue-400/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+                <div className="relative rounded-2xl bg-white/5 p-6 hover:border-blue-400/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
                   <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 text-2xl font-bold text-white shadow-xl">
                     {item.step}
                   </div>
@@ -390,7 +390,7 @@ export default function LandingPage() {
             disabled={false}
             glow={true}
           />
-          <Card className="max-w-2xl mx-auto border border-white/15 bg-white/5 text-white shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
+          <Card className="max-w-2xl mx-auto bg-white/5 text-white border-white/10 shadow-2xl hover:border-blue-400/30 hover:shadow-blue-500/20 transition-all duration-300">
             <CardContent className="pt-8 pb-8">
               <h3 className="text-2xl font-bold text-white mb-4">
                 Ready to create your ECE practical?
