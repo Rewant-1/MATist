@@ -7,11 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
-# Lazy import to avoid circular dependencies
+# Circular default import avoid karne ke liye lazy import
 _openrouter_client = None
 
 def get_openrouter():
-    """Lazy load OpenRouter client."""
+    """OpenRouter client ko baad mein load karo."""
     global _openrouter_client
     if _openrouter_client is None:
         try:
@@ -27,28 +27,28 @@ class BaseAgent:
     def __init__(self, name: str, instructions: str):
         self.name = name
         self.instructions = instructions
-        # Configure for faster responses with lower token limits
+        # Fast response ke liye configure kiya hai
         generation_config = {
             "temperature": 0.7,
             "top_p": 0.95,
             "top_k": 40,
-            "max_output_tokens": 4096,  # Reduced for faster responses
+            "max_output_tokens": 4096,  # Fast response ke liye kam tokens
         }
         self.model = genai.GenerativeModel(
-            'gemini-2.5-flash',  # Faster experimental model
+            'gemini-2.5-flash',  # Fast experimental model
             generation_config=generation_config
         )
     
     def respond(self, query: str) -> str:
         """
-        Generate response with Gemini -> OpenRouter fallback.
-        Tries Gemini first, falls back to OpenRouter on failure.
+        Gemini -> OpenRouter fallback ke saath response generate karo.
+        Pehle Gemini try karega, fail hua toh OpenRouter.
         """
         max_retries = 2
         retry_delay = 1
         last_error = None
         
-        # --- STEP 1: Try Gemini ---
+        # --- STEP 1: Gemini Try Karo ---
         for attempt in range(max_retries):
             try:
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -65,7 +65,7 @@ class BaseAgent:
                 last_error = error_msg
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 
-                # Check if it's a retriable error
+                # Check karo ki retry kar sakte hain ya nahi
                 is_quota_error = "429" in error_msg or "quota" in error_msg.lower()
                 is_timeout = "timeout" in error_msg.lower() or "deadline" in error_msg.lower()
                 is_server_error = "500" in error_msg or "503" in error_msg
@@ -79,11 +79,11 @@ class BaseAgent:
                         print(f"[{timestamp}] [Gemini] Max retries reached, attempting OpenRouter fallback...")
                         break
                 else:
-                    # Non-retriable error, go to fallback immediately
+                    # Error retry nahi kar sakte, seedha fallback
                     print(f"[{timestamp}] [Gemini] Non-retriable error, attempting OpenRouter fallback: {error_msg[:100]}")
                     break
         
-        # --- STEP 2: Fallback to OpenRouter ---
+        # --- STEP 2: OpenRouter Fallback ---
         openrouter = get_openrouter()
         if openrouter and openrouter.is_configured():
             try:
@@ -103,10 +103,10 @@ class BaseAgent:
             except Exception as fallback_error:
                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 print(f"[{timestamp}] [Fallback] OpenRouter also failed: {str(fallback_error)[:100]}")
-                # Both failed, return user-friendly error
+                # Dono fail ho gaye, user ko error dikhao
                 return f"⚠️ Service temporarily unavailable. Please try again later."
         else:
-            # OpenRouter not configured, return Gemini error
+            # OpenRouter configured nahi hai, Gemini ka error return karo
             if "quota" in str(last_error).lower() or "429" in str(last_error):
                 return "⚠️ API Quota Exceeded. Please try again in a few minutes."
             elif "timeout" in str(last_error).lower():
@@ -116,12 +116,12 @@ class BaseAgent:
     
     def respond_stream(self, query: str):
         """
-        Stream response with Gemini -> OpenRouter fallback.
-        Tries Gemini streaming first, falls back to OpenRouter on failure.
+        Gemini -> OpenRouter fallback ke saath stream response.
+        Pehle Gemini streaming try karega, fail hua toh OpenRouter.
         """
         gemini_failed = False
         
-        # --- STEP 1: Try Gemini Streaming ---
+        # --- STEP 1: Gemini Streaming Try Karo ---
         try:
             response = self.model.generate_content(
                 f"{self.instructions}\nUser: {query}",
@@ -130,7 +130,7 @@ class BaseAgent:
             for chunk in response:
                 if chunk.text:
                     yield chunk.text
-            return  # Success, exit
+            return  # Success, return karo
             
         except Exception as e:
             error_msg = str(e)
@@ -138,7 +138,7 @@ class BaseAgent:
             print(f"[{timestamp}] [Gemini Stream] Failed: {error_msg[:100]}")
             gemini_failed = True
         
-        # --- STEP 2: Fallback to OpenRouter Streaming ---
+        # --- STEP 2: OpenRouter Streaming Fallback ---
         if gemini_failed:
             openrouter = get_openrouter()
             if openrouter and openrouter.is_configured():

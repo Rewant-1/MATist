@@ -1,7 +1,7 @@
 from .base_agent import BaseAgent
 
 class CodeExplainerAgent(BaseAgent):
-    # Code samjhata hai line by line - theory se connect karta hai
+    # Code line-by-line samjhayega aur theory se connect karega
     
     def __init__(self):
         instructions = """You are a MATLAB code explanation expert for ECE students.
@@ -73,7 +73,7 @@ Be pedagogical: Assume student knows MATLAB basics but needs guidance on impleme
         super().__init__("CodeExplainerAgent", instructions)
     
     def explain_code(self, topic: str, code: str, code_type: str = "brute-force") -> str:
-        # Code ka breakdown deta hai
+        # Code ka breakdown dega
         if code_type == "brute-force":
             focus = "Focus on explaining the educational approach, why each step is shown explicitly, and how it helps understand the theory."
         else:
@@ -127,7 +127,7 @@ the code AND the underlying concepts.
         return self.respond(prompt)
     
     def explain_optimizations(self, brute_force_code: str, efficient_code: str, topic: str) -> str:
-        # Basic vs optimized comparison - kya optimize hua explain karta hai
+        # Basic vs optimized comparison - kya optimize hua, ye explain karega
         prompt = f"""
 Compare and explain the optimizations between two MATLAB implementations for: {topic}
 

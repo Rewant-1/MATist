@@ -1,9 +1,9 @@
-// API utility - backend se communicate karta hai
+// Backend se communication ke liye utility
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
 
 export const chatApi = {
-  // Chat message bhejta hai - streaming response ke liye
+  // Chat message bhejo - streaming response
   async sendMessage(messages: Array<{ role: string; content: string }>) {
     const response = await fetch(`${API_URL}/api/chat`, {
       method: 'POST',
@@ -33,7 +33,7 @@ export const chatApi = {
     return response;
   },
 
-  // ECE practical generate karta hai
+  // ECE practical generate karega
   async processECEPractical(topic: string) {
     const response = await fetch(`${API_URL}/api/ece-practical`, {
       method: 'POST',
@@ -48,7 +48,7 @@ export const chatApi = {
     return response.json();
   },
 
-  // Topics list fetch karta hai
+  // Topics list fetch karega
   async getTopics() {
     const response = await fetch(`${API_URL}/api/topics`);
     if (!response.ok) {
@@ -57,7 +57,7 @@ export const chatApi = {
     return response.json();
   },
 
-  // History fetch karta hai
+  // History fetch karega
   async getHistory(limit = 20) {
     const response = await fetch(`${API_URL}/api/history?limit=${limit}`);
     if (!response.ok) {

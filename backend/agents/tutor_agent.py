@@ -109,13 +109,13 @@ class TutorAgent(BaseAgent):
             Remember: You're not just answering questions—you're teaching and mentoring students 
             to become competent ECE engineers. Make every response a learning opportunity.
         """)
-        # Removed classifier - not needed since we have separate endpoints
+        # Classifier hata diya - alag endpoints hain isliye zaroorat nahi
 
     def route(self, messages: list[dict]) -> dict:
-        # Trim message history to fit under token and message limit
+        # Message history trim karo taaki limit mein rahe
         trimmed_messages = self._trim_messages(messages)
 
-        # Extract latest question from user
+        # User ka latest question nikalo
         user_query = ""
         for msg in reversed(trimmed_messages):
             if msg["role"] == "user":
@@ -130,10 +130,10 @@ class TutorAgent(BaseAgent):
             }
 
         try:
-            # For simple questions, use the base agent response
+            # Simple sawalo ke liye base agent response use karo
             context = "\n".join([
                 f"{msg['role']}: {msg['content']}" 
-                for msg in trimmed_messages[-5:]  # Last 5 messages for context
+                for msg in trimmed_messages[-5:]  # Context ke liye last 5 messages
             ])
             
             full_query = f"Context:\n{context}\n\nCurrent query: {user_query}"
@@ -153,7 +153,7 @@ class TutorAgent(BaseAgent):
             }
     
     def route_stream(self, messages: list[dict]):
-        # Stream wala route - real-time response ke liye
+        # Streaming route - real-time response
         trimmed_messages = self._trim_messages(messages)
 
         user_query = ""
@@ -167,7 +167,7 @@ class TutorAgent(BaseAgent):
             return
 
         try:
-            # For simple questions, stream the response
+            # Simple questions ke liye stream response
             context = "\n".join([
                 f"{msg['role']}: {msg['content']}" 
                 for msg in trimmed_messages[-5:]
@@ -175,7 +175,7 @@ class TutorAgent(BaseAgent):
             
             full_query = f"Context:\n{context}\n\nCurrent query: {user_query}"
             
-            # Use streaming response
+            # Streaming response use karo
             for chunk in super().respond_stream(full_query):
                 yield chunk
 
@@ -183,7 +183,7 @@ class TutorAgent(BaseAgent):
             yield f"Sorry, there was an error processing your request: {str(e)}"
     
     def _trim_messages(self, messages):
-        # First limit by message count
+        # Pehle message count se limit karo
         if len(messages) > MAX_MESSAGES:
             messages = messages[-MAX_MESSAGES:]
 

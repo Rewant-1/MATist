@@ -7,7 +7,7 @@ import json
 import os
 import atexit
 
-# Database import - Prisma use karta hai
+# Database import - Prisma ka use
 try:
     from db import get_db, close_db
     DB_ENABLED = True
@@ -21,7 +21,7 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# Rate limiting - abuse se bachao
+# Rate limiting - faltu calls rokne ke liye
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 limiter = Limiter(
@@ -45,7 +45,7 @@ def hello():
 
 @app.route("/api/chat", methods=["POST"])
 def chat():
-    # Chat endpoint - backward compatible
+    # Chat endpoint - purana support bhi hai
     try:
         data = request.get_json()
         messages = data.get("messages",[])
@@ -65,7 +65,7 @@ def chat():
 
 @app.route("/api/chat/stream", methods=["POST"])
 def chat_stream():
-    # Streaming chat - real-time response
+    # Streaming chat - ekdum real-time response
     try:
         data = request.get_json()
         messages = data.get("messages", [])
@@ -76,7 +76,7 @@ def chat_stream():
         def generate():
             try:
                 for chunk in tutor_agent.route_stream(messages):
-                    # Send Server-Sent Events format
+                    # Server-Sent Events format mein bhejo
                     yield f"data: {json.dumps({'chunk': chunk})}\n\n"
                 yield f"data: {json.dumps({'done': True})}\n\n"
             except Exception as e:
@@ -112,10 +112,10 @@ def agent_status():
     })
 
 @app.route("/api/ece-practical", methods=["POST"])
-@limiter.limit("10 per hour")  # Expensive endpoint - Gemini API calls
+@limiter.limit("10 per hour")  # Thoda heavy endpoint hai - Gemini API use hota hai
 def ece_practical():
     """
-    Endpoint for processing ECE MATLAB practical topics.
+    ECE MATLAB practical topics process karne ke liye endpoint.
     
     Request body:
     {
@@ -144,12 +144,12 @@ def ece_practical():
         
         print(f"[API] Processing ECE practical request for topic: {topic}")
         
-        # Process the practical using the ECE MATLAB agent with timeout handling
+        # ECE MATLAB agent se practical process karo (with timeout)
         try:
             result = ece_matlab_agent.process_practical(topic)
             print(f"[API] Processing completed with status: {result.get('status', 'unknown')}")
             
-            # Database mein save karo agar enabled hai
+            # Agar DB enabled hai toh result save karlo
             if DB_ENABLED and result.get('status') == 'success':
                 try:
                     db = get_db()
@@ -173,7 +173,7 @@ def ece_practical():
             return jsonify(result)
         except Exception as agent_error:
             print(f"[API] Agent processing error: {str(agent_error)}")
-            # Return user-friendly error
+            # User ko samajh aaye aisa error bhejo
             return jsonify({
                 "status": "error",
                 "error_message": "⚠️ Service temporarily unavailable. Please try again in a moment.",
@@ -196,7 +196,7 @@ def ece_practical():
 
 @app.route("/api/history", methods=["GET"])
 def get_history():
-    # Past practicals return karta hai
+    # Purane practicals return karega
     if not DB_ENABLED:
         return jsonify({"error": "Database not configured"}), 503
     
@@ -226,7 +226,7 @@ def get_history():
 
 @app.route("/api/history/<practical_id>", methods=["GET"])
 def get_practical_detail(practical_id: str):
-    # Single practical ka full detail
+    # Ek practical ki poori details
     if not DB_ENABLED:
         return jsonify({"error": "Database not configured"}), 503
     
@@ -254,7 +254,7 @@ def get_practical_detail(practical_id: str):
         print(f"[API] Detail fetch error: {e}")
         return jsonify({"error": "Failed to fetch practical"}), 500
 
-# ECE Syllabus Topics - common practicals jo students karte hain
+# ECE Syllabus Topics - students ke common practicals
 ECE_TOPICS = [
     "Convolution of two signals",
     "Discrete Fourier Transform (DFT)",
@@ -280,13 +280,13 @@ ECE_TOPICS = [
 
 @app.route("/api/topics", methods=["GET"])
 def get_topics():
-    # Syllabus ke common topics return karta hai
+    # Syllabus ke common topics return karega
     return jsonify({"topics": ECE_TOPICS, "count": len(ECE_TOPICS)})
 
 @app.route("/api/generate-pdf", methods=["POST"])
-@limiter.limit("5 per hour")  # PDF generation bhi costly hai
+@limiter.limit("5 per hour")  # PDF generation thoda bhari kaam hai
 def generate_pdf():
-    # LaTeX se PDF banata hai - LaTeX.Online API use karta hai
+    # LaTeX se PDF convert karta hai (LaTeX.Online API)
     import requests
     from urllib.parse import quote
     
@@ -299,7 +299,7 @@ def generate_pdf():
         
         print("[PDF] Generating PDF from LaTeX...")
         
-        # LaTeX.Online API - GET request with URL-encoded text
+        # LaTeX.Online API call karo
         encoded_latex = quote(latex_code, safe='')
         api_url = f"https://latexonline.cc/compile?text={encoded_latex}"
         
@@ -329,12 +329,12 @@ def generate_pdf():
         return jsonify({"error": f"PDF generation failed: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    # Use environment variable for debug mode, default to False for production
+    # Debug mode environment variable se uthao
     debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
     port = int(os.getenv("PORT", 5000))
     
     app.run(
-        host="0.0.0.0",  # Allow external connections (required for production)
+        host="0.0.0.0",  # External connections allow karo
         port=port,
         debug=debug_mode
     )

@@ -8,31 +8,31 @@ import time
 import threading
 import os
 
-# In-memory cache for practical results
+# Practical results ke liye in-memory cache
 PRACTICAL_CACHE = {}
-CACHE_MAX_SIZE = 50  # Limit cache size to prevent memory issues
+CACHE_MAX_SIZE = 50  # Memory issues na ho isliye cache size limit
 PRACTICAL_CACHE_LOCK = threading.Lock()
 
-# Validation thresholds - configurable via environment variables
+# Validation thresholds - environment variables se configure karo
 MIN_THEORY_LENGTH = int(os.getenv('MIN_THEORY_LENGTH', 50))
 MIN_CODE_LENGTH = int(os.getenv('MIN_CODE_LENGTH', 20))
 MIN_THEORY_WORDS = int(os.getenv('MIN_THEORY_WORDS', 20))  # approximate minimum word count
 
 class ECEMatlabAgent(BaseAgent):
     # Main orchestrator: Theory -> Code -> Explain -> LaTeX
-    # Parallel threads use karta hai speed ke liye
+    # Speed ke liye parallel threads ka use
     
     def __init__(self):
         super().__init__("ECEMatlabAgent", "MATist Orchestrator")
         
-        # Initialize all specialist agents
+        # Saare specialist agents initialize karo
         self.theory_agent = TheoryAgent()
         self.code_generator_agent = CodeGeneratorAgent()
         self.code_explainer_agent = CodeExplainerAgent()
         self.latex_generator_agent = LaTeXGeneratorAgent()
     
     def _generate_theory_thread(self, topic: str, results: dict):
-        # Thread worker - theory generate karta hai background mein
+        # Thread worker - background mein theory generation
         try:
             print("[THREAD] Generating theory...")
             start = time.time()
@@ -43,11 +43,11 @@ class ECEMatlabAgent(BaseAgent):
             print(f"[THREAD] Theory failed: {str(e)}")
     
     def _generate_brute_code_thread(self, topic: str, results: dict):
-        # Thread worker - brute force code banata hai parallel mein
+        # Thread worker - parallel mein brute force code generation
         try:
             print("[THREAD] Generating brute code...")
             start = time.time()
-            # Pass minimal context initially; will be improved with theory later for better quality
+            # Abhi kam context bhejo, baad mein theory ke saath improve karenge
             results['brute_code'] = self.code_generator_agent.generate_brute_force_code(topic, "")
             print(f"[THREAD] Brute code finished in {time.time() - start:.2f}s")
         except Exception as e:
@@ -55,8 +55,8 @@ class ECEMatlabAgent(BaseAgent):
             print(f"[THREAD] Brute code failed: {str(e)}")
     
     def process_practical(self, topic: str) -> dict:
-        # Pura practical generate karta hai - theory, code, explanation, latex sab
-        # --- Caching: Check if result exists ---
+        # Poora practical generate karega - theory, code, explanation, latex sab
+        # --- Caching: Check karo result hai ya nahi ---
         normalized_topic = topic.strip().lower()
         with PRACTICAL_CACHE_LOCK:
             if normalized_topic in PRACTICAL_CACHE:
@@ -65,39 +65,39 @@ class ECEMatlabAgent(BaseAgent):
         print(f"[CACHE] MISS for topic: {topic}")
         # --- End Caching Check ---
         
-        results = {}  # Initialize results dict for thread communication
+        results = {}  # Thread communication ke liye results dict
         
         try:
             print(f"[ECEMatlabAgent] Starting processing for topic: {topic}")
             start_time = time.time()  # Start global timer
             
-            # Steps 1 & 2: Generate Theory and Brute-Force Code in Parallel
+            # Steps 1 & 2: Theory aur Brute-Force Code parallel mein generate karo
             print("[ECEMatlabAgent] Steps 1 & 2: Generating theory and brute-force code in parallel...")
             # results = {}  # Dictionary to store results from threads
             
-            # Create threads for Step 1 and Step 2
+            # Step 1 aur Step 2 ke liye threads banao
             theory_thread = threading.Thread(target=self._generate_theory_thread, args=(topic, results), daemon=True)
             brute_code_thread = threading.Thread(target=self._generate_brute_code_thread, args=(topic, results), daemon=True)
             
-            # Start both threads
+            # Dono threads start karo
             step1_2_start = time.time()
             theory_thread.start()
             brute_code_thread.start()
             
-            # Wait for both threads to complete with timeout
+            # Dono threads khatam hone ka wait karo (timeout ke saath)
             THREAD_TIMEOUT = 30  # seconds
             theory_thread.join(timeout=THREAD_TIMEOUT)
             brute_code_thread.join(timeout=THREAD_TIMEOUT)
             step1_2_duration = time.time() - step1_2_start
             print(f"[TIMER] Parallel Steps 1 & 2 took: {step1_2_duration:.2f} seconds")
             
-            # Check for thread timeouts
+            # Thread timeouts check karo
             if theory_thread.is_alive():
                 raise Exception(f"Theory generation thread timed out after {THREAD_TIMEOUT} seconds for topic: {topic}")
             if brute_code_thread.is_alive():
                 raise Exception(f"Brute-force code generation thread timed out after {THREAD_TIMEOUT} seconds for topic: {topic}")
             
-            # Check for errors from threads
+            # Threads se errors check karo
             if 'theory_error' in results:
                 raise results['theory_error']
             if 'brute_code_error' in results:
@@ -106,7 +106,7 @@ class ECEMatlabAgent(BaseAgent):
             theory = results.get('theory')
             brute_force_code = results.get('brute_code')
             
-            # Improve brute-force code quality by regenerating with theory context
+            # Theory context ke saath brute-force code quality improve karo
             if theory and brute_force_code:
                 try:
                     print("[ECEMatlabAgent] Regenerating brute-force code with theory context for better quality...")
@@ -119,7 +119,7 @@ class ECEMatlabAgent(BaseAgent):
                     print(f"[ECEMatlabAgent] Failed to improve brute-force code: {e}")
                     # Keep original brute_force_code
             
-            # Validate results
+            # Results validate karo
             theory_stripped = theory.strip() if theory else ""
             theory_length = len(theory_stripped)
             theory_words = len(theory_stripped.split()) if theory_stripped else 0
@@ -134,7 +134,7 @@ class ECEMatlabAgent(BaseAgent):
             if not brute_force_code or code_length < MIN_CODE_LENGTH or not has_code_elements:
                 raise Exception(f"Code generation failed: Empty, too short, or invalid response (length: {code_length}, has_code_elements: {has_code_elements}, min_length: {MIN_CODE_LENGTH})")
             
-            # Step 3: Explain Brute-Force Code
+            # Step 3: Brute-Force Code explain karo
             print("[ECEMatlabAgent] Step 3: Explaining brute-force code...")
             step3_start = time.time()
             brute_force_explanation = self.code_explainer_agent.explain_code(
@@ -143,7 +143,7 @@ class ECEMatlabAgent(BaseAgent):
             step3_duration = time.time() - step3_start
             print(f"[TIMER] Step 3 (Brute Explain) took: {step3_duration:.2f} seconds")
             
-            # Step 4: Generate Efficient Code (conditional)
+            # Step 4: Efficient Code generate karo (agar zaroorat ho)
             print("[ECEMatlabAgent] Step 4: Attempting to generate efficient code...")
             step4_start = time.time()
             efficient_code_response = self.code_generator_agent.generate_efficient_code(
@@ -152,7 +152,7 @@ class ECEMatlabAgent(BaseAgent):
             step4_duration = time.time() - step4_start
             print(f"[TIMER] Step 4 (Efficient Code) took: {step4_duration:.2f} seconds")
             
-            # Check if optimization is applicable
+            # Check karo ki optimization ho sakta hai ya nahi
             optimization_applicable = not (
                 "no significant optimization" in efficient_code_response.lower() or
                 "no optimization possible" in efficient_code_response.lower()
@@ -165,7 +165,7 @@ class ECEMatlabAgent(BaseAgent):
                 print("[ECEMatlabAgent] Optimization applicable. Generating efficient code explanation...")
                 efficient_code = efficient_code_response
                 
-                # Step 5: Explain Efficient Code
+                # Step 5: Efficient Code explain karo
                 step5_start = time.time()
                 efficient_explanation = self.code_explainer_agent.explain_optimizations(
                     brute_force_code, efficient_code, topic
@@ -175,7 +175,7 @@ class ECEMatlabAgent(BaseAgent):
             else:
                 print("[ECEMatlabAgent] No significant optimization possible.")
             
-            # Step 6: Generate LaTeX Report
+            # Step 6: LaTeX Report generate karo
             print("[ECEMatlabAgent] Step 6: Generating LaTeX report...")
             step6_start = time.time()
             final_code = efficient_code if optimization_applicable else brute_force_code
@@ -206,12 +206,12 @@ class ECEMatlabAgent(BaseAgent):
                 "status": "success"
             }
             
-            # --- Caching: Store successful result ---
+            # --- Caching: Successful result store karo ---
             if result["status"] == "success":
                 with PRACTICAL_CACHE_LOCK:
-                    # Simple FIFO cache size limiting
+                    # Simple FIFO cache limit
                     if len(PRACTICAL_CACHE) >= CACHE_MAX_SIZE:
-                        # Remove the oldest item
+                        # Purana item hatao
                         oldest_key = next(iter(PRACTICAL_CACHE))
                         del PRACTICAL_CACHE[oldest_key]
                         print(f"[CACHE] Removed oldest entry to make space")
@@ -248,7 +248,7 @@ class ECEMatlabAgent(BaseAgent):
              }
     
     def process_practical_streaming(self, topic: str):
-        # Step-by-step yield wala version - real-time updates ke liye
+        # Step-by-step yield, real-time updates ke liye
         try:
             yield {"step": "theory", "status": "processing", "message": "Generating theory explanation..."}
             theory = self.theory_agent.explain_concept(topic)

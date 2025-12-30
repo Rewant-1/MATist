@@ -124,7 +124,7 @@ export function ChatInterface({
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Function to scroll to bottom
+  // Bottom tak scroll karne ke liye
   const scrollToBottom = () => {
     if (scrollAreaRef.current) {
       const scrollElement = scrollAreaRef.current.querySelector(
@@ -136,12 +136,12 @@ export function ChatInterface({
     }
   };
 
-  // Auto-scroll to bottom when new messages are added or during typing
+  // Naye messages ya typing ke time auto-scroll
   useEffect(() => {
     scrollToBottom();
   }, [chat.messages, typingMessage]);
 
-  // Continuous scroll during typing animation
+  // Typing animation ke time continuous scroll
   useEffect(() => {
     if (typingMessage) {
       const interval = setInterval(scrollToBottom, 100);
@@ -174,10 +174,10 @@ export function ChatInterface({
     const currentInput = input.trim();
     setInput("");
 
-    // Add user message immediately
+    // User message immediately add karo
     onAddMessage(chat.id, userMessage);
 
-    // Update chat title if this is the first message
+    // Agar pehla message hai toh title update karo
     if (chat.messages.length === 0) {
       onUpdateTitle(chat.id, currentInput);
     }
@@ -185,7 +185,7 @@ export function ChatInterface({
     setIsLoading(true);
 
     try {
-      // Prepare chat history for API
+      // API ke liye chat history prepare karo
       const chatHistory = [...chat.messages, userMessage].map((msg) => ({
         role: msg.role,
         content: msg.content,
@@ -197,7 +197,7 @@ export function ChatInterface({
         response.response ||
         "Sorry, I could not process your request.";
 
-      // Start typing animation
+      // Typing animation start karo
       const assistantMessageId = `assistant-${Date.now()}`;
       setTypingMessage({
         id: assistantMessageId,
@@ -271,7 +271,7 @@ export function ChatInterface({
     "What are FIR and IIR filters?",
   ];
 
-  // Render ECE Practical Data using the new tab component
+  // Naye tab component se ECE Practical Data render karo
   const renderECEPracticalData = (eceData: any, messageId: string) => {
     if (!eceData || eceData.status !== "success") return null;
 
@@ -291,7 +291,7 @@ export function ChatInterface({
     );
   };
 
-  // Custom markdown components for better styling
+  // Formatting ke liye custom markdown components
   const markdownComponents = {
     h1: ({ children }: any) => (
       <h1 className="text-xl font-bold mb-3 text-slate-900 dark:text-slate-100">
@@ -390,7 +390,7 @@ export function ChatInterface({
     ),
   };
 
-  // Process message content to handle math
+  // Math handle karne ke liye message content process karo
   const processMessageContent = (content: string) => {
     const textContent = String(content || "");
     const parts = textContent.split(/(\$\$[^$]+\$\$|\$[^$]+\$)/g);

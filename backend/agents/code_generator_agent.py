@@ -2,7 +2,7 @@ from .base_agent import BaseAgent
 import re
 
 class CodeGeneratorAgent(BaseAgent):
-    # MATLAB code banane wala - brute force aur optimized dono
+    # MATLAB code generator - brute force aur optimized dono
     
     def __init__(self):
         instructions = """You are a MATLAB code generation expert for ECE practicals.
@@ -180,7 +180,7 @@ end
     
     @staticmethod
     def clean_code(code: str) -> str:
-        # Markdown backticks hatata hai - ```matlab wala formatting
+        # Markdown backticks hatata hai
         # Remove markdown code fences (```matlab, ```python, ```)
         cleaned = re.sub(r'^```[a-zA-Z]*\n?', '', code.strip(), flags=re.MULTILINE)
         cleaned = re.sub(r'\n?```$', '', cleaned.strip(), flags=re.MULTILINE)
@@ -191,7 +191,7 @@ end
         return cleaned
     
     def generate_brute_force_code(self, topic: str, theory_context: str = "") -> str:
-        # Basic educational code with comments - beginners ke liye
+        # Beginners ke liye basic educational code with comments
         context_str = f"\n\nTheoretical Context:\n{theory_context}" if theory_context else ""
         
         prompt = f"""
@@ -250,7 +250,7 @@ The code itself should be self-documenting through extensive comments.
         return self.clean_code(raw_code)
     
     def generate_efficient_code(self, topic: str, brute_force_code: str) -> str:
-        # Optimized version - vectorization, built-ins use karta hai
+        # Optimized version - vectorization aur built-ins ka use
         prompt = f"""
 Generate OPTIMIZED/EFFICIENT MATLAB code for: {topic}
 

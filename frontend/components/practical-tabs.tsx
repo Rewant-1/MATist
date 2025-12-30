@@ -181,7 +181,7 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
               </div>
             </CardHeader>
             <CardContent className="p-6 space-y-6">
-              {/* Code Block with enhanced styling */}
+              {/* Enhanced styling ke saath Code Block */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h4 className="text-base font-bold text-cyan-800 dark:text-cyan-200 flex items-center gap-2">
@@ -214,7 +214,7 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                 </div>
               </div>
 
-              {/* Explanation with better spacing */}
+              {/* Better spacing ke saath Explanation */}
               {eceData.brute_force_explanation && (
                 <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-700">
                   <h4 className="text-base font-bold text-emerald-800 dark:text-emerald-200 flex items-center gap-2">

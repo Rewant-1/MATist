@@ -19,12 +19,12 @@ export function ECEPracticalInterface() {
   const [result, setResult] = useState<ECEPracticalResponse | null>(null);
   const hasTopic = topic.trim().length > 0;
 
-  // Load topic from URL query parameter
+  // URL query se topic load karega
   useEffect(() => {
     const urlTopic = searchParams.get("topic");
     if (urlTopic) {
       setTopic(urlTopic);
-      // Auto-submit if topic is from URL
+      // Agar topic URL se hai toh auto-submit
       handleSubmitWithTopic(urlTopic);
     }
   }, [searchParams]);
@@ -155,7 +155,7 @@ export function ECEPracticalInterface() {
         </CardContent>
       </Card>
 
-      {/* Loading State with Shimmer Effect */}
+      {/* Loading State (Shimmer Effect ke saath) */}
       {isLoading && (
         <Card className="glass-surface border border-teal-200/60 bg-linear-to-r from-teal-50/90 to-cyan-50/70 shadow-2xl dark:border-teal-800/70 dark:from-teal-950/40 dark:to-cyan-950/35">
           <CardContent className="py-12">
