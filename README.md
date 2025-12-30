@@ -5,8 +5,11 @@
 **Transform your ECE MATLAB practicals with AI.**  
 Theory → Code → Explanations → LaTeX Reports — all in minutes.
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-MATist-00b894?style=for-the-badge)](https://matist.vercel.app)
-[![Backend](https://img.shields.io/badge/API-Render-6c5ce7?style=for-the-badge)](https://ai-tutor-multi-agent.onrender.com)
+
+<a href="https://nextjs.org/">
+  <img src="https://skillicons.dev/icons?i=nextjs,react,ts,tailwind,python,flask,postgres,prisma,vercel,docker" />
+</a>
+
 
 </div>
 
