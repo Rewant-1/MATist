@@ -23,6 +23,7 @@ interface PracticalTabsProps {
 
 export function PracticalTabs({ eceData }: PracticalTabsProps) {
   const [copiedTab, setCopiedTab] = React.useState<string | null>(null);
+  const [isGeneratingPdf, setIsGeneratingPdf] = React.useState(false);
 
   const copyToClipboard = async (content: string, tabName: string) => {
     try {
@@ -45,6 +46,41 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  };
+
+  const downloadPdf = async () => {
+    if (!eceData.latex_report || isGeneratingPdf) return;
+    
+    setIsGeneratingPdf(true);
+    try {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+      const response = await fetch(`${backendUrl}/api/generate-pdf`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ latex: eceData.latex_report }),
+      });
+      
+      if (response.ok && response.headers.get('content-type') === 'application/pdf') {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${eceData.topic.replace(/\s+/g, '_')}_report.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else {
+        const error = await response.json();
+        console.error('PDF generation failed:', error);
+        alert('PDF generation failed. Try downloading LaTeX and using Overleaf.');
+      }
+    } catch (error) {
+      console.error('PDF download error:', error);
+      alert('PDF service unavailable. Try downloading LaTeX and using Overleaf.');
+    } finally {
+      setIsGeneratingPdf(false);
+    }
   };
 
   return (
@@ -172,8 +208,8 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                   </Button>
                 </div>
                 <div className="relative group">
-                  <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto text-sm border border-slate-700 shadow-lg scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 hover:scrollbar-thumb-slate-500">
-                    <code className="font-mono leading-relaxed">{eceData.brute_force_code || "% No code available"}</code>
+                  <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto overflow-y-auto max-h-[400px] text-sm border border-slate-700 shadow-lg">
+                    <code className="font-mono leading-relaxed whitespace-pre-wrap break-words">{eceData.brute_force_code || "% No code available"}</code>
                   </pre>
                 </div>
               </div>
@@ -185,8 +221,8 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                     <BookOpen className="h-4 w-4" />
                     Step-by-Step Explanation
                   </h4>
-                  <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200 dark:border-slate-800">
-                    <div className="prose prose-base max-w-none dark:prose-invert prose-headings:text-emerald-700 dark:prose-headings:text-emerald-300 prose-p:leading-relaxed">
+                  <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200 dark:border-slate-800 max-h-[500px] overflow-y-auto">
+                    <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-emerald-700 dark:prose-headings:text-emerald-300 prose-p:leading-7 prose-p:mb-4 prose-li:mb-2 prose-code:text-xs prose-code:bg-slate-200 dark:prose-code:bg-slate-700 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {eceData.brute_force_explanation}
                       </ReactMarkdown>
@@ -254,8 +290,8 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                       </Button>
                     </div>
                     <div className="relative group">
-                      <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto text-sm border border-slate-700 shadow-lg scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 hover:scrollbar-thumb-slate-500">
-                        <code className="font-mono leading-relaxed">{eceData.efficient_code || "% No optimized code available"}</code>
+                      <pre className="bg-gradient-to-br from-slate-900 to-slate-800 text-slate-100 p-5 rounded-xl overflow-x-auto overflow-y-auto max-h-[400px] text-sm border border-slate-700 shadow-lg">
+                        <code className="font-mono leading-relaxed whitespace-pre-wrap break-words">{eceData.efficient_code || "% No optimized code available"}</code>
                       </pre>
                     </div>
                   </div>
@@ -267,8 +303,8 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                         <Zap className="h-4 w-4" />
                         Optimization Details
                       </h4>
-                      <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200 dark:border-slate-800">
-                        <div className="prose prose-base max-w-none dark:prose-invert prose-headings:text-rose-700 dark:prose-headings:text-rose-300 prose-p:leading-relaxed">
+                      <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200 dark:border-slate-800 max-h-[500px] overflow-y-auto">
+                        <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-rose-700 dark:prose-headings:text-rose-300 prose-p:leading-7 prose-p:mb-4 prose-li:mb-2 prose-code:text-xs prose-code:bg-slate-200 dark:prose-code:bg-slate-700 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
                           <ReactMarkdown remarkPlugins={[remarkGfm]}>
                             {eceData.efficient_explanation}
                           </ReactMarkdown>
@@ -322,11 +358,30 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                   <Button
                     variant="default"
                     size="sm"
+                    onClick={downloadPdf}
+                    disabled={isGeneratingPdf}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white"
+                  >
+                    {isGeneratingPdf ? (
+                      <>
+                        <span className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="h-4 w-4 mr-2" />
+                        Download PDF
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={downloadLatex}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                    className="border-indigo-300 hover:bg-indigo-100 dark:border-indigo-700 dark:hover:bg-indigo-900"
                   >
                     <Download className="h-4 w-4 mr-2" />
-                    Download
+                    Download .tex
                   </Button>
                 </div>
               </div>

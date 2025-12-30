@@ -1,7 +1,7 @@
 from .base_agent import BaseAgent
 
 class CodeExplainerAgent(BaseAgent):
-    """Agent specialized in explaining MATLAB code step-by-step."""
+    # Code samjhata hai line by line - theory se connect karta hai
     
     def __init__(self):
         instructions = """You are a MATLAB code explanation expert for ECE students.
@@ -73,17 +73,7 @@ Be pedagogical: Assume student knows MATLAB basics but needs guidance on impleme
         super().__init__("CodeExplainerAgent", instructions)
     
     def explain_code(self, topic: str, code: str, code_type: str = "brute-force") -> str:
-        """
-        Generate a detailed explanation of the MATLAB code.
-        
-        Args:
-            topic: The ECE practical topic
-            code: The MATLAB code to explain
-            code_type: Type of code ("brute-force" or "efficient")
-            
-        Returns:
-            Step-by-step code explanation
-        """
+        # Code ka breakdown deta hai
         if code_type == "brute-force":
             focus = "Focus on explaining the educational approach, why each step is shown explicitly, and how it helps understand the theory."
         else:
@@ -137,17 +127,7 @@ the code AND the underlying concepts.
         return self.respond(prompt)
     
     def explain_optimizations(self, brute_force_code: str, efficient_code: str, topic: str) -> str:
-        """
-        Explain the optimizations made from brute-force to efficient code.
-        
-        Args:
-            brute_force_code: Original brute-force implementation
-            efficient_code: Optimized implementation
-            topic: The ECE practical topic
-            
-        Returns:
-            Explanation of optimizations and improvements
-        """
+        # Basic vs optimized comparison - kya optimize hua explain karta hai
         prompt = f"""
 Compare and explain the optimizations between two MATLAB implementations for: {topic}
 

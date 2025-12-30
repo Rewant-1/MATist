@@ -476,7 +476,7 @@ export function ChatInterface({
                 <br />
                 <br />
                 <span className="text-sm text-teal-600 dark:text-teal-400">
-                  💡 Tip: For complete practicals with theory, code & LaTeX reports, use the <strong>ECE MATLAB Helper</strong> page!
+                  💡 Tip: For complete practicals with theory, code & LaTeX reports, use the <strong>MATist</strong> page!
                 </span>
               </motion.p>
 

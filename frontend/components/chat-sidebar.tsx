@@ -217,7 +217,7 @@ export function ChatSidebar({
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="font-semibold text-sm text-slate-900 dark:text-slate-100 truncate">
-                ECE Helper
+                MATist
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Learning companion
@@ -394,7 +394,7 @@ export function ChatSidebar({
         {/* Footer */}
         <div className="p-3 border-t border-slate-200 dark:border-slate-800">
           <div className="text-xs text-slate-500 dark:text-slate-400 text-center">
-            ECE-Chat
+            MATist-Chat
           </div>
         </div>
       </div>

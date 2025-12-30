@@ -142,7 +142,7 @@ export default function LandingPage() {
             transition={{ delay: 0.2 }}
             className="text-6xl font-bold tracking-tight text-white mb-4"
           >
-            ECE MATLAB Helper
+            MATist
           </motion.h1>
 
           <motion.p

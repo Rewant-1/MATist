@@ -3,47 +3,37 @@ from .latex_examples import LATEX_EXAMPLE_1, LATEX_EXAMPLE_2, LATEX_STRUCTURE_GU
 import re
 
 class LaTeXGeneratorAgent(BaseAgent):
-    """Agent specialized in generating LaTeX reports for ECE practicals."""
+    # LaTeX report banata hai - Overleaf ready format
+    
     
     def __init__(self):
+        from .latex_examples import LATEX_PREAMBLE, LATEX_EXAMPLE_1, LATEX_STRUCTURE_GUIDELINES
+        
         instructions = f"""You are a LaTeX report generator for ECE laboratory reports. 
-Your role is to create professional, compilable LaTeX documents following academic standards.
+Your role is to create professional, compilable LaTeX documents that STRICTLY follow the user's "Gold Standard" format.
 
 {LATEX_STRUCTURE_GUIDELINES}
 
-REFERENCE EXAMPLES:
-Here are two complete examples of well-formatted ECE practical reports to guide your output:
+REFERENCE PREAMBLE (Use this EXACTLY):
+{LATEX_PREAMBLE}
 
-EXAMPLE 1 - Linear Convolution:
+REFERENCE EXAMPLES (Follow this content style):
 {LATEX_EXAMPLE_1}
 
-EXAMPLE 2 - System Response Analysis:
-{LATEX_EXAMPLE_2}
-
 KEY REQUIREMENTS:
-1. Output ONLY LaTeX code - NO markdown fences, NO explanations
-2. Follow the exact structure shown in examples
-3. Use proper mathematical notation with $ and \\[ \\]
-4. Include well-formatted code in lstlisting environment
-5. Add comprehensive theory with formulas
-6. Create professional tables and figures
-7. Write clear, academic-style conclusions
-8. Ensure all LaTeX is compilable
+1. GENERATE A COMPLETE COMPILABLE DOCUMENT: Start with \\documentclass..., include all packages from the preamble, \\begin{{document}}, then the practical content, then \\end{{document}}.
+2. USE THE EXACT PREAMBLE provided in the reference. Do not skip packages or custom color definitions.
+3. MATCH THE CHAPTER STYLE: Use \\chapter{{Title}} and \\label{{ch:expX}}.
+4. CODE LISTINGS: Use the custom \\lstset and colors defined in the preamble.
+5. FIGURES: Use \\begin{{figure}}[H] ... \\end{{figure}}.
+6. HEADER/FOOTER: Ensure \\pagestyle{{fancy}} and proper header settings are included.
 
-Match the professional quality and structure of the provided examples."""
+Output ONLY valid LaTeX code. No markdown fences."""
         super().__init__("LaTeXGeneratorAgent", instructions)
     
     @staticmethod
     def clean_latex(latex_code: str) -> str:
-        """
-        Remove markdown code fences from generated LaTeX.
-        
-        Args:
-            latex_code: Raw LaTeX string that may contain markdown formatting
-            
-        Returns:
-            Cleaned LaTeX string
-        """
+        # Markdown formatting hatata hai
         # Remove markdown code fences
         cleaned = re.sub(r'^```[a-zA-Z]*\n?', '', latex_code.strip(), flags=re.MULTILINE)
         cleaned = re.sub(r'\n?```$', '', cleaned.strip(), flags=re.MULTILINE)
@@ -60,22 +50,11 @@ Match the professional quality and structure of the provided examples."""
                        theory_explanation: str = "",
                        code_explanation: str = "",
                        optimization_notes: str = "") -> str:
-        """
-        Generate a complete LaTeX report for the ECE practical.
+        # Full LaTeX document generate karta hai - aim, theory, code, results sab
+        from .latex_examples import LATEX_PREAMBLE
         
-        Args:
-            topic: The practical topic
-            theory: Theoretical explanation
-            matlab_code: Final MATLAB code (efficient if available, else brute-force)
-            theory_explanation: Additional theory context
-            code_explanation: Code explanation
-            optimization_notes: Notes about optimizations (if applicable)
-            
-        Returns:
-            Complete LaTeX document as string
-        """
         prompt = f"""
-Generate a complete, professional LaTeX lab report for the ECE practical topic: "{topic}"
+Generate a COMPLETE, REFERENCE-QUALITY LaTeX practical report for the topic: "{topic}"
 
 CONTENT TO INCLUDE:
 
@@ -86,46 +65,37 @@ THEORY SECTION:
 MATLAB CODE SECTION:
 {matlab_code}
 
-CODE EXPLANATION (to be incorporated as comments or in description):
+CODE EXPLANATION:
 {code_explanation if code_explanation else "Code is self-explanatory with inline comments"}
 
-OPTIMIZATION NOTES (if applicable):
-{optimization_notes if optimization_notes else "Standard implementation approach used"}
+OPTIMIZATION NOTES:
+{optimization_notes if optimization_notes else "Standard implementation utilized."}
 
 INSTRUCTIONS:
-1. Follow the EXACT structure from the reference examples
-2. Create a proper \\chapter{{}} with the topic as title
-3. Write a clear Aim section with itemized objectives
-4. Include Apparatus section (MATLAB software)
-5. Develop comprehensive Theory section with:
-   - Clear introduction and definitions
-   - Mathematical formulas using proper LaTeX notation
-   - Explanation of methodology
-   - Any relevant theoretical background
-6. Present MATLAB code in lstlisting environment with descriptive caption
-7. Create Results section with:
-   - Sample output in verbatim environment
-   - Placeholder for figures (e.g., \\includegraphics)
-   - Tables if applicable
-8. Write detailed Conclusion with bullet points linking theory to implementation
-9. Use professional academic language throughout
-10. Ensure all LaTeX is properly formatted and compilable
+1. **START WITH THE PREAMBLE**: You MUST output the full \\documentclass... and all packages/settings exactly as defined in the Reference Preamble.
+2. **DOCUMENT BODY**:
+   - \\begin{{document}}
+   - \\chapter{{ {topic} }}
+   - \\label{{ch:{topic.lower().replace(' ', '_')}}}
+   - \\section{{Aim}}
+   - \\section{{Apparatus / Software Required}} (List MATLAB)
+   - \\section{{Theory}} (Introduction, Definitions, Mathematical Formulas)
+   - \\section{{MATLAB Code}} (Use lstlisting with caption)
+   - \\section{{Result}} (Sample verbatim output, Placeholders for figures)
+   - \\section{{Conclusion}} (Bullet points)
+   - \\end{{document}}
+3. **STRICT FORMATTING**:
+   - Use the specific \\definecolor and \\lstset provided in the preamble.
+   - Use \\pagestyle{{fancy}} instructions.
+   - Use \\titleformat{{\\chapter}} styles.
 
-OUTPUT ONLY THE LATEX CODE - NO MARKDOWN FENCES, NO EXPLANATIONS.
+OUTPUT ONLY THE LATEX CODE. NO MARKDOWN FENCES.
 """
         raw_latex = self.respond(prompt)
         return self.clean_latex(raw_latex)
     
     def create_aim_and_objective(self, topic: str) -> dict:
-        """
-        Generate concise Aim and Objective statements for the practical.
-        
-        Args:
-            topic: The practical topic
-            
-        Returns:
-            Dictionary with 'aim' and 'objective' keys
-        """
+        # Aim aur objectives generate karta hai practical ke liye
         prompt = f"""
 For the ECE practical topic "{topic}", generate:
 

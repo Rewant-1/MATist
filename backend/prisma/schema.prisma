@@ -1,0 +1,30 @@
+// Prisma schema for ECE MATLAB Helper
+// Database: PostgreSQL (Neon DB)
+
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "sync"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Practical history - user generated practicals store hote hain yahan
+model Practical {
+  id                      String   @id @default(cuid())
+  topic                   String
+  theory                  String?  @db.Text
+  bruteForceCode          String?  @db.Text @map("brute_force_code")
+  bruteForceExplanation   String?  @db.Text @map("brute_force_explanation")
+  efficientCode           String?  @db.Text @map("efficient_code")
+  efficientExplanation    String?  @db.Text @map("efficient_explanation")
+  optimizationApplicable  Boolean  @default(false) @map("optimization_applicable")
+  latexReport             String?  @db.Text @map("latex_report")
+  status                  String   @default("success")
+  createdAt               DateTime @default(now()) @map("created_at")
+
+  @@map("practicals")
+}

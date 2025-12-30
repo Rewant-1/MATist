@@ -162,7 +162,7 @@ export default function ChatPage() {
             <Code className="h-4 w-4 text-white" />
           </div>
           <span className="text-slate-600 dark:text-slate-400">
-            Loading ECE MATLAB Helper...
+            Loading MATist...
           </span>
         </div>
       </div>
@@ -221,10 +221,10 @@ export default function ChatPage() {
                 </div>
                 <div>
                   <h1 className="text-lg font-semibold bg-linear-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
-                    {currentChat?.title || "ECE MATLAB Helper"}
+                    {currentChat?.title || "MATist"}
                   </h1>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Your ECE MATLAB practical assistant
+                    Your MATist practical assistant
                   </p>
                 </div>
               </div>
@@ -245,7 +245,7 @@ export default function ChatPage() {
                   className="border-2 border-white/50 bg-white/70 text-slate-700 hover:border-teal-300 hover:bg-white/90 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-100 dark:hover:border-teal-500 dark:hover:bg-slate-800/80 transition-all duration-200"
                 >
                   <Code className="h-4 w-4 mr-2" />
-                  ECE MATLAB Helper
+                  MATist
                 </Button>
               </Link>
               <Button
@@ -289,7 +289,7 @@ export default function ChatPage() {
                   transition={{ delay: 0.3 }}
                   className="text-3xl font-bold bg-linear-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent mb-4"
                 >
-                  Welcome to ECE MATLAB Helper
+                  Welcome to MATist
                 </motion.h2>
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -297,7 +297,7 @@ export default function ChatPage() {
                   transition={{ delay: 0.4 }}
                   className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed"
                 >
-                  Your intelligent ECE MATLAB assistant is ready to help you with
+                  Your intelligent MATist assistant is ready to help you with
                   ECE practicals, MATLAB programming, signal processing, and 
                   communication systems.
                 </motion.p>

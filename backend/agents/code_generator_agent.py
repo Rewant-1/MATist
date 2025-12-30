@@ -2,7 +2,7 @@ from .base_agent import BaseAgent
 import re
 
 class CodeGeneratorAgent(BaseAgent):
-    """Agent specialized in generating MATLAB code for ECE practicals."""
+    # MATLAB code banane wala - brute force aur optimized dono
     
     def __init__(self):
         instructions = """You are a MATLAB code generation expert for ECE practicals.
@@ -180,15 +180,7 @@ end
     
     @staticmethod
     def clean_code(code: str) -> str:
-        """
-        Remove markdown code fences and other formatting from generated code.
-        
-        Args:
-            code: Raw code string that may contain markdown formatting
-            
-        Returns:
-            Cleaned code string ready for direct use
-        """
+        # Markdown backticks hatata hai - ```matlab wala formatting
         # Remove markdown code fences (```matlab, ```python, ```)
         cleaned = re.sub(r'^```[a-zA-Z]*\n?', '', code.strip(), flags=re.MULTILINE)
         cleaned = re.sub(r'\n?```$', '', cleaned.strip(), flags=re.MULTILINE)
@@ -199,16 +191,7 @@ end
         return cleaned
     
     def generate_brute_force_code(self, topic: str, theory_context: str = "") -> str:
-        """
-        Generate brute-force MATLAB code for the given topic.
-        
-        Args:
-            topic: The ECE practical topic
-            theory_context: Optional theoretical context to inform code generation
-            
-        Returns:
-            MATLAB code as a string
-        """
+        # Basic educational code with comments - beginners ke liye
         context_str = f"\n\nTheoretical Context:\n{theory_context}" if theory_context else ""
         
         prompt = f"""
@@ -267,16 +250,7 @@ The code itself should be self-documenting through extensive comments.
         return self.clean_code(raw_code)
     
     def generate_efficient_code(self, topic: str, brute_force_code: str) -> str:
-        """
-        Generate optimized MATLAB code based on the brute-force version.
-        
-        Args:
-            topic: The ECE practical topic
-            brute_force_code: The brute-force version to optimize
-            
-        Returns:
-            Optimized MATLAB code or message if no optimization needed
-        """
+        # Optimized version - vectorization, built-ins use karta hai
         prompt = f"""
 Generate OPTIMIZED/EFFICIENT MATLAB code for: {topic}
 

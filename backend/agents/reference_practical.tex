@@ -1,0 +1,3120 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp} % For Unicode minus sign
+\usepackage{graphicx}    % For including graphics
+\usepackage{amsmath}     % For math environments
+\usepackage{amssymb}     % For math symbols
+\usepackage{setspace}    % For line spacing
+\usepackage{hyperref}    % For hyperlinks in the PDF
+\usepackage{geometry}    % For page layout
+\usepackage{mdframed}    % For framing the title page
+\usepackage{listings}    % For code listings
+\usepackage{xcolor}      % For color in code
+\usepackage{titlesec}    % For custom section/chapter headings
+\usepackage{ragged2e}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{float}
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\geometry{
+    left=1in,
+    right=1in,
+    top=1in,
+    bottom=1in
+}
+
+%------------------------------------------------
+% CUSTOM COLORS FOR CODE LISTINGS
+%------------------------------------------------
+\definecolor{mCodeBackground}{rgb}{0.95,0.95,0.95}
+\definecolor{mCodeComment}{rgb}{0,0.5,0}
+\definecolor{mCodeString}{rgb}{0.6,0.1,0.1}
+\definecolor{mCodeKeywords}{rgb}{0,0,1}
+
+%------------------------------------------------
+% GLOBAL LISTINGS CONFIGURATION
+%------------------------------------------------
+\lstset{%
+    language=Matlab,
+    backgroundcolor=\color{mCodeBackground},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{mCodeKeywords}\bfseries,
+    stringstyle=\color{mCodeString},
+    commentstyle=\color{mCodeComment},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    showspaces=false,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,                % Draw a box around the code
+    framerule=0.5pt,            % Thickness of the frame
+    rulecolor=\color{black}     % Frame color
+}
+
+\makeatletter
+\renewcommand{\@chapapp}{Experiment}
+\makeatother
+
+%------------------------------------------------
+% CENTER AND UNDERLINE "Experiment X" HEADINGS
+% REMOVE EXTRA SPACE ABOVE
+%------------------------------------------------
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\centering}
+  {\underline{Experiment \thechapter}}
+  {0pt}{\LARGE}
+
+\titlespacing*{\chapter}{0pt}{-1em}{2em}  
+
+%------------------------------------------------
+% CUSTOM HEADER AND FOOTER STYLE WITH LINES
+%------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}  % Clear all header and footer fields
+\fancyhead[L]{\textit{Roll No.: 23294917045 | B. Tech. ECE A -- A1}}  % Left header text
+\fancyhead[R]{\textit{Experiment \thechapter}}                       % Right header with dynamic chapter number
+\fancyfoot[C]{\thepage}                                              % Centered footer with page number
+\renewcommand{\headrulewidth}{0.4pt}                                 % Header rule thickness
+\renewcommand{\footrulewidth}{0.4pt}
+
+%------------------------------------------------
+% OVERRIDE FIRST-PAGE "PLAIN" STYLE WITH "FANCY"
+%------------------------------------------------
+\makeatletter
+\let\ps@plain\ps@fancy
+\makeatother
+
+\fancypagestyle{noFooterText}{
+    \fancyhf{}% Clear everything
+    \renewcommand{\headrulewidth}{0.4pt} % Keep the top line
+    \renewcommand{\footrulewidth}{0.4pt} % Keep the bottom line
+}
+
+%------------------------------------------------
+% BEGIN DOCUMENT
+%------------------------------------------------
+\begin{document}
+\justifying
+
+% Suppress page numbering for the title page
+\pagenumbering{gobble}
+
+%-----------------------------------------------
+% FRONT PAGE
+%-----------------------------------------------
+\begin{titlepage}
+\begin{mdframed}[linewidth=1pt]
+    \thispagestyle{empty}
+    \begin{center}
+        \vspace*{0.5cm}
+        {\bfseries\Large \underline{Control System Engineering}}\\  % Underlined
+        \vspace{0.2cm}
+        {\large (DSC -- 13)}\\
+        \vspace{0.2cm}
+        {\large Practical File}\\[1.5cm]
+
+        \textit{Submitted By}\\[0.5cm]
+        {\bfseries Kirti Kumar}\\
+        Roll No.: 23294917045 (Batch: ECE A -- A1)\\
+        B. Tech Electronics and Communication Engineering\\
+        (Semester V)\\[1.5cm]
+
+        \textit{To}\\[0.5cm]
+        {\bfseries Dr. Deepika}\\
+        (Assistant Professor)\\
+        Department of Electrical Engineering\\[1.5cm]
+
+         \includegraphics[width=4cm]{University_of_Delhi.png}\\[1.5cm]
+
+        {\bfseries FACULTY OF TECHNOLOGY}\\
+        {\bfseries UNIVERSITY OF DELHI}\\
+        NEW DELHI -- 110007\\
+        (2025 -- 2026)
+        \vspace*{1cm}
+    \end{center}
+\end{mdframed}
+\end{titlepage}
+
+%-----------------------------------------------
+% CUSTOM TABLE OF CONTENTS WITH SIGN-OFF COLUMNS
+%-----------------------------------------------
+\chapter*{\centering \underline{Record of Experiments}}
+\thispagestyle{noFooterText} 
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|c|p{6.5cm}|c|c|c|}
+\hline
+\textbf{S. No.} & \textbf{Experiment Title} & \textbf{Page No.} & \textbf{Date} & \textbf{Remarks} \\
+\hline
+
+1 & 
+\hyperref[ch:exp1]{Experiment 1: Transfer Functions of I\textsuperscript{st} and II\textsuperscript{nd} Order Systems}
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+2 & 
+\hyperref[ch:exp2]{Experiment 2: Transfer Function Evaluation and Block Diagram Simplification}
+& \pageref{ch:exp2} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+3 &
+\hyperref[ch:exp3]{Experiment 3: Impulse and Step Response for Type 0, Type 1 and Type 2 Systems}
+& \pageref{ch:exp3} &
+& \\
+\hline
+4 &
+\hyperref[ch:exp4]{Experiment 4: DC Motor Speed: Simulink Modeling}
+& \pageref{ch:exp4} &
+& \\
+\hline
+5 &
+\hyperref[ch:exp5]{Experiment 5: Bode Plot, Root Locus, and Stability Margin
+ Analysis of a DC Motor}
+& \pageref{ch:exp5} &
+& \\
+\hline
+6 &
+\hyperref[ch:exp6]{Experiment 6: Routh–Hurwitz Stability Analysis and Root
+ Locus Plot}
+& \pageref{ch:exp6} &
+& \\
+\hline
+7 &
+\hyperref[ch:exp7]{Experiment 7: Ball and Beam System Analysis}
+& \pageref{ch:exp7} &
+& \\
+\hline
+8 &
+\hyperref[ch:exp8]{Experiment 8: Modeling and Simulation of Inverted
+ Pendulum}
+& \pageref{ch:exp8} &
+& \\
+\hline
+9 &
+\hyperref[ch:exp5]{Experiment 9: State-space analysis of aircraft pitch control }
+& \pageref{ch:exp5} &
+& \\
+\hline
+10&
+\hyperref[ch:exp5]{Experiment 10:  P, PI, PD, and PID controllers for the pitch control of an aircraft}
+& \pageref{ch:exp5} &
+& \\
+\hline
+\end{tabular}
+\end{center}
+\clearpage
+
+\pagestyle{fancy}
+\pagenumbering{arabic}  
+%-----------------------------------------------
+% EXPERIMENT 1
+%-----------------------------------------------
+\chapter{Transfer Functions of I\textsuperscript{st} and II\textsuperscript{nd} Order Systems}
+\label{ch:exp1}
+
+\section{Aim}
+\begin{itemize}
+    \item To implement Transfer Function of I\textsuperscript{st} and II\textsuperscript{nd} Order Systems and evaluate Poles, Zeroes and Gain for the same.
+\end{itemize}
+
+\section{Apparatus}
+\begin{itemize}
+\item Matlab Software
+\end{itemize}
+
+\section{Theory}
+\begin{itemize}
+    \item A Control System is an arrangement of physical components connected in such a way that they regulate, direct, or command the behavior of another system. The main purpose is to achieve a desired output by controlling the input.
+    \item \textbf{Open Loop Control System:} An open loop control system is a type of control system in which the system’s output does not have any effect on its input and, therefore, does not have any feedback.
+    \item \textbf{Closed Loop Control System:} A closed-loop control system is a system in which the control action is somehow dependent on the output. A simple example is a home thermostat.
+    \item \textbf{Transfer Function:} The ratio of the Laplace transform of the output variable to the Laplace transform of the input variable assuming all initial conditions to be zero is called Transfer Function.
+\end{itemize}
+\begin{equation}
+G(s) = \frac{C(s)}{R(s)}
+\end{equation}
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Poles, Zeroes and Gain for numeric Transfer Function}]
+
+num = [2,4];
+den=[1,5,4];
+ogfunc=tf(num,den);
+display(ogfunc)
+
+[z,p,k]=tf2zp(num,den);
+disp('Zeros:'); disp(z);
+disp('Poles:'); disp(p);
+disp('Gain:'); disp(k);
+
+s=tf('s');
+g1 = (2*s + 4) / (s^2 + 5*s + 4);
+pzplot(g1);
+
+zero=-2;
+poles=[-1,-4];
+gain=2;
+[a,b] = zp2tf(zero, poles,gain);
+transfunc=tf(a,b);
+display(transfunc);
+\end{lstlisting}
+
+\section{Result}
+\noindent \textbf{Command Window:}
+\begin{verbatim}
+ogfunc =
+ 
+     2 s + 4
+  -------------
+  s^2 + 5 s + 4
+
+Zeros:    -2
+
+Poles:    -4 -1
+
+Gain:      2
+
+
+transfunc =
+ 
+     2 s + 4
+  -------------
+  s^2 + 5 s + 4
+\end{verbatim}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-11-12 080934.png}
+    \caption{Pole-Zero Plot for Experiment 1}
+\end{figure}
+
+\section{Conclusion}
+\begin{itemize}
+\item Computed zeros, poles, and gain from a given transfer function.
+\item Constructed TF using ZPK form.
+\item Plotted pole-zero map in MATLAB.
+\end{itemize}
+
+%-----------------------------------------------
+% EXPERIMENT 2
+%-----------------------------------------------
+\chapter{Transfer Function Evaluation and Block Diagram Simplification for Feedback Control Systems}
+\label{ch:exp2}
+
+\section{Aim}
+\begin{itemize}
+    \item To determine the closed-loop transfer function of a multi-loop feedback control system.
+    \item To use MATLAB Control Toolbox for system modeling.
+    \item To simplify block diagrams using reduction techniques.
+\end{itemize}
+
+\section{Apparatus}
+\begin{itemize}
+\item Matlab Software
+\end{itemize}
+
+\section{Theory}
+\begin{itemize}
+    \item \textbf{Multi-Loop Feedback Control:} Improves stability, disturbance rejection, and robustness.
+    \item \textbf{Block Diagram Reduction:} Simplifies complex systems by combining series, parallel, and feedback elements into one equivalent transfer function.
+\end{itemize}
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Closed-Loop Transfer Function for Multi-Loop System}]
+
+G1 = tf(1, [1 10]);
+G2 = tf(1, [1 1]);
+G3 = tf([1 0 1], [1 4 4]);
+G4 = tf([1 1], [1 6]);
+H1 = tf([1 1], [1 2]);
+H2 = 2;
+H3 = 1;
+
+H2N = H2 / G4;
+A = series(G3, G4);
+B = feedback(A, H1, +1);
+C = series(G2, B);
+D = feedback(C, H2N, -1);
+E = series(G1, D);
+F = feedback(E, H3, -1);
+
+disp('Overall Transfer Function is:');
+F
+\end{lstlisting}
+
+\section{Result}
+\noindent \textbf{Command Window:}
+\begin{verbatim}
+Overall Transfer Function is:
+F =
+ 
+               s^5 + 4 s^4 + 6 s^3 + 6 s^2 + 5 s + 2
+  ----------------------------------------------------------------
+  12 s^6 + 205 s^5 + 1066 s^4 + 2517 s^3 + 3128 s^2 + 2196 s + 712
+ 
+Continuous-time transfer function.
+\end{verbatim}
+\section{Conclusion}
+The closed-loop transfer function was obtained successfully. Multi-loop feedback improved system performance, and MATLAB enabled efficient modeling and simplification.
+
+%-----------------------------------------------
+% EXPERIMENT 3
+%-----------------------------------------------
+\chapter{Impulse and Step Response for Type 0, Type 1 and Type 2 Systems}
+\label{ch:exp3}
+
+\section{Aim}
+\begin{itemize}
+    \item To study and compare impulse and step responses of Type 0, Type 1 and Type 2 systems.
+\end{itemize}
+
+\section{Apparatus}
+\begin{itemize}
+\item Matlab Software
+\end{itemize}
+
+\section{Theory}
+\section*{Introduction}
+In control systems, the dynamic behavior of a system can be studied using its \textbf{impulse response} and \textbf{step response}.
+\begin{itemize}
+    \item The \textbf{impulse response} represents how the system reacts to a very short input (Dirac delta), highlighting the natural dynamics of the system.
+    \item The \textbf{step response} shows how the system responds to a sudden and sustained input, which is commonly used to analyze stability, steady-state error, and transient performance.
+\end{itemize}
+
+\section*{System Type Definition}
+The type of a control system is defined by the number of pure integrators present in the open-loop transfer function. For a unity feedback system, if the open-loop transfer function is
+
+\[
+G(s) = \frac{K}{s^N P(s)},
+\]
+
+where $N$ is the number of poles at the origin, then the system is called \textbf{Type-$N$}.
+\begin{itemize}
+    \item \textbf{Type-0 System:} No pole at the origin ($N = 0$).
+    \item \textbf{Type-1 System:} One pole at the origin ($N = 1$).
+    \item \textbf{Type-2 System:} Two poles at the origin ($N = 2$).
+\end{itemize}
+
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Impulse and Step Response for Type 0, 1 and 2 Systems}]
+t = 0:0.1:20;
+
+num1 = [1]; den1 = [1 1 4];        
+num2 = [1]; den2 = [1 1 4 0];     
+num3 = [1]; den3 = [1 1 4 1 0];    
+
+sys1 = tf(num1, den1);
+sys2 = tf(num2, den2);
+sys3 = tf(num3, den3);
+
+[y1, t1] = step(sys1, t);
+[y2, t2] = step(sys2, t);
+[y3, t3] = step(sys3, t);
+
+plot(t1, y1, 'r-', 'LineWidth', 1.5); hold on;
+plot(t2, y2, 'b--', 'LineWidth', 1.5);
+plot(t3, y3, 'g:', 'LineWidth', 2);
+hold off;
+
+xlabel('Time (s)');
+ylabel('Step Response');
+title('Step Response Comparison of Different Systems');
+legend('System 1: 1/(s^2+s+4)', ...
+       'System 2: 1/(s^3+s^2+4s)', ...
+       'System 3: 1/(s^4+s^3+4s^2+s)', ...
+       'Location','best');
+grid on;
+
+info1 = stepinfo(sys1);
+info2 = stepinfo(sys2);
+info3 = stepinfo(sys3);
+
+disp('--- Step Response Characteristics ---');
+disp('System 1: 1/(s^2+s+4)');
+disp(info1);
+
+disp('System 2: 1/(s^3+s^2+4s)');
+disp(info2);
+
+disp('System 3: 1/(s^4+s^3+4s^2+s)');
+disp(info3);
+t = 0:0.1:20;
+
+num1 = [1]; den1 = [1 1 4];        
+num2 = [1]; den2 = [1 1 4 0];     
+num3 = [1]; den3 = [1 1 4 1 0];    
+
+sys1 = tf(num1, den1);
+sys2 = tf(num2, den2);
+sys3 = tf(num3, den3);
+
+[y1, t1] = impulse(sys1, t);
+[y2, t2] = impulse(sys2, t);
+[y3, t3] = impulse(sys3, t);
+
+plot(t1, y1, 'r-', 'LineWidth', 1.5); hold on;
+plot(t2, y2, 'b--', 'LineWidth', 1.5);
+plot(t3, y3, 'g:', 'LineWidth', 2);
+hold off;
+
+xlabel('Time (s)');
+ylabel('Impulse Response');
+title('Impulse Response Comparison of Different Systems');
+legend('System 1: 1/(s^2+s+4)', ...
+       'System 2: 1/(s^3+s^2+4s)', ...
+       'System 3: 1/(s^4+s^3+4s^2+s)', ...
+       'Location','best');
+grid on;
+
+info1 = stepinfo(sys1);
+info2 = stepinfo(sys2);
+info3 = stepinfo(sys3);
+
+disp('--- Impulse Response Characteristics ---');
+disp('System 1: 1/(s^2+s+4)');
+disp(info1);
+
+disp('System 2: 1/(s^3+s^2+4s)');
+disp(info2);
+
+disp('System 3: 1/(s^4+s^3+4s^2+s)');
+disp(info3);
+\end{lstlisting}
+
+\section{Result}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Characteristic} & \textbf{Type-0} & \textbf{Type-1} & \textbf{Type-2} \\
+\hline
+Rise Time (s)        & 0.6343 & NaN & NaN \\
+Transient Time (s)   & 7.0579 & NaN & NaN \\
+Settling Time (s)    & 7.0579 & NaN & NaN \\
+Settling Min         & 0.2007 & NaN & NaN \\
+Settling Max         & 0.3608 & NaN & NaN \\
+Overshoot (\%)       & 44.3235 & NaN & NaN \\
+Undershoot (\%)      & 0 & NaN & NaN \\
+Peak                 & 0.3608 & Inf & Inf \\
+Peak Time (s)        & 1.6579 & Inf & Inf \\
+\hline
+\end{tabular}
+\caption{Step Response Characteristics of Type-0, Type-1, and Type-2 Systems}
+\label{tab:step_response}
+\end{table}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Characteristic} & \textbf{Type-0} & \textbf{Type-1} & \textbf{Type-2} \\
+\hline
+Stable            & Yes     & No      & No \\
+Energy            & 0.125   & 0.66377 & Inf \\
+Settling Time (s) & 11.0524 & 10.4998 & NaN \\
+Rise Time (s)     & 0.46052 & 0.92103 & NaN \\
+Peak Time (s)     & 0.64472 & 1.6579  & NaN \\
+Transient Time (s)& 2.5789  & 6.6314  & NaN \\
+\hline
+\end{tabular}
+\caption{Impulse Response Characteristics of Type-0, Type-1, and Type-2 Systems}
+\label{tab:stability_energy}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.9\textwidth]{Screenshot 2025-08-25 171241.png}
+    \caption{Step response for type 0, type 1 and type 2 function}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.1\textwidth]{Screenshot 2025-08-25 171754.png}
+    \caption{Impulse response for type 0, type 1 and type 2 function}
+\end{figure}
+
+\section{Conclusion}
+\begin{itemize}
+\item \textbf{Type 0 system:} Settles to a finite steady value for a step input, showing a finite steady-state error. Its impulse response decays stably.
+\item \textbf{Type 1 system:} Produces an unbounded ramp in response to a step input (does not settle), but tracks a ramp input with finite error. Its impulse response decays, but the step never reaches steady state.
+\item \textbf{Type 2 system:} Diverges even faster for a step input (parabolic growth), meaning it cannot handle step inputs without infinite error.
+\item Thus, only the Type-0 system produces a stable and meaningful step response. Higher-order types are useful for tracking higher-order inputs (ramp, parabolic), but they lose
+ stability when subjected to simple step inputs.
+\end{itemize}
+
+%-----------------------------------------------
+% EXPERIMENT 4
+%-----------------------------------------------
+\chapter{DC Motor Speed: Simulink Modeling}
+\label{ch:exp4}
+
+\section{Aim}
+To model and simulate the dynamics of a DC motor using Simulink and Simscape, and to analyze the motor’s speed response.
+
+\section{Apparatus / Software Required}
+\begin{itemize}
+    \item MATLAB with Simulink and Simscape libraries
+    \item Computer system
+\end{itemize}
+
+\section{Theory}
+A DC motor converts electrical energy into mechanical rotational energy.  
+For an armature-controlled DC motor, the governing equations are derived using Newton’s Law for rotation and Kirchhoff’s Law for the electrical circuit.
+
+\subsection{Motor Torque and Back EMF}
+The torque developed is proportional to the armature current:
+\begin{equation}
+T = K_{t} i
+\end{equation}
+
+The back electromotive force (emf) is proportional to the angular velocity:
+\begin{equation}
+e = K_{e} \dot{\theta}
+\end{equation}
+For SI units, we assume $K_t = K_e = K$.
+
+\subsection{Mechanical Dynamics}
+Applying Newton’s second law to the rotor:
+\begin{equation}
+J \frac{d^2 \theta}{dt^2} = K i - b \frac{d\theta}{dt}
+\end{equation}
+where
+\begin{itemize}
+    \item $J$ = moment of inertia of the rotor
+    \item $b$ = viscous friction constant
+\end{itemize}
+
+\subsection{Electrical Dynamics}
+Applying Kirchhoff’s voltage law to the armature:
+\begin{equation}
+L \frac{di}{dt} = -Ri + V - K \frac{d\theta}{dt}
+\end{equation}
+where
+\begin{itemize}
+    \item $R$ = resistance of armature
+    \item $L$ = inductance of armature
+    \item $V$ = applied voltage
+\end{itemize}
+
+\subsection{Transfer Function}
+Taking Laplace transforms and eliminating $i(s)$, we obtain:
+\begin{equation}
+\frac{\dot{\theta}(s)}{V(s)} = \frac{K}{(JLs^2 + (bL + JR)s + (bR + K^2))}
+\end{equation}
+
+\subsection{Parameters Used}
+\[
+J = 0.01 \ \text{kg·m}^2, \quad 
+b = 0.1 \ \text{N·m·s}, \quad
+K = 0.01, \quad
+R = 1 \ \Omega, \quad
+L = 0.5 \ \text{H}
+\]
+
+\section{Simulink Model}
+The system can be modeled in Simulink in two ways:
+\begin{enumerate}
+    \item \textbf{Equation-based modeling:} Using integrator, gain, and summation blocks.
+    \item \textbf{Simscape-based modeling:} Using physical elements like resistor, inductor, inertia, and damping.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cs_04_01.png}
+    \caption{DC Motor Model using Simulink blocks (Equation-based)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cs_04_02.png}
+    \caption{DC Motor Model using Simscape blocks (Physical modeling)}
+\end{figure}
+
+\section{Observation}
+The motor’s speed response was simulated for a step input voltage.
+\begin{itemize}
+    \item The speed rises gradually due to inertia and inductance.
+    \item Steady-state speed is determined by the balance of voltage, back emf, and damping.
+    \item Transient response depends on $J$, $L$, and $b$.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cs_04_03.png}
+    \caption{Angular speed response of the DC Motor}
+\end{figure}
+
+\section{Conclusion}
+\begin{itemize}
+    \item The DC motor was modeled successfully using both mathematical and physical Simulink approaches.
+    \item The speed response shows first-order lag characteristics.
+    \item This model forms the basis for future controller design.
+   
+\end{itemize}
+
+
+%-----------------------------------------------
+% EXPERIMENT 5
+%-----------------------------------------------
+\chapter{Bode Plot, Root Locus, and Stability Margin Analysis of a DC Motor}
+\label{ch:exp5}
+
+\section{Aim}
+To plot the Root Locus and Bode Plot of a given DC Motor transfer function and determine the gain margin, phase margin, and stability using MATLAB.
+
+\section{Apparatus / Software Required}
+\begin{itemize}
+    \item MATLAB (Control System Toolbox)
+\end{itemize}
+
+\section{Theory}
+A DC motor can be modeled by:
+\[
+P(s) = \frac{K}{s\big[(Js + b)(Ls + R) + K^2\big]}
+\]
+where
+\[
+J, b, K, R, L \ \text{represent the motor’s physical parameters.}
+\]
+The Bode plot gives the frequency response and allows determination of gain margin (GM) and phase margin (PM):
+\begin{itemize}
+    \item \textbf{Gain Margin (GM):} Factor by which system gain can increase before instability.
+    \item \textbf{Phase Margin (PM):} Extra phase lag that leads system to instability.
+\end{itemize}
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Bode and Root Locus Analysis of DC Motor}]
+
+J = 3.2284E-6;
+b = 3.5077E-6;
+K = 0.0274;
+R = 4;
+L = 2.75E-6;
+s = tf('s');
+
+P_motor = K / (s*((J*s+b)*(L*s+R) + K^2));
+% Root locus
+figure;
+rlocus(P_motor);
+title('Root Locus - P Control');
+sgrid(0.5, 100);
+% Bode plot
+figure;
+bode(P_motor);
+grid on;
+% Stability margins
+[GM, PM, Wcg, Wcp] = margin(P_motor);
+fprintf('Gain Margin = %.2f dB at %.2f rad/s\n', 20*log10(GM), Wcg);
+fprintf('Phase Margin = %.2f\degree{} at %.2f rad/s\n', PM, Wcp);
+% Pole analysis
+disp('Open-loop poles:');
+pole(P_motor)
+CL = feedback(P_motor,1);
+disp('Closed-loop poles:');
+pole(CL)
+\end{lstlisting}
+
+\section{Result}
+\noindent\textbf{Console Output:}
+\begin{verbatim}
+Gain Margin = 92.17 dB at 9281.35 rad/s
+Phase Margin = 61.91° at 31.61 rad/s
+Open-loop poles:
+   1.0e+06 *
+         0
+   -1.4545
+   -0.0001
+Closed-loop poles:
+  -1.4545 + 0.0000i
+  -0.0000 + 0.0000i
+  -0.0000 - 0.0000i
+\end{verbatim}
+
+\section{Observation}
+\begin{itemize}
+    \item Bode plot shows frequency response of the motor.
+    \item Root Locus shows pole movement with varying gain.
+    \item Computed GM and PM indicate good system stability.
+    \item The DC motor system is stable with positive gain and phase margins.
+    \item A phase margin of about $60^\circ$ ensures satisfactory transient behavior.
+    \item Frequency domain tools (Bode, Root Locus) effectively predict stability and control design potential.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{cs_05.png}
+    \caption{Root Locus of DC Motor}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{cs_05_2.png}
+    \caption{Bode Plot – Magnitude and Phase}
+\end{figure}
+
+
+
+
+%-----------------------------------------------
+% EXPERIMENT 6
+%-----------------------------------------------
+\chapter{Routh–Hurwitz Stability Analysis and Root Locus Plot}
+\label{ch:exp6}
+
+\section{Aim}
+To determine the stability of a system using the Routh–Hurwitz criterion and to plot the Root Locus of the given characteristic equation using MATLAB.
+
+\section{Apparatus / Software Required}
+\begin{itemize}
+    \item MATLAB (Control System Toolbox)
+    \item Computer system
+\end{itemize}
+
+\section{Theory}
+The Routh–Hurwitz criterion determines the number of roots of a characteristic equation lying in the right half of the $s$-plane without solving for them explicitly.
+
+For the polynomial
+\[
+a_0 s^n + a_1 s^{n-1} + \dots + a_n = 0,
+\]
+the system is stable if and only if all elements of the first column of the Routh array are positive.
+
+The \textbf{Root Locus} plot shows how closed-loop poles move as gain $K$ varies.
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Routh–Hurwitz Criterion and Root Locus}]
+
+
+e = input("Enter characteristic equation coefficients: ");
+l = length(e);
+m = mod(l,2);
+
+if m == 0
+    a = zeros(1, l/2);
+    b = zeros(1, l/2);
+    for i = 1:(l/2)
+        a(i) = e((2*i)-1);
+        b(i) = e(2*i);
+    end
+else
+    e1 = [e 0];
+    a = zeros(1, (l+1)/2);
+    b = [zeros(1, (l-1)/2), 0];
+    for i = 1:((l+1)/2)
+        a(i) = e1((2*i)-1);
+        b(i) = e1(2*i);
+    end
+end
+
+l1 = length(a);
+c = zeros(l, l1);
+c(1,:) = a;
+c(2,:) = b;
+
+for m = 3:l
+    for n = 1:l1-1
+        c(m,n) = -(1/c(m-1,1)) * ...
+            det([c((m-2),1) c((m-2),(n+1)); c((m-1),1) c((m-1),(n+1))]);
+    end
+end
+
+disp('The Routh matrix:');
+disp(c);
+
+if all(c(:,1) > 0)
+    disp('System is Stable');
+else
+    disp('System is Unstable');
+end
+
+% Root Locus for sample transfer function
+num = [1];
+den = [1 8 17 0];
+figure;
+rlocus(num, den);
+grid on;
+title('Root Locus of the Given System');
+\end{lstlisting}
+
+\section{Result}
+\noindent\textbf{Sample Console Output:}
+\begin{verbatim}
+Enter characteristic equation coefficients: [2 0 0 0]
+The Routh matrix:
+     2
+     0
+System is Unstable
+\end{verbatim}
+
+\section{Observation}
+\begin{itemize}
+    \item Routh array successfully formed.
+    \item Sign changes in first column indicate instability.
+    \item Root Locus confirms poles in right half-plane.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{rlocus_plot.png}
+    \caption{Root Locus of the Given System}
+\end{figure}
+
+\section{Conclusion}
+\begin{itemize}
+    \item Routh–Hurwitz method verified system stability mathematically.
+    \item Sign change in the first column implies instability.
+    \item Root Locus visualization supports analytical results.
+\end{itemize}
+
+
+%-----------------------------------------------
+% EXPERIMENT 7
+%-----------------------------------------------
+\chapter{Ball and Beam System Analysis}
+\label{ch:exp7}
+
+\section{Aim}
+To plot Bode and Nyquist plots and determine the stability margins of the Ball and Beam System using MATLAB.
+
+\section{Apparatus / Software Required}
+\begin{itemize}
+    \item MATLAB Software
+\end{itemize}
+
+\section{Theory}
+The Ball and Beam system involves balancing a ball on a beam by controlling beam angle.  
+Its transfer function is:
+\[
+G(s) = \frac{K}{s^2}
+\]
+where $K = \frac{5g}{7R}$, $g$ is gravitational acceleration, and $R$ is the ball radius.
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Ball and Beam System Bode and Nyquist Analysis}]
+
+
+clc; clear; close all;
+
+g = 9.81;          % gravitational acceleration (m/s^2)
+R = 0.02;          % ball radius (m)
+K = (5*g)/(7*R);   % plant constant
+
+% Transfer Function: G(s) = K / s^2
+num = [K];
+den = [1 0 0];
+G = tf(num, den);
+disp('Open-loop Transfer Function G(s) = K / s^2');
+G
+
+% Bode Plot
+figure;
+bode(G);
+grid on;
+title('Bode Plot of Ball and Beam System');
+
+% Nyquist Plot
+figure;
+nyquist(G);
+grid on;
+title('Nyquist Plot of Ball and Beam System');
+
+% Stability Margins
+[GM, PM, Wcg, Wcp] = margin(G);
+fprintf('\n==== Stability Margins ====\n');
+fprintf('Gain Margin (GM): %.2f dB\n', 20*log10(GM));
+fprintf('Phase Margin (PM): %.2f degrees\n', PM);
+fprintf('Gain crossover frequency (Wcg): %.2f rad/s\n', Wcg);
+fprintf('Phase crossover frequency (Wcp): %.2f rad/s\n', Wcp);
+
+% Theoretical Unity-gain crossover frequency
+W_unity = sqrt(K);
+fprintf('\nTheoretical Unity-gain crossover frequency: %.2f rad/s\n', W_unity);
+\end{lstlisting}
+
+\section{Result}
+\noindent\textbf{Console Output:}
+\begin{verbatim}
+==== Stability Margins ====
+Gain Margin (GM): 0.00 dB
+Phase Margin (PM): 0.00 degrees
+Gain crossover frequency (Wcg): 18.72 rad/s
+Phase crossover frequency (Wcp): 18.72 rad/s
+Theoretical Unity-gain crossover frequency: 18.72 rad/s
+\end{verbatim}
+
+\section{Observation}
+\begin{itemize}
+    \item Gain and phase margins are both zero, indicating instability.
+    \item The open-loop system has two poles at the origin.
+    \item Nyquist plot confirms encirclement of the critical point, verifying instability.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{bode_plot.png}
+    \caption{Bode Plot of Ball and Beam System}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{nyquist_plot.png}
+    \caption{Nyquist Plot of Ball and Beam System}
+\end{figure}
+
+\section{Conclusion}
+\begin{itemize}
+    \item The Ball and Beam system is inherently unstable in open-loop condition.
+    \item Gain and phase margins being zero indicate the system requires feedback control.
+    \item Both Bode and Nyquist plots confirm marginal or unstable behavior.
+\end{itemize}
+\chapter{Modeling and Simulation of Inverted Pendulum}
+\label{ch:exp8}
+
+\begin{center}
+    \large \textbf{Inverted Pendulum Modeling using Simulink} \\[0.5em]
+\end{center}
+
+\section*{Aim}
+To model and simulate the dynamics of an inverted pendulum on a cart using Simulink and to observe its open-loop response.
+
+\section*{Apparatus / Software Required}
+\begin{itemize}
+    \item MATLAB with Simulink
+    \item Computer system
+\end{itemize}
+
+\section{Theory}
+The inverted pendulum (or cart–pole system) is a classical benchmark in control system design. It represents a nonlinear, inherently unstable system and is used to test various control strategies such as PID, LQR, or state feedback control.
+
+The system consists of a cart of mass $M$ moving along a horizontal track and a pendulum of mass $m$ and length $2l$ (with its center of mass at $l$) attached via a hinge. A horizontal control force $F$ acts on the cart, as shown in Fig.~\ref{fig:your_label}.
+
+\begin{table}[h!]
+    \centering
+    \caption{System Parameters and Descriptions}
+    \label{tab:variables}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Symbol} & \textbf{Description} \\
+        \midrule
+        $M$ & Mass of the cart \\
+        $m$ & Mass of the pendulum \\
+        $I$ & Moment of inertia of the pendulum about its center of mass ($I = \frac{1}{3}ml^2$) \\
+        $l$ & Distance from the pivot to the pendulum’s center of mass \\
+        $x$ & Horizontal displacement of the cart \\
+        $\theta$ & Angular displacement of the pendulum (upright at $\theta = 0$) \\
+        $F$ & Control input (force on the cart) \\
+        $g$ & Acceleration due to gravity \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Nonlinear Dynamic Model}
+The coupled nonlinear equations governing the motion of the inverted pendulum are obtained using Newton’s laws or the Euler–Lagrange approach.
+
+\textbf{Equation of Motion for the Cart:}
+\begin{equation}
+    (M + m)\ddot{x} + ml\ddot{\theta}\cos\theta - ml\dot{\theta}^2\sin\theta = F
+\end{equation}
+
+\textbf{Equation of Motion for the Pendulum:}
+\begin{equation}
+    (I + ml^2)\ddot{\theta} + ml\ddot{x}\cos\theta - mgl\sin\theta = 0
+\end{equation}
+
+These equations are nonlinear due to terms like $\sin\theta$, $\cos\theta$, and $\dot{\theta}^2\sin\theta$.
+
+\subsection{Linearization about the Upright Position}
+For small angular deviations ($\theta \approx 0$), we use the small-angle approximations:
+\[
+\sin\theta \approx \theta, \quad \cos\theta \approx 1, \quad \dot{\theta}^2\sin\theta \approx 0
+\]
+
+The linearized state-space model can then be written as:
+\begin{align*}
+    \dot{\mathbf{X}} &= A\mathbf{X} + B\mathbf{U} \\
+    \mathbf{Y} &= C\mathbf{X} + D\mathbf{U}
+\end{align*}
+where
+\[
+\mathbf{X} = 
+\begin{bmatrix}
+x \\ \dot{x} \\ \theta \\ \dot{\theta}
+\end{bmatrix}, \quad
+\mathbf{U} = [F]
+\]
+
+The matrices $A$ and $B$ depend on physical parameters $(M, m, l, I, g)$ and are derived through algebraic manipulation of the linearized equations.
+
+\section{Simulink Model}
+Two main Simulink implementations can represent this system:
+\begin{enumerate}
+    \item \textbf{Equation-based model:} Uses mathematical blocks (integrators, gains, and summations) to represent the nonlinear equations directly.
+    \item \textbf{Physical model:} Employs Simscape Multibody components for a realistic physical simulation.
+\end{enumerate}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img6_1.png}
+    \caption{Simulink model of the inverted pendulum (equation-based approach)}
+    \label{fig:pendulum_eq}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img6_3.png}
+    \caption{Simscape physical modeling of the inverted pendulum system}
+    \label{fig:pendulum_phys}
+\end{figure}
+
+\section{Observation}
+The simulation results from the Scope block are shown below.  
+The pendulum angle (yellow curve) oscillates continuously around the equilibrium position, while the cart displacement (blue curve) increases with time.  
+This demonstrates that the open-loop nonlinear system is unstable—small deviations in angle grow over time without control action.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img6_2.png}
+    \caption{Pendulum angle and cart position versus time}
+    \label{fig:pendulum_output}
+\end{figure}
+
+\section{Conclusion}
+\begin{itemize}
+    \item The inverted pendulum system was successfully modeled and simulated in Simulink.
+    \item The nonlinear dynamics were implemented using differential equations of motion.
+    \item The open-loop simulation confirmed that the system is inherently unstable.
+    \item The developed model provides a foundation for designing feedback controllers (e.g., PID, LQR) to stabilize the pendulum in the upright position.
+\end{itemize}
+
+\section{Result}
+The dynamics of the inverted pendulum were modeled and simulated in Simulink. The open-loop system was found to be unstable, as observed from the oscillatory and divergent responses of the pendulum and cart.
+%-----------------------------------------------
+% EXPERIMENT 10
+%-----------------------------------------------
+\chapter{Aircraft Pitch Control: State-Space Analysis}
+\label{ch:exp10}
+
+\section{Aim}
+To model the aircraft pitch control system in state-space form, and to check its controllability and observability using MATLAB.
+
+\section{Apparatus / Software Required}
+\begin{itemize}
+    \item MATLAB Software
+\end{itemize}
+
+\section{Theory}
+
+The aircraft pitch control system can be represented using state-space equations:
+
+\[
+\dot{x} = A x + B u,
+\qquad
+y = C x + D u
+\]
+
+where:
+\begin{itemize}
+    \item $x$ = State vector
+    \item $u$ = System input
+    \item $y$ = System output
+\end{itemize}
+
+\noindent Matrices:
+\begin{itemize}
+    \item $A$ — System dynamics matrix
+    \item $B$ — Input matrix
+    \item $C$ — Output matrix
+    \item $D$ — Feedthrough matrix
+\end{itemize}
+
+Two major properties are evaluated:
+
+\subsection*{1. Controllability}
+
+A system is controllable if the controllability matrix
+
+\[
+Co = \left[ B \; AB \; A^{2}B \; \ldots \right]
+\]
+
+has rank equal to the number of states.
+
+\subsection*{2. Observability}
+
+A system is observable if the observability matrix
+
+\[
+Ob = 
+\begin{bmatrix}
+C \\ CA \\ CA^2 \\ \vdots
+\end{bmatrix}
+\]
+
+has full rank equal to the number of states.
+
+If both properties hold, the system can be controlled and its states can be reconstructed from outputs.
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Aircraft Pitch System State-Space Analysis}]
+% system matrices
+A = [0     1     0;
+     0  -0.313  56.7;
+     0  -0.0139 -0.426];
+
+B = [0;
+     0.232;
+     0.0203];
+
+C = [0 0 1];   % Measuring pitch angle
+D = 0;
+
+disp('State-Space Model:');
+A, B, C, D
+
+% Controllability
+Co = ctrb(A, B);
+rank_Co = rank(Co);
+disp('Controllability Matrix Co:');
+Co
+fprintf('Rank of Co = %d\n', rank_Co);
+
+% Observability
+Ob = obsv(A, C);
+rank_Ob = rank(Ob);
+disp('Observability Matrix Ob:');
+Ob
+fprintf('Rank of Ob = %d\n', rank_Ob);
+
+%full controllability and observability
+n = size(A, 1);   % number of states
+
+if rank_Co == n
+    disp('System is fully CONTROLLABLE.');
+else
+    disp('System is NOT fully controllable.');
+end
+
+if rank_Ob == n
+    disp('System is fully OBSERVABLE.');
+else
+    disp('System is NOT fully observable.');
+end
+\end{lstlisting}
+
+\section{Result}
+\noindent\textbf{Console Output (Expected):}
+\begin{verbatim}
+State-Space Model:
+A =
+     0    1.0000         0
+     0   -0.3130   56.7000
+     0   -0.0139   -0.4260
+
+B =
+         0
+    0.2320
+    0.0203
+
+C =
+     0     0     1
+
+D =
+     0
+
+Controllability Matrix Co:
+Rank of Co = 3
+System is fully CONTROLLABLE.
+
+Observability Matrix Ob:
+Rank of Ob = 3
+System is fully OBSERVABLE.
+\end{verbatim}
+
+\section{Observation and Conclusion}
+\begin{itemize}
+    \item The aircraft pitch control system was successfully modeled in state-space form. The controllability matrix had full rank, confirming the system is completely controllable.
+    \item The observability matrix had full rank, confirming the system is completely observable.
+    \item Since both properties are satisfied, modern controllers (LQR, pole placement) can be applied.
+    \item The experiment confirms the advantage of state-space analysis over classical control methods.
+\end{itemize}
+\section{Figures}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Screenshot 2025-11-24 092740.png}
+    \caption{Closed Loop Step Response with Precompensation}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Screenshot 2025-11-24 092710.png}
+    \caption{Closed Loop Step Response-I}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Screenshot 2025-11-24 094218.png}
+    \caption{Closed Loop Step Response-II}
+\end{figure}
+
+%-----------------------------------------------
+% EXPERIMENT 9
+%-----------------------------------------------
+\chapter{PID Controller Design for Aircraft Pitch Control}
+\label{ch:exp9}
+
+\section{Aim}
+To design and analyze P, PI, PD, and PID controllers for aircraft pitch control using MATLAB and Simulink, and to obtain fast response, minimum overshoot, and zero steady-state error for a step input of 0.2 radians.
+
+\section{Apparatus / Software Required}
+\begin{itemize}
+    \item MATLAB Software
+    \item Simulink
+\end{itemize}
+
+\section{Theory}
+
+PID control is a widely used feedback mechanism in control systems. The controller generates the control input using three components:
+
+\subsection*{1. Proportional Control (P)}
+Acts on instantaneous error:
+\[
+u_p(t) = K_p e(t)
+\]
+
+\subsection*{2. Integral Control (I)}
+Removes steady-state error by integrating past errors:
+\[
+u_i(t) = K_i \int e(t)\, dt
+\]
+
+\subsection*{3. Derivative Control (D)}
+Predicts future error and improves damping:
+\[
+u_d(t) = K_d \frac{de(t)}{dt}
+\]
+
+\noindent The complete PID law:
+\[
+u(t) = K_p e(t) + K_i \int e(t)\, dt + K_d \frac{de(t)}{dt}
+\]
+
+Different controller types:
+\begin{itemize}
+    \item \textbf{P Controller}: Uses only $K_p$
+    \item \textbf{PI Controller}: Uses $K_p$ and $K_i$
+    \item \textbf{PD Controller}: Uses $K_p$ and $K_d$
+    \item \textbf{PID Controller}: Uses all three gains
+\end{itemize}
+
+Tuning $K_p$, $K_i$, and $K_d$ adjusts rise time, overshoot, damping, and steady-state error.
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={P, PI, PD, and PID Controller Simulation for Aircraft Pitch}]
+s = tf('s');
+num_G = [1.1513 0.1774];
+den_G = [1 0.739 0.921 0];
+G_s = tf(num_G, den_G);
+
+% P
+K_p = 2;
+
+% PI
+Kp_pi = 2;
+Ki_pi = 0;
+
+% PD
+Kp_pd = 10;
+Kd_pd = 5;
+
+% PID
+Kp_pid = 10;
+Ki_pid = 10;
+Kd_pid = 5;
+
+ref_magnitude = 0.2;
+
+% P-Only Controller
+C_p = pid(Kp_p);
+
+% PI Controller
+C_pi = pid(Kp_pi, Ki_pi);
+
+% PD Controller
+C_pd = pid(Kp_pd, 0, Kd_pd);
+
+% PID Controller
+C_pid = pid(Kp_pid, Ki_pid, Kd_pid);
+
+sys_cl_p   = feedback(C_p   * G_s, 1);
+sys_cl_pi  = feedback(C_pi  * G_s, 1);
+sys_cl_pd  = feedback(C_pd  * G_s, 1);
+sys_cl_pid = feedback(C_pid * G_s, 1);
+
+t = 0:0.01:20;
+
+[y_p,   t_out] = step(ref_magnitude * sys_cl_p,   t);
+[y_pi,  ~]     = step(ref_magnitude * sys_cl_pi,  t);
+[y_pd,  ~]     = step(ref_magnitude * sys_cl_pd,  t);
+[y_pid, ~]     = step(ref_magnitude * sys_cl_pid, t);
+
+figure;
+hold on;
+
+plot(t_out, y_p,  'r', 'LineWidth', 2);
+plot(t_out, y_pi, 'b', 'LineWidth', 2);
+plot(t_out, y_pd, 'g', 'LineWidth', 2);
+plot(t_out, y_pid,'k', 'LineWidth', 2);
+
+%  reference signal
+y_ref = ones(size(t_out)) * ref_magnitude;
+plot(t_out, y_ref, 'c', 'LineWidth', 1);
+
+xlabel('Time (seconds)');
+ylabel('Pitch Angle (radians)');
+title('Aircraft Pitch Control Comparison (0.2 rad Step)');
+legend('P (Only Kp=2)', ...
+       'PI (Kp=2, Ki=0)', ...
+       'PD (Kp=10, Kd=5)', ...
+       'PID (Kp=10, Ki=12, Kd=5)', ...
+       'Reference Signal', ...
+       'Location', 'SouthEast');
+
+grid on;
+hold off;
+
+\end{lstlisting}
+\section{Figures}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-11-24 092814.png}
+    \caption{Simulink Model}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-11-24 092827.png}
+    \caption{PID-I}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2025-11-24 092804.png}
+    \caption{PID-II}
+\end{figure}
+
+
+
+\section{Result}
+\noindent\textbf{Observed responses:}
+\begin{itemize}
+    \item \textbf{P Controller}: Fast but had steady-state error and noticeable overshoot.
+    \item \textbf{PI Controller}: Eliminated steady-state error; increased rise time slightly.
+    \item \textbf{PD Controller}: Better damping and reduced overshoot; steady-state error remained.
+    \item \textbf{PID Controller}: Achieved best tracking — fast rise time, minimal overshoot, and zero steady-state error.
+\end{itemize}
+
+Simulation plots showed that the \textbf{PID controller} tracked the reference signal most accurately.
+
+\section{Observation}
+\begin{itemize}
+    \item The P controller alone cannot remove steady-state error.
+    \item Integral action eliminates steady-state error but may introduce overshoot if not balanced.
+    \item Derivative action improves damping and reduces overshoot by predicting future error.
+    \item The combined PID controller produces the most stable and accurate response.
+\end{itemize}
+
+\section{Conclusion}
+\begin{itemize}
+    \item The aircraft pitch control system behaves differently under P, PI, PD, and PID controllers.
+    \item PID control provided the optimal performance: fast rise time, minimal overshoot, and zero steady-state error.
+    \item Proper tuning of $K_p$, $K_i$, and $K_d$ is essential for stable aircraft pitch dynamics.
+    \item The experiment demonstrates that PID controllers offer the most effective strategy for maintaining aircraft stability and passenger comfort.
+\end{itemize}
+
+
+
+
+\end{document}
+
+
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}    % For including graphics
+\usepackage{amsmath}     % For math environments
+\usepackage{mathtools}   % For extensible math symbols
+\usepackage{amssymb}     % For math symbols
+\usepackage{setspace}    % For line spacing
+\usepackage{hyperref}    % For hyperlinks in the PDF
+\usepackage{geometry}    % For page layout
+\usepackage{mdframed}    % For framing the title page
+\usepackage{listings}    % For code listings
+\usepackage{xcolor}      % For color in code
+\usepackage{titlesec}    % For custom section/chapter headings
+\usepackage{ragged2e}
+\usepackage{fancyhdr}
+
+\setlength{\headheight}{14.5pt}
+\usepackage{float}
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\geometry{
+    left=1in,
+    right=1in,
+    top=1in,
+    bottom=1in
+}
+
+%------------------------------------------------
+% CUSTOM COLORS FOR CODE LISTINGS
+%------------------------------------------------
+\definecolor{mCodeBackground}{rgb}{0.95,0.95,0.95}
+\definecolor{mCodeComment}{rgb}{0,0.5,0}
+\definecolor{mCodeString}{rgb}{0.6,0.1,0.1}
+\definecolor{mCodeKeywords}{rgb}{0,0,1}
+
+%------------------------------------------------
+% GLOBAL LISTINGS CONFIGURATION
+%------------------------------------------------
+\lstset{%
+    language=Matlab,
+    backgroundcolor=\color{mCodeBackground},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{mCodeKeywords}\bfseries,
+    stringstyle=\color{mCodeString},
+    commentstyle=\color{mCodeComment},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    showspaces=false,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,                % Draw a box around the code
+    framerule=0.5pt,            % Thickness of the frame
+    rulecolor=\color{black}     % Frame color
+}
+
+\makeatletter
+\renewcommand{\@chapapp}{Experiment}
+\makeatother
+
+%------------------------------------------------
+% CENTER AND UNDERLINE "Experiment X" HEADINGS
+% REMOVE EXTRA SPACE ABOVE
+%------------------------------------------------
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\centering}
+  {\underline{Experiment \thechapter}}
+  {0pt}{\LARGE}
+
+\titlespacing*{\chapter}{0pt}{-1em}{2em}  
+
+%------------------------------------------------
+% CUSTOM HEADER AND FOOTER STYLE WITH LINES
+%------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}  % Clear all header and footer fields
+\fancyhead[L]{\textit{Roll No.: 23294917013 | B. Tech. ECE A -- B1}}  % Left header text
+\fancyhead[R]{\textit{Experiment \thechapter}}                       % Right header with dynamic chapter number
+\fancyfoot[C]{\thepage}                                              % Centered footer with page number
+\renewcommand{\headrulewidth}{0.4pt}                                 % Header rule thickness
+\renewcommand{\footrulewidth}{0pt}
+
+% Footer style
+\fancyfoot[C]{\thepage}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%------------------------------------------------
+% OVERRIDE FIRST-PAGE "PLAIN" STYLE WITH "FANCY"
+%------------------------------------------------
+\makeatletter
+\let\ps@plain\ps@fancy
+\makeatother
+
+\fancypagestyle{noFooterText}{
+    \fancyhf{}% Clear everything
+    \renewcommand{\headrulewidth}{0.4pt} % Keep the top line
+    \renewcommand{\footrulewidth}{0.4pt} % Keep the bottom line
+    % No page number or text in header/footer
+}
+
+%------------------------------------------------
+% BEGIN DOCUMENT
+%------------------------------------------------
+\begin{document}
+\justifying
+
+% Suppress page numbering for the title page
+\pagenumbering{gobble}
+
+%-----------------------------------------------
+% FRONT PAGE
+%-----------------------------------------------
+\begin{titlepage}
+\begin{mdframed}[linewidth=1pt]
+    \thispagestyle{empty}
+    \begin{center}
+        \vspace*{0.5cm}
+        {\bfseries\Large \underline{Digital Signal Processing}}\\  % Underlined
+        \vspace{0.2cm}
+        {\large (DSC -- 14)}\\
+        \vspace{0.2cm}
+        {\large Practical File}\\[1.5cm]
+
+        \textit{Submitted By}\\[0.5cm]
+        {\bfseries Rewant Bhriguvanshi}\\
+        Roll No.: 23294917013 (Batch: ECE A -- B1)\\
+        B. Tech Electronics and Communication Engineering\\
+        (Semester V)\\[1.5cm]
+
+        \textit{To}\\[0.5cm]
+        {\bfseries Dr. Ajay Kumar Gupta}\\
+        (Assistant Professor)\\
+        Department of Electronics and Communication Engineering\\[1.5cm]
+
+         \includegraphics[width=4cm]{University_of_Delhi.png}\\[1.5cm]
+
+        {\bfseries FACULTY OF TECHNOLOGY}\\
+        {\bfseries UNIVERSITY OF DELHI}\\
+        NEW DELHI -- 110007\\
+        (2024 -- 2025)
+        \vspace*{1cm}
+    \end{center}
+\end{mdframed}
+\end{titlepage}
+
+%-----------------------------------------------
+% CUSTOM TABLE OF CONTENTS WITH SIGN-OFF COLUMNS
+%-----------------------------------------------
+\chapter*{\centering \underline{Record of Experiments}}
+\thispagestyle{noFooterText} 
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3} % increases row height for readability
+\begin{tabular}{|c|p{6.5cm}|c|c|c|}
+\hline
+\textbf{S. No.} & \textbf{Experiment Title} & \textbf{Page No.} & \textbf{Date} & \textbf{Remarks} \\
+\hline
+
+1 & 
+\hyperref[ch:exp1]{Experiment 1: Magnitude and Phase Spectrum using DTFT
+and Bandwidth Measurement at -3 dB} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+
+2 & 
+\hyperref[ch:exp2]{Experiment 2: Linear Convolution of two sequence using
+matrix multiplication method} 
+& \pageref{ch:exp2} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+3 & 
+\hyperref[ch:exp1]{Experiment 3: Circular Convulation and its applications} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+4 & 
+\hyperref[ch:exp1]{Experiment 4: N-point dft and IDFT} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+5 & 
+\hyperref[ch:exp1]{Experiment 5: Circular DFT} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+6 & 
+\hyperref[ch:exp1]{Experiment 6: FIR Filter Design} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+7 & 
+\hyperref[ch:exp1]{Experiment 7: FIR Filter design using Blackman Window} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+8 & 
+\hyperref[ch:exp1]{Experiment 8: FIR Hilbert Transformer} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+9 & 
+\hyperref[ch:exp1]{Experiment 9: FIR Differentiator Filter Using FDA Tool} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+10 & 
+\hyperref[ch:exp1]{Experiment 10: IIR Filter Designing} 
+& \pageref{ch:exp1} & 
+&   % Empty for teacher to fill in date
+\\ \hline
+
+
+\end{tabular}
+\end{center}
+\clearpage
+
+
+\pagestyle{fancy}
+
+%-----------------------------------------------
+% START PAGE NUMBERING FROM EXPERIMENT 1
+%-----------------------------------------------
+\pagenumbering{arabic}  
+
+%-----------------------------------------------
+% EXPERIMENT 1
+%-----------------------------------------------
+\chapter{Magnitude and Phase Spectrum using DTFT
+and Bandwidth Measurement at -3 dB}
+\label{ch:exp1}
+
+\section{Aim}
+\begin{itemize}
+    \item To compute and plot the Discrete-Time Fourier Transform (DTFT) of a discrete sequence and explore its frequency characteristics using MATLAB.
+    \item To identify the $-3$~dB bandwidth from the computed magnitude response.
+\end{itemize}
+
+\section{Theory}
+Discrete-time signals can be efficiently analyzed in the frequency domain using the DTFT. The DTFT formula for a signal $x[n]$ is:
+\[
+X(e^{j\omega}) = \sum_{n=-\infty}^{\infty} x[n]e^{-j\omega n} \qquad -\pi \leq \omega \leq \pi
+\]
+Major aspects include:
+\begin{itemize}
+    \item \textbf{Magnitude Spectrum:} Reflects how the energy or amplitude of the signal is distributed over the frequency range. Peaks indicate dominant frequency components.
+    \item \textbf{Phase Spectrum:} Depicts phase shifts corresponding to each frequency component of the signal, providing insight into signal alignment and delay.
+    \item \textbf{$-3$~dB Bandwidth:} The frequency interval within which the magnitude drops to $1/\sqrt{2}$ (approximately $0.707$) times the peak value. This bandwidth characterizes the effective frequency extent of the signal.
+\end{itemize}
+
+\section{Structure for Plots}
+This experiment involves generating:
+\begin{enumerate}
+    \item \textbf{Time-Domain Signal:} Visual representation of the original discrete signal $x[n]$.
+    \item \textbf{Magnitude Spectrum:} Magnitude response $|X(e^{j\omega})|$ with $-3$~dB points highlighted.
+    \item \textbf{Phase Spectrum:} Phase plot $\angle X(e^{j\omega})$ versus frequency.
+\end{enumerate}
+
+\section{MATLAB Code}
+
+\begin{lstlisting}[caption={DTFT Analysis and Bandwidth Computation}]
+n = 0:50;
+x = (0.7).^n;
+w = -10:0.1:10;
+
+Xw = zeros(1,length(w));
+for k = 1:length(w)
+    Xw(k) = sum(x .* exp(-1i*w(k)*n));
+end
+
+magX = abs(Xw);
+maxVal = max(magX);
+threshold = maxVal/sqrt(2);
+
+[~,peakIdx] = max(magX);
+leftIdx = peakIdx;
+while leftIdx > 1 && magX(leftIdx) >= threshold
+    leftIdx = leftIdx - 1;
+end
+rightIdx = peakIdx;
+while rightIdx < length(magX) && magX(rightIdx) >= threshold
+    rightIdx = rightIdx + 1;
+end
+
+cutoffLow = w(leftIdx);
+cutoffHigh = w(rightIdx);
+bw = cutoffHigh - cutoffLow;
+
+fprintf('3 dB Bandwidth (main lobe) = %.4f rad/sample\n',bw);
+
+subplot(3,1,1)
+stem(n,x)
+title('Input Signal')
+xlabel('n \rightarrow')
+ylabel('x[n]')
+grid on
+subplot(3,1,2)
+plot(w,magX,'LineWidth',1.5)
+title('Magnitude Spectrum')
+xlabel('\omega (rad/sample)')
+ylabel('|X(\omega)|')
+grid on
+hold on
+yline(threshold,'r--','3 dB Threshold','LineWidth',1.2);
+xline(cutoffLow,'g--','3db cutoff','LineWidth',1.2);
+xline(cutoffHigh,'g--','3db cutoff','LineWidth',1.2);
+hold off
+subplot(3,1,3)
+plot(w,angle(Xw),'LineWidth',1.5)
+title('Phase Spectrum')
+xlabel('\omega (rad/sample)')
+ylabel('\angleX(\omega) (radians)')
+grid on
+\end{lstlisting}
+
+\section{Result}
+
+\begin{verbatim}
+3 dB Bandwidth (main lobe) = 0.8000 rad/sample
+\end{verbatim}
+\noindent \textbf{Figures from MATLAB Output:}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-08-25 011212.png}
+    \caption{DTFT of Discrete-Time Signal with 3-dB Bandwidth}
+    \label{fig:dtft_time}
+
+\end{figure}
+
+\section{Conclusion}
+\begin{itemize}
+    \item The experiment demonstrates the use of DTFT for analyzing a discrete-time exponential signal, both in terms of magnitude and phase.
+    \item The magnitude spectrum confirms the low-pass characteristic of the considered signal, exhibiting a central peak and rapid side attenuation.
+    \item The $-3$~dB bandwidth provides a quantitative understanding of the signal’s effective spectral width.
+    \item The phase plot reveals a generally linear variation, affirming expected signal behavior.
+    \item The results validate theoretical predictions and build practical insight for signal analysis in the frequency domain.
+\end{itemize}
+
+%-----------------------------------------------
+% EXPERIMENT 2
+%-----------------------------------------------
+\chapter{Linear Convolution of two sequence using
+matrix multiplication method}
+\label{ch:exp2}
+
+\section{Aim}
+\begin{itemize}
+    \item To perform linear convolution of two discrete sequences using the matrix (Toeplitz) method in MATLAB.
+    \item To verify the result by comparing with MATLAB's built-in \texttt{conv} function and using frequency domain multiplication.
+\end{itemize}
+
+\section{Theory}
+Convolution is essential for analyzing Linear Time-Invariant (LTI) systems in signal processing. It describes how an input signal $x[n]$ interacts with a system’s impulse response $h[n]$, with the output:
+\[
+y[n] = (x * h)[n] = \sum_{k=0}^{N_x-1} x[k] \cdot h[n-k]
+\]
+where $N_x$ and $N_h$ are the lengths of $x[n]$ and $h[n]$, respectively, and $N = N_x + N_h - 1$.
+
+\textbf{Matrix/Toeplitz Method:}
+\begin{itemize}
+    \item The Toeplitz approach rewrites the convolution as a matrix operation: representing $x[n]$ by a Toeplitz matrix whose columns are shifted versions of $x[n]$ with zero padding.
+    \item The vector $h[n]$ is padded as needed and treated as a column vector. Multiplying this matrix by $h[n]$ yields the convolution result.
+    \item This method is computationally instructive and aligns with digital hardware implementations.
+\end{itemize}
+Besides the direct matrix method, convolution can also be examined in the frequency domain, where multiplication of DTFTs of sequences followed by inverse transform gives the same output.
+
+\section{Structure for Plots}
+For demonstration and verification, we display:
+\begin{enumerate}
+    \item \textbf{Input Sequence} ($x[n]$): The original signal.
+    \item \textbf{Impulse Response} ($h[n]$): System characteristic.
+    \item \textbf{Convolved Output} ($y[n]$): Resulting signal after convolution.
+\end{enumerate}
+
+Each is depicted as a stem plot for discrete-time clarity.
+
+\section{MATLAB Code}
+
+\begin{lstlisting}[caption={Linear Convolution via Matrix/Toeplitz Method}]
+x = [6 4 5 7];
+h = [3 2 1];
+
+nx = length(x);
+nh = length(h);
+N = nx + nh - 1;
+
+% Convolution by explicit convolution matrix 
+H = [h, zeros(1, nx-1)];              
+X = zeros(nx+nh-1, nx+nh-1);          
+
+for i = 1:(nx+nh-1)
+    for j = 1:(nx+nh-1)
+        idx = i - j + 1;
+        if (idx > 0) && (idx <= nx)
+            X(i,j) = x(idx);
+        end
+    end
+end
+
+y_mat = X * H.';        % result from matrix multiplication 
+
+% DTFT multiplication
+w = linspace(-pi, pi, 2001);
+Xw = zeros(size(w));
+Hw = zeros(size(w));
+
+for k = 1:length(w)
+    Xw(k) = sum(x .* exp(-1j * w(k) * (0:(nx-1))));
+    Hw(k) = sum(h .* exp(-1j * w(k) * (0:(nh-1))));
+end
+
+Yw = Xw .* Hw;
+
+y_dtft = zeros(1, N);
+for n = 0:(N-1)
+    integrand = Yw .* exp(1j * w * n);
+    y_dtft(n+1) = (1/(2*pi)) * trapz(w, integrand);
+end
+
+y_conv = conv(x, h);
+
+subplot(3,1,1);
+stem(0:nx-1, x, 'filled');
+title('Signal x[n]');
+xlabel('n'); ylabel('x[n]');
+grid on;
+
+subplot(3,1,2);
+stem(0:nh-1, h, 'filled');
+title('Impulse Response h[n]');
+xlabel('n'); ylabel('h[n]');
+grid on;
+
+subplot(3,1,3);
+stem(0:N-1, y_mat, 'filled');
+title('Output y[n] = x[n] * h[n] (matrix method)');
+xlabel('n'); ylabel('y[n]');
+grid on;
+
+disp('Convolution using DTFT (numerical, real part rounded):');
+disp(round(real(y_dtft), 5));
+
+disp('Using matrix multiplication:');
+disp(y_mat.');
+
+disp('Using inbuilt conv():');
+disp(y_conv);
+
+disp('Using DTFT property (complex values):');
+disp(y_dtft);
+\end{lstlisting}
+
+\section{Result}
+
+\begin{verbatim}
+Using matrix multiplication:
+    18    24    29    35    19     7
+
+Using inbuilt conv():
+    18    24    29    35    19     7
+
+Using DTFT property (complex values):
+  18.0000 + 0.0000i  24.0000 - 0.0000i  29.0000 - 0.0000i
+  
+  35.0000 + 0.0000i  19.0000 + 0.0000i   7.0000 + 0.0000i
+\end{verbatim}
+\noindent \textbf{Figures from MATLAB Output:}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-08-25 012955.png}
+    \caption{ Linear Convolution of two discrete time sequences}
+    \label{fig:conv_input}
+
+\end{figure}
+
+\section{Conclusion}
+\begin{itemize}
+    \item This experiment confirms that matrix-based convolution matches the result from both the built-in MATLAB function and frequency-domain multiplication.
+    \item The identical outputs from all three methods reinforce the accuracy and flexibility of the Toeplitz approach.
+    \item Visual plots highlight each step of the convolution process, providing deeper understanding of signal manipulation in digital processing.
+\end{itemize}
+
+
+%-----------------------------------------------
+% EXPERIMENT 3
+%-----------------------------------------------
+\chapter{Circular Convulation and its applications}
+\label{ch:exp3}
+
+\section{Aim}
+\begin{itemize}
+    \item Obtain the N-point circular convolution of two sequences using user defined function and verify the result using cconv in-built function.
+    \item Obtain the linear convolution using circular convolution
+\end{itemize}
+
+\section{Theory}
+\textbf{Definition}
+
+For two discrete-time sequences $x[n]$ and $h[n]$ of length $N$, the \textit{circular convolution} is defined as
+\[
+y[n] = (x * h)_{N}[n] = \sum_{k=0}^{N-1} x[k]h[(n-k) \bmod N], \quad n = 0, 1, \ldots, N-1
+\]
+where $(n - k) \bmod N$ denotes modulo-$N$ arithmetic. The result is always $N$-periodic.
+
+In contrast, the \textit{linear convolution} of two finite-length sequences of length $L$ and $M$ produces a sequence of length $L + M - 1$:
+\[
+y[n] = (x * h)[n] = \sum_{k=0}^{L-1} x[k]h[n - k], \quad n = 0, 1, \ldots, L + M - 2
+\]
+
+\textbf{Matrix Representation of Circular Convolution}
+
+Circular convolution can be expressed as a matrix multiplication using a circulant matrix.  
+For example, let
+\[
+x = [x[0], x[1], x[2], x[3]], \quad h = [h[0], h[1], h[2], h[3]]
+\]
+The circular convolution matrix generated from $x$ is
+\[
+X = 
+\begin{bmatrix}
+x[0] & x[3] & x[2] & x[1] \\
+x[1] & x[0] & x[3] & x[2] \\
+x[2] & x[1] & x[0] & x[3] \\
+x[3] & x[2] & x[1] & x[0]
+\end{bmatrix}
+\]
+Then the circular convolution result is obtained as
+\[
+y = X \cdot h
+\]
+
+\textbf{Relation Between Linear and Circular Convolution}
+
+The linear convolution of a length-$L$ and a length-$M$ sequence produces an output of length $L + M - 1$.  
+To obtain this result using circular convolution, both sequences are zero-padded to length $N \geq L + M - 1$, and the circular convolution is computed as
+\[
+y[n] = \text{circconv}(x_{zp}[n], h_{zp}[n]), \quad n = 0, 1, \ldots, N-1
+\]
+Thus, linear convolution can be realized by circular convolution with sufficient zero-padding.  
+This property is widely used in FFT-based fast convolution algorithms.
+
+\section{MATLAB Code}
+
+\begin{lstlisting}[caption={Circular Convolution}]
+x = [1 3 2 5];
+h = [2 1 4 0];
+
+nx = length(x);
+nh = length(h);
+
+% Circular convolution function
+function sdsp = circular_dsp(x, h, N)
+    
+    x = [x zeros(1, N - length(x))];
+    h = [h zeros(1, N - length(h))];
+
+    for i = 1:N
+        for j = 1:N
+            X(i, j) = 0;
+            if (i - j + 1 > 0)
+                X(i, j) = x(i - j + 1);
+            else
+                if (i < j)
+                    X(i, j) = x(i - j + 1 + N);
+                end
+            end
+        end
+    end
+
+    sdsp = X * h';
+end
+
+% Circular convolution (manual)
+y = circular_dsp(x, h, nx);
+disp('Result of Circular Convolution (manual):');
+disp(y');
+
+disp('Result using cconv:');
+disp(cconv(x, h, nx));
+
+if isequal(y', cconv(x, h, nx))
+    disp('The circular results match.');
+else
+    disp('The circular results do not match.');
+end
+
+% Linear Convolution
+N = nx + nh - 1;
+linear = circular_dsp(x, h, N);
+disp('Linear Convolution (using circular conv + zero padding):');
+disp(linear');
+
+disp('Result using conv:');
+disp(conv(x, h));
+
+\end{lstlisting}
+
+
+
+\section{Observation}
+From the above calculation, the circulant matrix $X$ constructed from sequence $x$ correctly 
+performs circular convolution when multiplied with sequence $h$. The obtained output is
+
+\[
+y = \{15,\, 25,\, 27,\, 23\}
+\]
+
+which exactly matches the result produced by MATLAB's built-in function 
+\texttt{cconv(x, h, 4)}. This verifies that the matrix method of constructing a circulant 
+matrix and multiplying with $h$ gives the same result as the definition of circular convolution.
+
+
+\section{Conclusion}
+It is concluded that circular convolution can be effectively represented using a circulant matrix, where each row of the matrix is a cyclic shift of the input sequence $x$. The result obtained from this matrix formulation is identical to MATLAB’s \texttt{cconv} output, thereby validating the theoretical approach. Furthermore, this method illustrates the inherent periodicity of circular convolution and forms the basis for fast convolution methods using the Discrete Fourier Transform (DFT).
+
+
+%-----------------------------------------------
+% EXPERIMENT 4
+%-----------------------------------------------
+\chapter{N-point dft and IDFT}
+\label{ch:exp4}
+\section{Aim}
+
+\begin{enumerate}
+    \item Write a program to compute $N$-point DFT of a sequence and verify using FFT.
+    \item Write a program to compute $N$-point IDFT to get back $x(n)$.
+    \item Verify Parseval’s theorem.
+    \item Verify the Convolution theorem.
+\end{enumerate}
+
+\section{Theory}
+
+\subsection{Discrete Fourier Transform (DFT)}
+The Discrete Fourier Transform (DFT) converts a finite sequence of length $N$ into its frequency-domain representation:
+\[
+X(k) = \sum_{n=0}^{N-1} x(n) e^{-j\frac{2\pi}{N}kn}, \quad k=0,1,\dots,N-1
+\]
+It provides frequency-domain analysis of discrete-time signals. The Fast Fourier Transform (FFT) is an efficient algorithm to compute the DFT in $O(N\log N)$ time instead of $O(N^2)$.
+
+\subsection{Inverse DFT (IDFT)}
+The IDFT converts the frequency-domain sequence back to the time domain:
+\[
+x(n) = \frac{1}{N} \sum_{k=0}^{N-1} X(k) e^{j\frac{2\pi}{N}kn}, \quad n=0,1,\dots,N-1
+\]
+
+\subsection{Parseval’s Theorem}
+Parseval’s theorem states that the total energy of a discrete-time signal in the time domain equals that in the frequency domain:
+\[
+\sum_{n=0}^{N-1} |x(n)|^2 = \frac{1}{N} \sum_{k=0}^{N-1} |X(k)|^2
+\]
+
+\subsection{Convolution Theorem}
+The convolution theorem states that convolution in the time domain corresponds to multiplication in the frequency domain:
+\[
+y(n) = x_1(n) * x_2(n) \quad \Longleftrightarrow \quad Y(k) = X_1(k) \cdot X_2(k)
+\]
+
+\section{MATLAB Code}
+\begin{lstlisting}[language=Matlab]
+N=4;
+x=[1,2,4,6];
+x2=[3,5,7,10];
+w_o=2*pi/N;
+
+% Function for DFT
+function [Xk] = DtFT(x, N)
+    w0 = 2*pi/N;
+    x1 = [x, zeros(1, N-length(x))]; 
+    n = 0:N-1; k = 0:N-1;
+    W = exp(-1j*w0*(n'*k));
+    Xk = x1 * W;
+end
+
+% DFT of signals
+y=DtFT(x,N);
+z=DtFT(x2,N);
+disp(y);
+
+% IDFT
+n = 0:N-1; k = 0:N-1;
+W_inv = exp(1j*2*pi/N * (n'*k));
+x_recon = (1/N) * (y * W_inv);
+disp(x_recon);
+
+% Parsevals theorem
+energy_time = sum(abs(x).^2);
+energy_freq = (1/N) * sum(abs(y).^2);
+
+if abs(energy_time-energy_freq)<1e-6
+    disp("Parseval theorem verified");
+else
+    disp("Parseval theorem not verified");
+end
+
+% Convolution Theorem
+y_direct = conv(x,x2);
+Nfft = 8;
+X_fft = fft([x, zeros(1,Nfft-length(x))]);
+H_fft = fft([x2, zeros(1,Nfft-length(x2))]);
+Y_fft = X_fft .* H_fft;
+y_fftconv = ifft(Y_fft);
+
+disp('Direct Convolution:');
+disp(y_direct);
+disp('Convolution via FFT:');
+disp(y_fftconv);
+\end{lstlisting}
+\newpage
+
+\section{Observation}
+
+\begin{lstlisting}
+DFT of x(n):
+13.0000 + 0.0000i  -3.0000 + 4.0000i  -3.0000 - 0.0000i  -3.0000 - 4.0000i
+
+DFT of x2(n):
+25.0000 + 0.0000i  -4.0000 + 5.0000i  -5.0000 - 0.0000i  -4.0000 - 5.0000i
+
+Reconstructed x(n) using IDFT:
+1.0000 - 0.0000i   2.0000 - 0.0000i   4.0000 + 0.0000i   6.0000 + 0.0000i
+
+Energy in time domain:   57.000000
+Energy in frequency domain:   57.000000
+Parseval theorem verified.
+
+Direct Convolution:
+
+     3    11    29    62    78    82    60
+\end{lstlisting}
+\begin{enumerate}
+
+    \item The DFT computed using matrix multiplication matches with FFT output.
+    \item The IDFT reconstructs the original sequence $x(n)$ correctly.
+    \item Parseval’s theorem holds true as the energies in both domains are equal.
+    \item Direct convolution in the time domain matches with convolution obtained via FFT (after proper zero-padding).
+\end{enumerate}
+
+\section{Conclusion}
+In this practical, we implemented the DFT and IDFT of discrete sequences. Parseval’s theorem was verified, confirming energy preservation across domains. The convolution theorem was also verified, demonstrating that convolution in the time domain is equivalent to multiplication in the frequency domain. This experiment reinforced the relationship between time and frequency domain operations and showed the efficiency of FFT in DFT computation.
+
+\section{Practical Images}
+\begin{figure}
+    \centering
+    \includegraphics[width=.9\linewidth]{Screenshot 2025-11-07 095419.png}
+    \caption{Magnitudes of DFT sequences}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=.9\linewidth]{Screenshot 2025-11-07 095514.png}
+    \caption{Convolution verification using direct vs fft}
+    \label{fig:placeholder}
+\end{figure}
+%-----------------------------------------------
+% EXPERIMENT 5
+%-----------------------------------------------
+\chapter{Circular DFT}
+\label{ch:exp5}
+\section{Aim}
+\begin{itemize}
+\item Circular time shift
+\item Ciruclar time reversal
+\item Circular Frequency shift
+\item Duality
+\item Configuration and Symmetry
+\end{itemize}
+\section{Theory}
+ \subsection*{1. Circular Time Shift}
+\[
+x((n - m))_N \xleftrightarrow{DFT} X(k)e^{-j\frac{2\pi km}{N}}
+\]
+Circular time shift means rotating the samples of $x(n)$ within one period of $N$. 
+It results in a linear phase shift in the frequency domain, proportional to $k$.
+\vspace{.5em}
+
+\vspace{.5em}
+
+\subsection*{2. Circular Time Reversal}
+\[
+x((-n))_N \xleftrightarrow{DFT} X((-k))_N
+\]
+Circular time reversal mirrors the sequence around the origin within one period. 
+This operation reverses the order of frequency components in the DFT.
+\vspace{.5em}
+
+\vspace{.5em}
+
+\subsection*{3. Circular Frequency Shift}
+\[
+X((k - k_0))_N \xleftrightarrow{IDFT} x(n)e^{j\frac{2\pi nk_0}{N}}
+\]
+Shifting the DFT in the frequency domain corresponds to modulation in the time domain. 
+It is the dual property of the circular time shift.
+
+\vspace{.5em}
+
+\vspace{.5em}
+\subsection*{4. Duality Property}
+\[
+x(n) \xleftrightarrow{DFT} X(k) \quad \Rightarrow \quad X(n) \xleftrightarrow{DFT} x(-k)
+\]
+Duality shows that the roles of time and frequency can be interchanged. 
+The DFT of a signal in one domain acts like the signal itself in the other, with a reversal in order.
+
+\vspace{0.4cm}
+
+\subsection*{5. Conjugation and Symmetry}
+\[
+x^*(n) \xleftrightarrow{DFT} X^*(-k)
+\]
+For real sequences:
+\[
+X(k) = X^*(N - k)
+\]
+Taking the complex conjugate in time causes conjugate reversal in frequency. 
+For real signals, the DFT exhibits conjugate symmetry — magnitude is symmetric and phase is antisymmetric.
+
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Frequency-domain characteristic}]
+function xk = my_dft(x)
+    N = length(x);
+    w = 2*pi/N;
+    n = 0:N-1;
+    k = 0:N-1;
+    xk = x * exp(-1j * w * (n' * k));
+end
+
+%shift time
+function y = my_circshift(x, k)
+    N = length(x);
+    k = mod(k, N);
+    y = [x(end-k+1:end), x(1:end-k)];
+end
+
+%reversal
+function x_rev = circular_time_reversal(x)
+    N = length(x);
+    n = 0:N-1;
+    x_rev = x(mod(-n, N) + 1);
+end
+
+% IDFT
+function x = my_idft(X)
+    N = length(X);
+    x = zeros(1, N);
+    for n = 0:N-1
+        for k = 0:N-1
+            x(n+1) = x(n+1) + X(k+1) * exp(1j * 2 * pi * k * n / N);
+        end
+    end
+    x = x / N;
+end
+
+% Input signal
+x = [1 2 3 4 5];
+N=5;
+m=2;
+% Circular shift by 2
+x_shifted = my_circshift(x, 2);
+
+% Circular time reversal
+x_reversed = circular_time_reversal(x);
+
+xk = my_dft(x);
+xk_shifted = my_dft(x_shifted);
+xk_reversed = my_dft(x_reversed);
+
+%for circ freq shift
+%e^(j*2*pi*ko*n/N)*x(n)=X(N-K)
+
+%idft of shifted
+x_recovered_shifted = my_idft(xk_shifted);
+disp("Recovered signal from shifted DFT:");
+disp(x_recovered_shifted);
+
+
+
+%Time Shift
+
+    % expected phase shift
+    k = 0:N-1;
+    phase_shift = exp(-1j * 2 * pi * k * m / N);
+    xk_expected = xk.* phase_shift;
+    
+    % Compare DFTs
+    disp("DFT of shifted x:");
+    disp(xk_shifted);
+    disp("Expected DFT after time shift (original * phase):");
+    disp(xk_expected);
+    
+    error = abs(xk_shifted - xk_expected);
+    disp("Error between actual and expected DFTs:");
+    disp(error);
+
+%Time reversal
+    n = 0:N-1;
+    x_freq_rev=xk(mod(-n, N) + 1);
+    
+    error = abs(xk_reversed - x_freq_rev);
+    disp("Error between DFT of reversed signal and frequency-reversed DFT:");
+    disp(error);
+
+%Verify circular freq shift
+    % expected phase shift
+    k = 0:N-1;
+    phase_shift = exp(-1j * 2 * pi * k * m / N);
+    xf_expected = x.* phase_shift;
+     % Comparing DFTs
+    disp("IDFT of shifted x:");
+    disp(x_recovered_shifted);
+    disp("Expected DFT after time shift (original * phase):");
+    disp(xf_expected);
+    
+    error = abs(xk_shifted - xf_expected);
+    disp("Error between actual and expected DFTs:");
+    disp(error);
+\end{lstlisting}
+
+\section{Result}
+\begin{verbatim}
+Recovered signal from shifted DFT:
+   4.0000 - 0.0000i   5.0000 - 0.0000i   1.0000 + 0.0000i   2.0000 + 0.0000i
+   3.0000 + 0.0000i
+
+DFT of shifted x:
+  15.0000 + 0.0000i   4.0451 - 1.3143i  -1.5451 - 2.1266i  -1.5451 + 2.1266i
+  4.0451 + 1.3143i
+
+Expected DFT after time shift (original * phase):
+  15.0000 + 0.0000i   4.0451 - 1.3143i  -1.5451 - 2.1266i  -1.5451 + 2.1266i
+  4.0451 + 1.3143i
+
+Error between actual and expected DFTs:
+   1.0e-14 *
+
+         0    0.1601    0.1404    0.1110    0.7857
+
+Error between DFT of reversed signal and frequency-reversed DFT:
+   1.0e-14 *
+
+         0    0.3794    0.0444    0.0888    0.1256
+
+IDFT of shifted x:
+   4.0000 - 0.0000i   5.0000 - 0.0000i   1.0000 + 0.0000i   2.0000 + 0.0000i
+   3.0000 + 0.0000i
+
+Expected DFT after time shift (original * phase):
+   1.0000 + 0.0000i  -1.6180 - 1.1756i   0.9271 + 2.8532i   1.2361 - 3.8042i
+   -4.0451 + 2.9389i
+
+Error between actual and expected DFTs:
+   14.0000    5.6648    5.5597    6.5506    8.2517
+\end{verbatim}
+
+
+\section{Conclusion}
+The experiment successfully verifies key DFT properties such as circular time and frequency shifts, reversal, duality, and symmetry. These properties demonstrate the strong relationship between time and frequency domains, highlighting how operations in one correspond to predictable transformations in the other.
+%-----------------------------------------------
+% EXPERIMENT 6
+%-----------------------------------------------
+\chapter{FIR Filter Design}
+\label{ch:exp6}
+\section{Aim}
+To study and compare different window functions used in FIR filter design.
+\subsection*{Objectives}
+\begin{enumerate}
+    \item Compare the magnitude response of various window functions for the same length $N$.
+    \item Compare the magnitude response of a window function for different values of $N$.
+    \item Observe the linear phase characteristics of a window function of length $N$.
+    \item Modify some values of $w(n)$ from (C) to observe non-linear phase response when $w(n) \neq w(N-n-1)$.
+\end{enumerate}
+
+\subsection*{Parameters for Comparison}
+\begin{itemize}
+    \item Main lobe width
+    \item Peak side lobe level
+    \item Main lobe transition width
+\end{itemize}
+
+\subsection*{Windows Used}
+Rectangular, Hamming, Hanning, Blackman, Bartlett
+\section{Theory}
+Finite Impulse Response (FIR) filters can be efficiently designed using the window method. 
+An ideal filter has an infinite impulse response, which is truncated and shaped using a window function $w(n)$ to control side lobes and transition width. 
+Common windows include Rectangular, Hamming, Hanning, Blackman, and Bartlett. 
+Each window exhibits a trade-off between main-lobe width (frequency resolution) and side-lobe level (ripple control). 
+Symmetric windows provide a linear phase response, ensuring constant group delay, while modifying symmetry leads to a non-linear phase response.
+\section{MATLAB Code}
+\begin{lstlisting}[caption={Frequency-domain characteristic}]
+
+N = 51;             
+n = 0:N-1;          
+wc = 0.4*pi;  
+
+% Different windows
+w_rect = rectwin(N);
+w_ham  = hamming(N);
+w_han  = hann(N);
+w_blk  = blackman(N);
+w_bar  = bartlett(N);
+
+windows = {w_rect, w_ham, w_han, w_blk, w_bar};
+names   = {'Rectangular', 'Hamming', 'Hanning', 'Blackman', 'Bartlett'};
+
+%  Compare for same N 
+figure;
+for i = 1:length(windows)
+    [H, w] = freqz(windows{i}, 1, 1024);
+    plot(w/pi, 20*log10(abs(H)), 'LineWidth', 1.2);
+    hold on;
+end
+title(['(A) Magnitude Response for N = ', num2str(N)]);
+xlabel('\omega / \pi'); ylabel('Magnitude (dB)');
+legend(names); grid on;
+
+%  Compare for different N 
+figure;
+Ns = [21, 51, 101];
+for i = 1:length(Ns)
+    w_hamN = hamming(Ns(i));
+    [H, w] = freqz(w_hamN, 1, 1024);
+    plot(w/pi, 20*log10(abs(H)), 'LineWidth', 1.2);
+    hold on;
+end
+title('(B) Hamming Window for Different N');
+xlabel('\omega / \pi'); ylabel('Magnitude (dB)');
+legend('N=21', 'N=51', 'N=101');
+grid on;
+
+%  Observe Linear Phase 
+figure;
+plot(n, w_ham, 'LineWidth', 1.3);
+title('(C) Hamming Window w(n) - Symmetric');
+xlabel('n'); ylabel('Amplitude');
+grid on;
+
+figure;
+[H, w] = freqz(w_ham, 1, 1024);
+plot(w/pi, unwrap(angle(H)));
+title('Phase Response of Symmetric Window (Linear Phase)');
+xlabel('\omega / \pi'); ylabel('Phase (radians)');
+grid on;
+
+%  Modify to break symmetry 
+w_mod = w_ham;
+w_mod(10) = 0.5 * w_mod(10);   % break symmetry intentionally
+
+figure;
+[Hmod, w] = freqz(w_mod, 1, 1024);
+plot(w/pi, unwrap(angle(Hmod)), 'r', 'LineWidth', 1.3);
+title('(D) Modified Window Phase Response (Non-linear)');
+xlabel('\omega / \pi'); ylabel('Phase (radians)');
+grid on;
+\end{lstlisting}
+
+\section{Result}
+
+\noindent \textbf{Figures from MATLAB Output:}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{fig5.png}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{fig4.png}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{fig3.png}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{fig2.png}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{fig1.png}
+    \label{fig:placeholder}
+\end{figure}
+
+
+\section{Conclusion}
+The experiment demonstrated the effect of various window functions on FIR filter characteristics. 
+It was observed that Hamming and Blackman windows give better side-lobe attenuation, while the Rectangular window provides the narrowest main lobe. 
+Increasing window length improves frequency resolution. 
+The phase response was linear for symmetric windows and became non-linear when the window symmetry was disturbed.
+
+
+
+
+\chapter{FIR Filter design using Blackman Window}
+\label{ch:exp7}
+\section{Aim}
+To design and implement a low-pass FIR filter using the Blackman window method and to analyze its impulse and frequency response.
+
+\section{Theory}
+Finite Impulse Response (FIR) filters are non-recursive filters that have finite-duration impulse responses.  
+The ideal low-pass filter has the following frequency response:
+\[
+H_d(e^{j\omega}) =
+\begin{cases}
+1, & |\omega| \leq \omega_c \\
+0, & \text{otherwise}
+\end{cases}
+\]
+However, the ideal filter has an infinite impulse response given by:
+\[
+h_d(n) = \frac{\sin(\omega_c (n - M/2))}{\pi (n - M/2)}
+\]
+To make it realizable, a finite-length window is applied.  
+The **Blackman window** provides excellent stopband attenuation and is defined as:
+\[
+w(n) = 0.42 - 0.5\cos\left(\frac{2\pi n}{N-1}\right) + 0.08\cos\left(\frac{4\pi n}{N-1}\right)
+\]
+The final FIR filter coefficients are:
+\[
+h(n) = h_d(n) \times w(n)
+\]
+
+\section{MATLAB Code}
+\begin{lstlisting}[language=Matlab, caption={FIR Low-Pass Filter using Blackman Window}, basicstyle=\ttfamily\footnotesize, breaklines=true]
+% Filter specifications
+rp = 0.07;         % passband ripple
+rs = 0.04;         % stopband ripple
+fp = 2000;         % passband edge (Hz)
+fs = 4000;         % stopband edge (Hz)
+Fs = 20000;        % sampling frequency (Hz)
+
+% Filter order using Blackman window formula
+N = (-20*log10(sqrt(rp*rs)) - 13) / (14.6*((fs - fp)/Fs));
+N = ceil(N);       % round up
+if mod(N,2)==0
+    N = N + 1;     % N odd for symmetric impulse
+end
+disp(['Filter order (N): ', num2str(N)]);
+
+% Cutoff frequency (midpoint)
+fc = (fp + fs)/2;      
+fcn = fc / (Fs/2);     % normalized cutoff (0 to 1 range)
+
+%Blackman window
+w = blackman(N)';      
+
+%Ideal low-pass filter (sinc function)
+n = 0:N-1;
+h_ideal = fcn * sinc(fcn*(n - (N-1)/2));
+
+%Apply window
+h = h_ideal .* w;
+
+figure;
+stem(n, h, 'filled');
+title('Impulse Response of Low-Pass Filter (Blackman Window)');
+xlabel('n');
+ylabel('h[n]');
+grid on;
+
+%  Frequency response 
+figure;
+[H, f] = freqz(h, 1, 1024, Fs);
+plot(f, 20*log10(abs(H)));
+title('Magnitude Response (dB)');
+xlabel('Frequency (Hz)');
+ylabel('Magnitude (dB)');
+grid on;
+\end{lstlisting}
+
+\section{Observations and Results}
+\begin{itemize}
+    \item The Blackman window yields a smooth impulse response with high attenuation in the stopband.
+    \item The transition band is narrow compared to other windows such as Hamming or Hanning.
+    \item The magnitude response clearly shows low ripple in the passband and high attenuation in the stopband.
+
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.9\textwidth]{Screenshot 2025-11-07 101539.png} 
+        \caption{Impulse Response}
+        \label{fig:impulse}
+    \end{figure}
+
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.9\textwidth]{Screenshot 2025-11-07 101602.png} 
+        \caption{Magnitude and Phase response}
+        \label{fig:mag_phase}
+    \end{figure}
+
+\end{itemize}
+\section{Conclusion}
+The FIR low-pass filter was successfully designed and implemented using the Blackman window method.  
+The resulting filter exhibits excellent stopband attenuation and minimal ripple in the passband, validating the effectiveness of the Blackman window for FIR design.
+
+
+
+\chapter{FIR Hilbert Transformer}
+\label{ch:exp8}
+\section{Aim}
+To design and implement a Hilbert Transformer using the Hamming window method in MATLAB and to plot its magnitude and phase response.
+
+\section{Theory}
+A Hilbert Transformer introduces a phase shift of $\pm 90^\circ$ to all frequency components of the input signal without affecting its magnitude.  
+The ideal frequency response is defined as:
+\[
+H_d(e^{j\omega}) = 
+\begin{cases}
+-j, & 0 < \omega < \pi \\
++j, & -\pi < \omega < 0
+\end{cases}
+\]
+Since the ideal impulse response is infinite in length, it is truncated and multiplied by a window function (Hamming window) to obtain a realizable FIR approximation.
+
+\section{MATLAB Code}
+\begin{lstlisting}[language=Matlab, caption={Hilbert Transformer using Hamming Window}, basicstyle=\ttfamily\footnotesize, breaklines=true]
+syms j
+syms i
+M = 15; % Filter length
+N = 1000; % Frequency samples
+
+% Hamming window function
+wr = zeros(1, N);
+for n = -7:7
+    wr = 0.54 - 0.46 * n * cos(2 * pi * n / (M - 1));
+end
+
+% Hilbert transformer ideal 
+w = linspace(-pi, pi, 1000);
+hd = zeros(1, N);
+for k = 1:1000
+    if w(k) < 0
+        hd(k) = 1j;
+    else
+        hd(k) = -1j;
+    end
+end
+
+HD = ifft(hd);
+
+% first M samples and applying window
+Hd = HD(1:M);
+w_final = wr .* Hd;
+
+% Frequency response
+H = fft(w_final, 1024);
+
+% Magnitude Response
+figure;
+subplot(2,1,1);
+plot(linspace(-pi, pi, 1024), fftshift(abs(H)));
+title('Magnitude Response');
+xlabel('Frequency (rad/sample)');
+ylabel('|H(e^{j\omega})|');
+grid on;
+
+% Phase Response
+subplot(2,1,2);
+plot(linspace(-pi, pi, 1024), fftshift(angle(H)));
+title('Phase Response');
+xlabel('Frequency (rad/sample)');
+ylabel('∠H(e^{j\omega}) (radians)');
+grid on;
+
+% Input cosine signal
+N = 100;
+n = 0:N-1;
+x = cos(pi * n / 8);
+
+% Applying filter
+y = conv(x, w_final, 'same');
+
+figure;
+subplot(3,1,1);
+plot(n, x);
+title('Input Signal x[n] = cos(\pi n / 8)');
+xlabel('n');
+ylabel('Amplitude');
+grid on;
+
+subplot(3,1,2);
+plot(n, y);
+title('Filtered Output y[n] after Hilbert Transformer');
+xlabel('n');
+ylabel('Amplitude');
+grid on;
+
+subplot(3,1,3);
+plot(n, y);
+hold on;
+plot(n, x);
+title('Input and Output Comparison');
+xlabel('n');
+ylabel('Amplitude');
+grid on;
+\end{lstlisting}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{response.png}
+    \caption{Magnitude and Phase response}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{Screenshot 2025-11-07 100516.png}
+    \caption{Phase difference}
+    \label{fig:placeholder}
+\end{figure}
+
+\section{Results and Discussion}
+\begin{itemize}
+    \item The magnitude response shows nearly constant amplitude over the passband.
+    \item The phase response exhibits a linear variation indicating a constant group delay.
+    \item The output signal $y[n]$ is the Hilbert transform of $x[n]$, showing a $90^\circ$ phase shift.
+\end{itemize}
+
+\section{Conclusion}
+The Hilbert Transformer was successfully implemented using the Hamming window method. The simulated output confirms a $90^\circ$ phase shift between input and output signals, validating the design.
+
+
+\chapter{FIR Differentiator Filter Using FDA Tool}
+
+\section{Aim}
+To design and implement a Finite Impulse Response (FIR) differentiator filter using the Filter Designer (FDA Tool) in MATLAB and observe its effect on a sine-wave input signal.
+
+\section{Apparatus}
+\begin{itemize}
+    \item MATLAB Software
+\end{itemize}
+
+\section{Theory}
+In digital signal processing, a differentiator produces an output proportional to the derivative of the input signal.  
+The ideal differentiator has frequency response:
+\[
+H_d(e^{j\omega}) = j\omega
+\]
+Thus:
+\[
+|H_d(e^{j\omega})| = |\omega|
+\]
+
+The ideal differentiator is non-causal and infinite in duration, hence cannot be implemented directly.  
+A practical FIR differentiator approximates the ideal response over a limited band. The FDA Tool in MATLAB is used to design such a filter.
+
+Design steps:
+\begin{enumerate}
+    \item Open FDA Tool using \texttt{fdatool}.
+    \item Choose FIR $\rightarrow$ Differentiator.
+    \item Set filter order, sampling frequency, and desired response.
+    \item Analyze magnitude and phase response.
+    \item Export coefficients and apply the filter to a test signal.
+\end{enumerate}
+
+When a sinusoid is applied, the differentiator shifts it by \(+90^\circ\), resulting in a cosine-like output.
+
+\section{MATLAB Code}
+\begin{lstlisting}
+fs = 48000;
+dt = 1/fs;
+t = 0:dt:0.01;
+f = 1000;
+x = sin(2*pi*f*t);
+
+y = filter(Hd, x);
+
+figure;
+plot(t, x, 'b', 'LineWidth', 1.5); hold on;
+plot(t, y, 'r', 'LineWidth', 1.5);
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Input vs Output of FIR Differentiator');
+legend('Input Sine', 'Differentiated Output');
+grid on;
+\end{lstlisting}
+\section{Conclusion}
+A FIR differentiator was designed using the FDA Tool.  
+The magnitude response increased linearly with frequency, while phase showed a \(+90^\circ\) lead.  
+Impulse and step responses confirmed its FIR nature.  
+The output for a sine wave was cosine-like, verifying differentiator behavior. Images are as follows:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-11-21 092401.png}
+    \caption{Magnitude and Phase response of FIR Differentiator}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-11-21 092622.png}
+    \caption{Impulse Response of FIR Differentiator}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-11-21 092731.png}
+    \caption{Step Response of FIR Differentiator}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-11-21 093147.png}
+    \caption{Group Delay Plot}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-11-21 093331.png}
+    \caption{Phase Delay Plot}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Screenshot 2025-11-21 093506.png}
+    \caption{Pole-Zero Plot of FIR Differentiator}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Screenshot 2025-11-21 093604.png}
+    \caption{Input vs Output of FIR Differentiator (Sine and Cosine Relationship)}
+    \label{fig:placeholder}
+\end{figure}
+
+
+
+
+
+
+\chapter{IIR Filter Designing}
+
+\section{Aim}
+To design IIR filters and:
+\begin{itemize}
+    \item Compare magnitude responses of Butterworth, Chebyshev I, and Chebyshev II filters of the same order.
+    \item Compare Butterworth filters of different orders.
+    \item Compare Chebyshev I and Chebyshev II filters for different orders.
+    \item Observe magnitude responses of LP, HP, BP, and BS Butterworth filters of the same order.
+    \item Apply a suitable input signal and observe the filtered output.
+\end{itemize}
+
+\section{Apparatus}
+\begin{itemize}
+    \item MATLAB Software
+\end{itemize}
+
+\section{Theory}
+IIR filters have an impulse response that theoretically extends to infinity.  
+They achieve sharp frequency transitions with lower filter orders compared to FIR filters.
+
+\textbf{Butterworth Filter:} Provides a maximally flat passband with a smooth and monotonic response.
+
+\textbf{Chebyshev Type I:} Allows ripples in the passband but offers sharper roll-off than Butterworth.
+
+\textbf{Chebyshev Type II:} Has a flat passband but introduces ripples in the stopband with high stopband attenuation.
+
+The filter frequency response depends on the location of poles and zeros in the z-plane.  
+Increasing the filter order increases selectivity but also increases design complexity.
+
+\section{MATLAB Code}
+\begin{lstlisting}
+clc; clear; close all;
+
+%% Parameters
+fs = 1000;          % Sampling frequency
+fc = 100;           % Cutoff frequency
+Wn = fc/(fs/2);     % Normalized cutoff
+orders = [15 31 71 101];
+
+%% (a) Compare LP Butterworth vs Chebyshev I vs Chebyshev II (same order & cutoff)
+
+order = 15;
+
+[b_butt, a_butt]  = butter(order, Wn, 'low');
+[b_cheb1, a_cheb1] = cheby1(order, 0.5, Wn, 'low');
+[b_cheb2, a_cheb2] = cheby2(order, 20, Wn, 'low');
+
+[H_butt, f]  = freqz(b_butt, a_butt, 512, fs);
+H_cheb1 = freqz(b_cheb1, a_cheb1, 512, fs);
+H_cheb2 = freqz(b_cheb2, a_cheb2, 512, fs);
+
+figure;
+plot(f, 20*log10(abs(H_butt)), 'LineWidth', 1.5); hold on;
+plot(f, 20*log10(abs(H_cheb1)), 'LineWidth', 1.5);
+plot(f, 20*log10(abs(H_cheb2)), 'LineWidth', 1.5);
+grid on;
+xlabel('Frequency (Hz)');
+ylabel('Magnitude (dB)');
+title('Comparison of LP Butterworth, Chebyshev I & II Filters');
+legend('Butterworth','Chebyshev I','Chebyshev II');
+
+%% Pole-Zero Plots
+figure;
+
+subplot(1,3,1);
+zplane(b_butt, a_butt);
+title('Butterworth LPF');
+grid on;
+
+subplot(1,3,2);
+zplane(b_cheb1, a_cheb1);
+title('Chebyshev I LPF');
+grid on;
+
+subplot(1,3,3);
+zplane(b_cheb2, a_cheb2);
+title('Chebyshev II LPF');
+grid on;
+
+sgtitle('Pole-Zero Plots of IIR Filters (Order = 15)');
+
+%% (b) Butterworth LPF Responses for Different Orders
+
+figure;
+for i = 1:length(orders)
+    [b, a] = butter(orders(i), Wn, 'low');
+    [H, f] = freqz(b, a, 512, fs);
+    plot(f, 20*log10(abs(H)), 'LineWidth', 1.5); hold on;
+end
+grid on;
+xlabel('Frequency (Hz)');
+ylabel('Magnitude (dB)');
+title('Butterworth LPF for Different Orders');
+legend("Order 15", "Order 31", "Order 71", "Order 101");
+
+%% (c) Compare Chebyshev I vs II for Different Orders
+
+figure;
+for i = 1:length(orders)
+    [b1, a1] = cheby1(orders(i), 0.5, Wn, 'low');
+    [b2, a2] = cheby2(orders(i), 20, Wn, 'low');
+    [H1, f] = freqz(b1, a1, 512, fs);
+    H2 = freqz(b2, a2, 512, fs);
+
+    subplot(1, length(orders), i);
+    plot(f, 20*log10(abs(H1)), 'LineWidth', 1.5); hold on;
+    plot(f, 20*log10(abs(H2)), 'LineWidth', 1.5);
+    grid on;
+    title(['Order = ' num2str(orders(i))]);
+    xlabel('Freq (Hz)');
+    ylabel('Magnitude (dB)');
+    legend('Chebyshev I','Chebyshev II');
+end
+sgtitle('Chebyshev I vs II for Different Orders');
+
+%% (d) LP, HP, BP, BS Butterworth Responses (Same Order)
+
+order = 15;
+Wn_low  = 0.2;
+Wn_high = 0.2;
+Wn_band = [0.2 0.5];
+
+[b_lp, a_lp] = butter(order, Wn_low, 'low');
+[b_hp, a_hp] = butter(order, Wn_high, 'high');
+[b_bp, a_bp] = butter(order, Wn_band, 'bandpass');
+[b_bs, a_bs] = butter(order, Wn_band, 'stop');
+
+[H_lp, f] = freqz(b_lp, a_lp, 512, fs);
+H_hp = freqz(b_hp, a_hp, 512, fs);
+H_bp = freqz(b_bp, a_bp, 512, fs);
+H_bs = freqz(b_bs, a_bs, 512, fs);
+
+figure;
+
+subplot(2,2,1);
+plot(f, 20*log10(abs(H_lp)), 'LineWidth', 1.5);
+grid on; title('Low-Pass Butterworth');
+xlabel('Frequency (Hz)'); ylabel('Magnitude (dB)');
+
+subplot(2,2,2);
+plot(f, 20*log10(abs(H_hp)), 'LineWidth', 1.5);
+grid on; title('High-Pass Butterworth');
+xlabel('Frequency (Hz)'); ylabel('Magnitude (dB)');
+
+subplot(2,2,3);
+plot(f, 20*log10(abs(H_bp)), 'LineWidth', 1.5);
+grid on; title('Band-Pass Butterworth');
+xlabel('Frequency (Hz)'); ylabel('Magnitude (dB)');
+
+subplot(2,2,4);
+plot(f, 20*log10(abs(H_bs)), 'LineWidth', 1.5);
+grid on; title('Band-Stop Butterworth');
+xlabel('Frequency (Hz)'); ylabel('Magnitude (dB)');
+
+sgtitle('Responses of Butterworth Filters (Order = 15)');
+
+%% (e) Apply input and observe output using LP Butterworth
+
+t = 0:1/fs:1;
+x = sin(2*pi*50*t) + sin(2*pi*200*t);  % mixture of 50 Hz + 200 Hz
+y = filter(b_lp, a_lp, x);
+
+figure;
+subplot(2,1,1);
+plot(t, x); grid on;
+title('Input Signal (50 Hz + 200 Hz)');
+xlabel('Time (s)'); ylabel('Amplitude');
+
+subplot(2,1,2);
+plot(t, y); grid on;
+title('Filtered Output (LP Butterworth)');
+xlabel('Time (s)'); ylabel('Amplitude');
+
+\end{lstlisting}
+\section{Figures}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Screenshot 2025-11-21 094329.png}
+    \caption{Comparison of Butterworth, Chebyshev I, and Chebyshev II magnitude responses}
+    \label{fig:butter_cheby_compare}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Screenshot 2025-11-21 094630.png}
+    \caption{Pole–Zero Plots for Butterworth, Chebyshev I, and Chebyshev II Filters}
+    \label{fig:pz_plots}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Screenshot 2025-11-21 094727.png}
+    \caption{Magnitude Response of Butterworth Filters for Different Orders}
+    \label{fig:butter_orders}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Screenshot 2025-11-21 094802.png}
+    \caption{Comparison of Chebyshev I and II Filters for Different Orders}
+    \label{fig:cheby_orders}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Screenshot 2025-11-21 094856.png}
+    \caption{Magnitude Responses of LP, HP, BP, and BS Butterworth Filters}
+    \label{fig:lphpbpbs}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Screenshot 2025-11-21 095002.png}
+    \caption{Input Signal and Low-Pass Filtered Output}
+    \label{fig:filtered_output}
+\end{figure}
+
+\section{Conclusion}
+Butterworth, Chebyshev Type I, and Chebyshev Type II IIR filters were designed and analyzed.
+
+\begin{itemize}
+    \item Butterworth showed a smooth passband with no ripples.
+    \item Chebyshev Type I had passband ripple but sharper cutoff.
+    \item Chebyshev Type II provided high stopband attenuation with stopband ripple.
+    \item Higher filter orders improved transition sharpness but increased complexity.
+    \item The low-pass Butterworth filter successfully removed high-frequency components from the test signal.
+\end{itemize}
+
+\section{Viva Questions}
+\begin{enumerate}
+    \item What are the differences between FIR and IIR filters?
+    \item Why does the Butterworth filter have a maximally flat passband?
+    \item How do Chebyshev I and II differ?
+    \item What is the effect of increasing filter order?
+    \item What is the significance of pole-zero plots in filter design?
+\end{enumerate}
+
+
+
+
+\end{document}

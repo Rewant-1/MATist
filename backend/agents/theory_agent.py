@@ -1,7 +1,7 @@
 from .base_agent import BaseAgent
 
 class TheoryAgent(BaseAgent):
-    """Agent specialized in explaining ECE theoretical concepts."""
+    # Theory explain karne wala agent - formulas, concepts sab deta hai
     
     def __init__(self):
         instructions = """You are a distinguished ECE professor specializing in theoretical foundations. 
@@ -136,15 +136,7 @@ to practical implementation."""
         super().__init__("TheoryAgent", instructions)
     
     def explain_concept(self, topic: str) -> str:
-        """
-        Generate a detailed theoretical explanation for the given ECE topic.
-        
-        Args:
-            topic: The ECE practical topic to explain
-            
-        Returns:
-            Detailed theoretical explanation
-        """
+        # Topic leke detailed theory deta hai
         prompt = f"""
 Explain the ECE topic: {topic}
 

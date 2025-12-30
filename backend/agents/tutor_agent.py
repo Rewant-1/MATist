@@ -140,9 +140,9 @@ class TutorAgent(BaseAgent):
             result = super().respond(full_query)
 
             return {
-                "agent": "ECE MATLAB Helper",
+                "agent": "MATist",
                 "response": result,
-                "reason": "ECE MATLAB educational assistant"
+                "reason": "MATist educational assistant"
             }
 
         except Exception as e:
@@ -153,7 +153,7 @@ class TutorAgent(BaseAgent):
             }
     
     def route_stream(self, messages: list[dict]):
-        """Streaming version of route method"""
+        # Stream wala route - real-time response ke liye
         trimmed_messages = self._trim_messages(messages)
 
         user_query = ""

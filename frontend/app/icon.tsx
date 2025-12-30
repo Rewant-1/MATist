@@ -25,7 +25,7 @@ export default function Icon() {
           borderRadius: '20%',
         }}
       >
-        ECE
+        M
       </div>
     ),
     {

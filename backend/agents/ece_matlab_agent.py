@@ -19,20 +19,11 @@ MIN_CODE_LENGTH = int(os.getenv('MIN_CODE_LENGTH', 20))
 MIN_THEORY_WORDS = int(os.getenv('MIN_THEORY_WORDS', 20))  # approximate minimum word count
 
 class ECEMatlabAgent(BaseAgent):
-    """
-    Main orchestrator agent for ECE MATLAB Practical Helper.
-    
-    Workflow:
-    1. Theory Explanation (TheoryAgent)
-    2. Brute-Force Code Generation (CodeGeneratorAgent)
-    3. Brute-Force Code Explanation (CodeExplainerAgent)
-    4. Efficient Code Generation (CodeGeneratorAgent) - if applicable
-    5. Efficient Code Explanation (CodeExplainerAgent) - if applicable
-    6. LaTeX Report Generation (LaTeXGeneratorAgent)
-    """
+    # Main orchestrator: Theory -> Code -> Explain -> LaTeX
+    # Parallel threads use karta hai speed ke liye
     
     def __init__(self):
-        super().__init__("ECEMatlabAgent", "ECE MATLAB Practical Helper orchestrator")
+        super().__init__("ECEMatlabAgent", "MATist Orchestrator")
         
         # Initialize all specialist agents
         self.theory_agent = TheoryAgent()
@@ -41,7 +32,7 @@ class ECEMatlabAgent(BaseAgent):
         self.latex_generator_agent = LaTeXGeneratorAgent()
     
     def _generate_theory_thread(self, topic: str, results: dict):
-        """Thread worker for generating theory."""
+        # Thread worker - theory generate karta hai background mein
         try:
             print("[THREAD] Generating theory...")
             start = time.time()
@@ -52,7 +43,7 @@ class ECEMatlabAgent(BaseAgent):
             print(f"[THREAD] Theory failed: {str(e)}")
     
     def _generate_brute_code_thread(self, topic: str, results: dict):
-        """Thread worker for generating brute-force code."""
+        # Thread worker - brute force code banata hai parallel mein
         try:
             print("[THREAD] Generating brute code...")
             start = time.time()
@@ -64,15 +55,7 @@ class ECEMatlabAgent(BaseAgent):
             print(f"[THREAD] Brute code failed: {str(e)}")
     
     def process_practical(self, topic: str) -> dict:
-        """
-        Complete workflow for processing an ECE MATLAB practical topic.
-        
-        Args:
-            topic: The ECE practical topic (e.g., "Convolution of two signals")
-            
-        Returns:
-            Dictionary containing all generated content
-        """
+        # Pura practical generate karta hai - theory, code, explanation, latex sab
         # --- Caching: Check if result exists ---
         normalized_topic = topic.strip().lower()
         with PRACTICAL_CACHE_LOCK:
@@ -265,16 +248,7 @@ class ECEMatlabAgent(BaseAgent):
              }
     
     def process_practical_streaming(self, topic: str):
-        """
-        Generator version for streaming responses step-by-step.
-        Yields partial results as each step completes.
-        
-        Args:
-            topic: The ECE practical topic
-            
-        Yields:
-            Dictionaries with step updates
-        """
+        # Step-by-step yield wala version - real-time updates ke liye
         try:
             yield {"step": "theory", "status": "processing", "message": "Generating theory explanation..."}
             theory = self.theory_agent.explain_concept(topic)
