@@ -8,6 +8,13 @@ import { Typewriter } from "@/components/ui/typewriter";
 import ASMRStaticBackground from "@/components/asmr-static-background";
 import { Testimonial } from "@/components/testimonial";
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default function LandingPage() {
   const features = [
@@ -47,6 +54,44 @@ export default function LandingPage() {
     <div className="min-h-screen w-full relative overflow-hidden">
       {/* Interactive ASMR Particle Background */}
       <ASMRStaticBackground />
+
+      {/* Landing-only header (logo + CTA + auth) */}
+      <header className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-6">
+        <Link href="/" className="flex items-center">
+          <img
+            src="/logo-main.svg"
+            alt="MATist"
+            className="h-16 w-16 rounded-full object-cover bg-white/5 border-2 border-white/10 scale-75"
+            style={{ objectPosition: "center 60%" }}
+          />
+        </Link>
+        <div className="flex items-center gap-3">
+          <Link href="/ece-practical">
+            <button className="group relative overflow-hidden rounded-full bg-white/10 hover:bg-white/20 border border-white/20 px-6 py-2.5 text-sm font-medium text-white backdrop-blur-md transition-all duration-300 shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.5)]">
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <span className="relative flex items-center gap-2">
+                <Sparkles className="h-4 w-4" />
+                Start Generating
+              </span>
+            </button>
+          </Link>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="text-sm font-medium text-white/70 hover:text-white transition-colors px-4">
+                Sign In
+              </button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button className="rounded-full border border-white/20 bg-white/5 hover:bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm transition-all">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+        </div>
+      </header>
       
       {/* Content Layer */}
       <div className="relative z-10 container mx-auto px-4 py-20">

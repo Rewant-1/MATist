@@ -38,6 +38,7 @@
     "@radix-ui/react-toggle-group": "latest",
     "@radix-ui/react-tooltip": "latest",
     "@tailwindcss/postcss": "latest",
+    "@tailwindcss/typography": "latest",
     "autoprefixer": "latest",
     "class-variance-authority": "latest",
     "clsx": "latest",

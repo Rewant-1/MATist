@@ -25,6 +25,36 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
   const [copiedTab, setCopiedTab] = React.useState<string | null>(null);
   const [isGeneratingPdf, setIsGeneratingPdf] = React.useState(false);
 
+  const markdownComponents = {
+    a: ({ children, href }: any) => (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 underline"
+      >
+        {children}
+      </a>
+    ),
+    code: ({ children, className }: any) => {
+      const isInline = !className;
+      if (isInline) {
+        return (
+          <code className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm font-mono text-teal-700 dark:text-teal-300">
+            {children}
+          </code>
+        );
+      }
+      return (
+        <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl overflow-x-auto mb-4 border border-slate-200 dark:border-slate-700">
+          <code className="text-sm font-mono text-slate-800 dark:text-slate-200">
+            {children}
+          </code>
+        </pre>
+      );
+    },
+  };
+
   const copyToClipboard = async (content: string, tabName: string) => {
     try {
       await navigator.clipboard.writeText(content);
@@ -146,7 +176,7 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
             </CardHeader>
             <CardContent className="p-6 space-y-4">
               <div className="prose prose-base max-w-none dark:prose-invert prose-headings:text-teal-800 dark:prose-headings:text-teal-300 prose-strong:text-teal-900 dark:prose-strong:text-teal-200">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                   {eceData.theory || "No theory available"}
                 </ReactMarkdown>
               </div>
@@ -223,7 +253,7 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                   </h4>
                   <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200 dark:border-slate-800 max-h-[500px] overflow-y-auto">
                     <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-emerald-700 dark:prose-headings:text-emerald-300 prose-p:leading-7 prose-p:mb-4 prose-li:mb-2 prose-code:text-xs prose-code:bg-slate-200 dark:prose-code:bg-slate-700 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                         {eceData.brute_force_explanation}
                       </ReactMarkdown>
                     </div>
@@ -305,7 +335,7 @@ export function PracticalTabs({ eceData }: PracticalTabsProps) {
                       </h4>
                       <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-200 dark:border-slate-800 max-h-[500px] overflow-y-auto">
                         <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-rose-700 dark:prose-headings:text-rose-300 prose-p:leading-7 prose-p:mb-4 prose-li:mb-2 prose-code:text-xs prose-code:bg-slate-200 dark:prose-code:bg-slate-700 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                             {eceData.efficient_explanation}
                           </ReactMarkdown>
                         </div>
