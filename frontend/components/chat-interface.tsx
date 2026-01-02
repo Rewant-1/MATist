@@ -557,7 +557,7 @@ export function ChatInterface({
                           {message.content}
                         </div>
                       ) : (
-                        <div className="prose prose-sm max-w-none dark:prose-invert prose-blue [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                        <div className="prose prose-sm max-w-none dark:prose-invert prose-blue whitespace-pre-wrap break-words [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
                           {processMessageContent(message.content)}
                         </div>
                       )}
